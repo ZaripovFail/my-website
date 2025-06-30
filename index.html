@@ -3,30 +3,435 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой крутой сайт</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Мой Умный Сайт</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --text: #2d3436;
+            --bg: #f5f6fa;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --glass: rgba(255, 255, 255, 0.2);
+        }
+
+        .dark-mode {
+            --primary: #a29bfe;
+            --secondary: #6c5ce7;
+            --text: #f5f6fa;
+            --bg: #1a1a2e;
+            --card-bg: rgba(26, 26, 46, 0.8);
+            --glass: rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            transition: all 0.5s ease;
+            background-image: url('https://source.unsplash.com/random/1920x1080/?abstract');
+            background-size: cover;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Glass header */
+        header {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        /* Hero section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s forwards 0.5s;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        /* Animated buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(108, 92, 231, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.3));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .btn:hover::after {
+            opacity: 1;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        /* World clocks */
+        .clocks {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .clock {
+            text-align: center;
+            padding: 20px;
+            min-width: 200px;
+        }
+
+        .clock-time {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .clock-city {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        /* Weather widget */
+        .weather {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .weather-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .weather-temp {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .weather-desc {
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .clocks {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .clock {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header class="glass-header">
+    <header>
         <nav>
-            <a href="#" class="logo">YourBrand</a>
+            <a href="#" class="logo">MySite</a>
             <div class="nav-links">
-                <a href="#about">Обо мне</a>
-                <a href="#projects">Проекты</a>
-                <a href="#contact">Контакты</a>
+                <a href="#features">Возможности</a>
+                <a href="#clocks">Время</a>
+                <a href="#weather">Погода</a>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
             </div>
         </nav>
     </header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Привет, я <span class="highlight">[Ваше Имя]</span></h1>
-            <p>Веб-разработчик | Дизайнер | Креативщик</p>
-            <button class="cta-button">Узнать больше</button>
-        </div>
-    </section>
+    <div class="container">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Добро пожаловать</h1>
+                <p class="subtitle">Интерактивный сайт с анимациями и полезными виджетами</p>
+                <div>
+                    <button class="btn" id="actionBtn">Нажми меня</button>
+                    <button class="btn btn-outline">Узнать больше</button>
+                </div>
+            </div>
+        </section>
 
-    <script src="js/script.js"></script>
+        <section class="card" id="features">
+            <h2 class="card-title">Особенности сайта</h2>
+            <p>Этот сайт включает следующие функции:</p>
+            <ul>
+                <li>Анимированные кнопки и элементы</li>
+                <li>Переключение темного/светлого режима</li>
+                <li>Мировые часы (Москва, Токио, Нью-Йорк)</li>
+                <li>Погодный виджет для Казани</li>
+                <li>Адаптивный дизайн для всех устройств</li>
+                <li>Стеклянный морфизм (glassmorphism)</li>
+            </ul>
+        </section>
+
+        <section class="card" id="clocks">
+            <h2 class="card-title">Мировое время</h2>
+            <div class="clocks">
+                <div class="clock">
+                    <div class="clock-city">Москва</div>
+                    <div class="clock-time" id="moscow-time">--:--:--</div>
+                </div>
+                <div class="clock">
+                    <div class="clock-city">Токио</div>
+                    <div class="clock-time" id="tokyo-time">--:--:--</div>
+                </div>
+                <div class="clock">
+                    <div class="clock-city">Нью-Йорк</div>
+                    <div class="clock-time" id="newyork-time">--:--:--</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card" id="weather">
+            <h2 class="card-title">Погода в Казани</h2>
+            <div class="weather">
+                <div class="weather-icon" id="weather-icon">
+                    <i class="fas fa-sun"></i>
+                </div>
+                <div class="weather-temp" id="weather-temp">+5°C</div>
+                <div class="weather-desc" id="weather-desc">Солнечно</div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2023 Мой крутой сайт. Все права защищены.</p>
+    </footer>
+
+    <script>
+        // Theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+
+        // Animated button effect
+        const actionBtn = document.getElementById('actionBtn');
+        actionBtn.addEventListener('click', () => {
+            actionBtn.textContent = 'Анимация!';
+            actionBtn.style.background = 'linear-gradient(45deg, #ff7675, #fd79a8)';
+            
+            setTimeout(() => {
+                actionBtn.textContent = 'Нажми меня';
+                actionBtn.style.background = '';
+            }, 1000);
+        });
+
+        // World clocks
+        function updateClocks() {
+            const options = {
+                timeZone: 'Europe/Moscow',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
+            
+            document.getElementById('moscow-time').textContent = 
+                new Date().toLocaleTimeString('ru-RU', options);
+            
+            options.timeZone = 'Asia/Tokyo';
+            document.getElementById('tokyo-time').textContent = 
+                new Date().toLocaleTimeString('ja-JP', options);
+            
+            options.timeZone = 'America/New_York';
+            document.getElementById('newyork-time').textContent = 
+                new Date().toLocaleTimeString('en-US', options);
+        }
+        
+        setInterval(updateClocks, 1000);
+        updateClocks();
+
+        // Weather widget (mock data - in a real app you would use an API)
+        function updateWeather() {
+            const weatherData = {
+                temp: '+3°C',
+                desc: 'Облачно',
+                icon: 'cloud'
+            };
+            
+            document.getElementById('weather-temp').textContent = weatherData.temp;
+            document.getElementById('weather-desc').textContent = weatherData.desc;
+            
+            const iconMap = {
+                'sun': 'fa-sun',
+                'cloud': 'fa-cloud',
+                'rain': 'fa-cloud-rain',
+                'snow': 'fa-snowflake'
+            };
+            
+            document.getElementById('weather-icon').innerHTML = 
+                `<i class="fas ${iconMap[weatherData.icon]}"></i>`;
+        }
+        
+        updateWeather();
+        
+        // In a real app, you would fetch weather from an API like:
+        // fetch('https://api.openweathermap.org/data/2.5/weather?q=Kazan&appid=YOUR_API_KEY')
+        //   .then(response => response.json())
+        //   .then(data => {
+        //       // Update weather widget with real data
+        //   });
+    </script>
 </body>
 </html>
