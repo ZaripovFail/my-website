@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Личный Дашборд Зарипова</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <title>Минимал Дашборд</title>
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
     rel="stylesheet"
@@ -37,23 +35,22 @@
     }
     header {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      padding: 1rem 2rem;
+      padding: 1.5rem 2rem;
       background: var(--card);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
-    .logo {
       font-weight: 700;
-      font-size: 1.2rem;
+      font-size: 1.8rem;
       color: var(--accent);
+      letter-spacing: 2px;
+      user-select: none;
     }
-    .lang-switcher select {
-      padding: 4px 8px;
-      margin-right: 10px;
+    .lang-switcher {
+      display: none; /* убираем переключатель языка */
     }
     .container {
-      max-width: 1200px;
+      max-width: 1000px;
       margin: 2rem auto;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -62,13 +59,20 @@
     }
     .card {
       background: var(--card);
-      padding: 1.2rem;
+      padding: 1.5rem 1.8rem;
       border-radius: var(--radius);
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      user-select: none;
     }
     .card h2 {
       margin-top: 0;
-      font-size: 1.1rem;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
     }
     .dark .card {
       background: #2a2a2a;
@@ -86,16 +90,37 @@
       text-align: center;
       padding: 2rem;
       color: #888;
+      user-select: none;
     }
-    /* Notes modal */
+    /* Заметки */
+    #notesList {
+      width: 100%;
+      max-height: 250px;
+      overflow-y: auto;
+      margin-top: 0.5rem;
+      text-align: left;
+    }
+    .note-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .note-item label {
+      flex-grow: 1;
+      margin-left: 8px;
+      cursor: pointer;
+      user-select: text;
+    }
+    .completed {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+    /* Модальное окно */
     .modal {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
       justify-content: center;
       align-items: center;
       z-index: 1000;
@@ -104,102 +129,116 @@
       display: flex;
     }
     .modal-content {
-      background: white;
-      padding: 1.5rem;
+      background: var(--card);
+      padding: 1.5rem 2rem;
       border-radius: 10px;
       width: 90%;
-      max-width: 500px;
-      position: relative;
+      max-width: 450px;
+      box-sizing: border-box;
     }
     .modal-content.dark {
       background: #2a2a2a;
     }
-    .modal input,
-    .modal select,
-    .modal textarea {
+    .modal input, .modal select {
       width: 100%;
-      padding: 0.5rem;
+      padding: 0.6rem;
       margin-top: 10px;
       border-radius: 6px;
       border: 1px solid #ccc;
       box-sizing: border-box;
+      font-size: 1rem;
     }
-    .note-item {
-      margin-bottom: 10px;
+    .modal button {
+      margin-top: 15px;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: var(--accent);
+      color: white;
+      transition: background 0.2s;
+    }
+    .modal button:hover {
+      background: #005bb5;
+    }
+    .modal button.close-btn {
+      background: #ccc;
+      color: #333;
+      margin-left: 10px;
+    }
+    .modal button.close-btn:hover {
+      background: #aaa;
+    }
+    /* Погода и иконка */
+    #weather {
       display: flex;
       align-items: center;
+      font-size: 1.3rem;
+      gap: 10px;
     }
-    .note-item span {
-      display: inline-block;
-      margin-left: 10px;
-      flex-grow: 1;
+    #weather img {
+      width: 48px;
+      height: 48px;
     }
-    .completed {
-      text-decoration: line-through;
-      opacity: 0.6;
-    }
-    .timezone-select {
+    /* Кнопка открытия заметок */
+    #openNotesBtn {
       margin-top: 0.5rem;
-      width: 100%;
-      padding: 6px;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background: var(--accent);
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #openNotesBtn:hover {
+      background: #005bb5;
+    }
+    /* Селектор часовых поясов */
+    #timezone {
+      margin-bottom: 1rem;
+      padding: 0.5rem 0.7rem;
       border-radius: 6px;
       border: 1px solid #ccc;
+      font-size: 1rem;
+      cursor: pointer;
+      user-select: none;
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo" id="logo">Zaripov Dashboard</div>
-    <div class="lang-switcher">
-      <select id="lang">
-        <option value="ru">Русский</option>
-        <option value="en">English</option>
-      </select>
-      <button id="theme" aria-label="Toggle theme">🌙</button>
-    </div>
-  </header>
+  <header>Минимал Дашборд</header>
 
   <main class="container">
     <section class="card">
-      <h2 id="weather-title">Погода</h2>
+      <h2>Погода</h2>
       <div id="weather">Загрузка...</div>
     </section>
     <section class="card">
-      <h2 id="time-title">Время</h2>
-      <select id="timezone" class="timezone-select" aria-label="Выбор часового пояса">
-        <option value="Europe/Moscow">Москва</option>
+      <h2>Время</h2>
+      <select id="timezone" aria-label="Выбор часового пояса">
+        <option value="Europe/Moscow" selected>Москва</option>
         <option value="America/New_York">Нью-Йорк</option>
-        <option value="Asia/Tokyo">Токио</option>
       </select>
-      <div id="time">--:--:--</div>
+      <div id="time" style="font-size: 2rem; font-weight: 600; user-select:none;">--:--</div>
     </section>
     <section class="card">
-      <h2 id="currency-title">Курс валют</h2>
+      <h2>Курс валют</h2>
       <div id="currency">Загрузка...</div>
     </section>
     <section class="card">
-      <h2 id="notes-title">Заметки</h2>
-      <button id="openNotesBtn">Открыть</button>
+      <h2>Заметки</h2>
+      <button id="openNotesBtn">Открыть заметки</button>
       <div id="notesList"></div>
-    </section>
-    <section class="card">
-      <h2 id="quote-title">Цитата дня</h2>
-      <div id="quote">Загрузка...</div>
-    </section>
-    <section class="card">
-      <h2 id="event-title">Событие дня</h2>
-      <div id="onthisday">Загрузка...</div>
-    </section>
-    <section class="card">
-      <h2 id="fact-title">Случайный факт</h2>
-      <div id="fact">Загрузка...</div>
     </section>
   </main>
 
-  <div class="modal" id="notesModal" role="dialog" aria-modal="true" aria-labelledby="notes-title">
+  <div class="modal" id="notesModal" role="dialog" aria-modal="true" aria-labelledby="notesTitle">
     <div class="modal-content" id="modalContent">
-      <h3 id="modal-title">Добавить заметку</h3>
-      <input type="text" id="noteText" placeholder="Текст..." aria-label="Текст заметки" />
+      <h3 id="notesTitle">Добавить заметку</h3>
+      <input type="text" id="noteText" placeholder="Текст заметки" aria-label="Текст заметки" />
       <select id="notePriority" aria-label="Приоритет заметки">
         <option value="low">Низкий</option>
         <option value="medium">Средний</option>
@@ -207,314 +246,160 @@
       </select>
       <div style="margin-top: 1rem;">
         <button id="addNoteBtn">Добавить</button>
-        <button id="closeNotesBtn">Закрыть</button>
+        <button id="closeNotesBtn" class="close-btn">Закрыть</button>
       </div>
     </div>
   </div>
 
-  <footer>&copy; 2025 Зарипов Фаиль</footer>
+  <footer>&copy; 2025 Минимал Дашборд</footer>
 
   <script>
     (() => {
-      // --- Языки интерфейса ---
-      const texts = {
-        ru: {
-          logo: "Личный Дашборд Зарипова",
-          weather: "Погода",
-          time: "Время",
-          currency: "Курс валют",
-          notes: "Заметки",
-          quote: "Цитата дня",
-          event: "Событие дня",
-          fact: "Случайный факт",
-          addNote: "Добавить заметку",
-          notePlaceholder: "Текст...",
-          notePriorityLow: "Низкий",
-          notePriorityMedium: "Средний",
-          notePriorityHigh: "Высокий",
-          open: "Открыть",
-          close: "Закрыть",
-          themeMoon: "🌙",
-          themeSun: "☀️"
-        },
-        en: {
-          logo: "Zaripov Personal Dashboard",
-          weather: "Weather",
-          time: "Time",
-          currency: "Currency rates",
-          notes: "Notes",
-          quote: "Quote of the day",
-          event: "On this day",
-          fact: "Random fact",
-          addNote: "Add note",
-          notePlaceholder: "Text...",
-          notePriorityLow: "Low",
-          notePriorityMedium: "Medium",
-          notePriorityHigh: "High",
-          open: "Open",
-          close: "Close",
-          themeMoon: "🌙",
-          themeSun: "☀️"
-        }
-      };
+      // Тема из localStorage
+      const themeBtn = document.createElement("button");
+      themeBtn.id = "themeToggleBtn";
+      themeBtn.style.position = "fixed";
+      themeBtn.style.top = "10px";
+      themeBtn.style.right = "10px";
+      themeBtn.style.fontSize = "1.5rem";
+      themeBtn.style.background = "none";
+      themeBtn.style.border = "none";
+      themeBtn.style.cursor = "pointer";
+      themeBtn.style.userSelect = "none";
+      themeBtn.title = "Переключить тему";
+      document.body.appendChild(themeBtn);
 
-      // Текущий язык
-      let currentLang = localStorage.getItem("lang") || "ru";
-
-      // --- Элементы ---
-      const langSelect = document.getElementById("lang");
-      const logoEl = document.getElementById("logo");
-      const weatherTitle = document.getElementById("weather-title");
-      const timeTitle = document.getElementById("time-title");
-      const currencyTitle = document.getElementById("currency-title");
-      const notesTitle = document.getElementById("notes-title");
-      const quoteTitle = document.getElementById("quote-title");
-      const eventTitle = document.getElementById("event-title");
-      const factTitle = document.getElementById("fact-title");
-      const openNotesBtn = document.getElementById("openNotesBtn");
-      const closeNotesBtn = document.getElementById("closeNotesBtn");
-      const addNoteBtn = document.getElementById("addNoteBtn");
-      const notesModal = document.getElementById("notesModal");
-      const modalContent = document.getElementById("modalContent");
-      const noteTextInput = document.getElementById("noteText");
-      const notePrioritySelect = document.getElementById("notePriority");
-      const themeBtn = document.getElementById("theme");
-      const timezoneSelect = document.getElementById("timezone");
-
-      // --- Переключение языка ---
-      function updateTexts() {
-        const t = texts[currentLang];
-        logoEl.textContent = t.logo;
-        weatherTitle.textContent = t.weather;
-        timeTitle.textContent = t.time;
-        currencyTitle.textContent = t.currency;
-        notesTitle.textContent = t.notes;
-        quoteTitle.textContent = t.quote;
-        eventTitle.textContent = t.event;
-        factTitle.textContent = t.fact;
-        openNotesBtn.textContent = t.open;
-        closeNotesBtn.textContent = t.close;
-        addNoteBtn.textContent = t.addNote;
-        noteTextInput.placeholder = t.notePlaceholder;
-
-        // Обновить приоритеты в селекте
-        notePrioritySelect.options[0].text = t.notePriorityLow;
-        notePrioritySelect.options[1].text = t.notePriorityMedium;
-        notePrioritySelect.options[2].text = t.notePriorityHigh;
-
-        // Кнопка темы
-        themeBtn.textContent = document.body.classList.contains("dark") ? t.themeSun : t.themeMoon;
+      function updateThemeButton() {
+        themeBtn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
       }
 
-      langSelect.value = currentLang;
-      updateTexts();
-
-      langSelect.addEventListener("change", () => {
-        currentLang = langSelect.value;
-        localStorage.setItem("lang", currentLang);
-        updateTexts();
-        // Перезагрузить данные, которые зависят от языка (погода, цитаты и т.д.)
-        loadWeather();
-        loadQuote();
-      });
-
-      // --- Темная тема ---
-      function updateThemeBtn() {
-        const t = texts[currentLang];
-        themeBtn.textContent = document.body.classList.contains("dark") ? t.themeSun : t.themeMoon;
-      }
-
-      themeBtn.addEventListener("click", () => {
+      themeBtn.onclick = () => {
         document.body.classList.toggle("dark");
         modalContent.classList.toggle("dark");
-        updateThemeBtn();
-        // Сохраняем выбор темы
+        updateThemeButton();
         localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
-      });
+      };
 
-      // Инициализация темы из localStorage
       if (localStorage.getItem("theme") === "dark") {
         document.body.classList.add("dark");
-        modalContent.classList.add("dark");
-        updateThemeBtn();
+        document.getElementById("modalContent").classList.add("dark");
       }
+      updateThemeButton();
 
-      // --- Время с часовыми поясами ---
+      // --- Время ---
+      const timezoneSelect = document.getElementById("timezone");
+      const timeDiv = document.getElementById("time");
+
       function updateTime() {
         const tz = timezoneSelect.value;
         const now = new Date();
         const options = {
           hour: "2-digit",
           minute: "2-digit",
-          second: "2-digit",
           hour12: false,
           timeZone: tz,
         };
-        const timeString = now.toLocaleTimeString(currentLang === "ru" ? "ru-RU" : "en-US", options);
-        document.getElementById("time").textContent = timeString;
+        const timeString = now.toLocaleTimeString("ru-RU", options).slice(0, 5); // без секунд
+        timeDiv.textContent = timeString;
       }
+      timezoneSelect.addEventListener("change", updateTime);
       setInterval(updateTime, 1000);
       updateTime();
 
-      timezoneSelect.addEventListener("change", updateTime);
+      // --- Погода с иконкой ---
+      const weatherDiv = document.getElementById("weather");
+      const apiKey = "87bed00ad1d3b7c292017260b3f9f09e";
+      const city = "Kazan";
 
-      // --- Погода ---
       function loadWeather() {
-        const city = "Kazan";
-        const apiKey = "87bed00ad1d3b7c292017260b3f9f09e";
-        fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=${currentLang}`
-        )
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=ru`)
           .then((r) => r.json())
           .then((data) => {
             if (data && data.weather && data.main) {
-              const weatherText = `${data.name}: ${Math.round(data.main.temp)}°C, ${data.weather[0].description}`;
-              document.getElementById("weather").textContent = weatherText;
+              const iconCode = data.weather[0].icon;
+              const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+              const temp = Math.round(data.main.temp);
+              const desc = data.weather[0].description;
+
+              weatherDiv.innerHTML = `
+                <img src="${iconUrl}" alt="${desc}" />
+                <div>${city}: ${temp}°C, ${desc}</div>
+              `;
             } else {
-              document.getElementById("weather").textContent =
-                currentLang === "ru" ? "Не удалось загрузить погоду." : "Failed to load weather.";
+              weatherDiv.textContent = "Не удалось загрузить погоду.";
             }
           })
           .catch(() => {
-            document.getElementById("weather").textContent =
-              currentLang === "ru" ? "Не удалось загрузить погоду." : "Failed to load weather.";
+            weatherDiv.textContent = "Не удалось загрузить погоду.";
           });
       }
       loadWeather();
 
-      // --- Курс валют через exchangerate.host ---
+      // --- Курс валют ---
+      const currencyDiv = document.getElementById("currency");
       function loadCurrency() {
-        // Получаем курс RUB к USD, EUR, CNY (используем базу RUB)
         fetch("https://api.exchangerate.host/latest?base=RUB&symbols=USD,EUR,CNY")
           .then((r) => r.json())
           .then((data) => {
             if (data && data.rates) {
-              // Переворачиваем курс, чтобы показать сколько рублей за 1 валюту
-              const usdRate = 1 / data.rates.USD;
-              const eurRate = 1 / data.rates.EUR;
-              const cnyRate = 1 / data.rates.CNY;
-              document.getElementById("currency").innerHTML = `
-                USD: ${usdRate.toFixed(2)} ₽<br>
-                EUR: ${eurRate.toFixed(2)} ₽<br>
-                CNY: ${cnyRate.toFixed(2)} ₽
+              const usd = (1 / data.rates.USD).toFixed(2);
+              const eur = (1 / data.rates.EUR).toFixed(2);
+              const cny = (1 / data.rates.CNY).toFixed(2);
+
+              currencyDiv.innerHTML = `
+                USD: ${usd} ₽<br/>
+                EUR: ${eur} ₽<br/>
+                CNY: ${cny} ₽
               `;
             } else {
-              document.getElementById("currency").textContent =
-                currentLang === "ru" ? "Не удалось загрузить курс валют." : "Failed to load currency rates.";
+              currencyDiv.textContent = "Не удалось загрузить курсы валют.";
             }
           })
           .catch(() => {
-            document.getElementById("currency").textContent =
-              currentLang === "ru" ? "Не удалось загрузить курс валют." : "Failed to load currency rates.";
+            currencyDiv.textContent = "Не удалось загрузить курсы валют.";
           });
       }
       loadCurrency();
 
-      // --- Цитата дня ---
-      function loadQuote() {
-        // Forismatic иногда не работает с CORS, поэтому добавим простой fallback
-        fetch(`https://api.forismatic.com/api/1.0/?method=getQuote&lang=${currentLang}&format=json`)
-          .then((r) => r.json())
-          .then((data) => {
-            if (data && data.quoteText) {
-              document.getElementById("quote").textContent = data.quoteText;
-            } else {
-              throw new Error("No quote");
-            }
-          })
-          .catch(() => {
-            // Альтернативный источник цитаты
-            const fallbackQuotes = {
-              ru: [
-                "Жизнь — это то, что с тобой происходит, пока ты строишь планы. — Джон Леннон",
-                "Счастье не в обладании, а в умении радоваться. — Лев Толстой",
-              ],
-              en: [
-                "Life is what happens when you're busy making other plans. — John Lennon",
-                "Happiness depends upon ourselves. — Aristotle",
-              ],
-            };
-            const arr = fallbackQuotes[currentLang] || fallbackQuotes.en;
-            const q = arr[Math.floor(Math.random() * arr.length)];
-            document.getElementById("quote").textContent = q;
-          });
-      }
-      loadQuote();
-
-      // --- Событие дня ---
-      function loadEvent() {
-        fetch("https://history.muffinlabs.com/date")
-          .then((r) => r.json())
-          .then((data) => {
-            if (data && data.data && data.data.Events && data.data.Events.length > 0) {
-              const event = data.data.Events[0];
-              document.getElementById("onthisday").textContent = `${event.year}: ${event.text}`;
-            } else {
-              document.getElementById("onthisday").textContent =
-                currentLang === "ru" ? "Нет данных." : "No data.";
-            }
-          })
-          .catch(() => {
-            document.getElementById("onthisday").textContent =
-              currentLang === "ru" ? "Ошибка загрузки." : "Failed to load.";
-          });
-      }
-      loadEvent();
-
-      // --- Случайный факт ---
-      function loadFact() {
-        fetch("https://uselessfacts.jsph.pl/api/v2/facts/random?language=" + currentLang)
-          .then((r) => r.json())
-          .then((data) => {
-            if (data && data.text) {
-              document.getElementById("fact").textContent = data.text;
-            } else {
-              document.getElementById("fact").textContent =
-                currentLang === "ru" ? "Нет данных." : "No data.";
-            }
-          })
-          .catch(() => {
-            document.getElementById("fact").textContent =
-              currentLang === "ru" ? "Ошибка загрузки." : "Failed to load.";
-          });
-      }
-      loadFact();
-
-      // --- Заметки с localStorage ---
+      // --- Заметки ---
       let notes = JSON.parse(localStorage.getItem("notes")) || [];
       const notesList = document.getElementById("notesList");
+      const notesModal = document.getElementById("notesModal");
+      const modalContent = document.getElementById("modalContent");
+      const noteTextInput = document.getElementById("noteText");
+      const notePrioritySelect = document.getElementById("notePriority");
+      const openNotesBtn = document.getElementById("openNotesBtn");
+      const addNoteBtn = document.getElementById("addNoteBtn");
+      const closeNotesBtn = document.getElementById("closeNotesBtn");
 
       function saveNotes() {
         localStorage.setItem("notes", JSON.stringify(notes));
       }
 
+      function translatePriority(p) {
+        const map = {
+          low: "Низкий",
+          medium: "Средний",
+          high: "Высокий",
+        };
+        return map[p] || p;
+      }
+
       function renderNotes() {
         if (notes.length === 0) {
-          notesList.innerHTML = currentLang === "ru" ? "<i>Заметок нет</i>" : "<i>No notes</i>";
+          notesList.innerHTML = "<i>Заметок нет</i>";
           return;
         }
         notesList.innerHTML = notes
           .map(
-            (n, i) =>
-              `<div class="note-item">
-                <input type="checkbox" onchange="toggleNote(${i})" id="note_${i}" ${
-                n.done ? "checked" : ""
-              }>
-                <label for="note_${i}" class="${n.done ? "completed" : ""}">${n.text}</label>
-                <em style="margin-left:8px">[${translatePriority(n.priority)}]</em>
-              </div>`
+            (n, i) => `
+          <div class="note-item">
+            <input type="checkbox" id="note_${i}" ${n.done ? "checked" : ""} onchange="toggleNote(${i})" />
+            <label for="note_${i}" class="${n.done ? "completed" : ""}">${n.text}</label>
+            <em style="margin-left: 8px;">[${translatePriority(n.priority)}]</em>
+          </div>`
           )
           .join("");
-      }
-
-      // Функция перевода приоритетов
-      function translatePriority(p) {
-        const map = {
-          low: currentLang === "ru" ? "Низкий" : "Low",
-          medium: currentLang === "ru" ? "Средний" : "Medium",
-          high: currentLang === "ru" ? "Высокий" : "High",
-        };
-        return map[p] || p;
       }
 
       window.toggleNote = function (index) {
@@ -526,7 +411,7 @@
       function addNote() {
         const text = noteTextInput.value.trim();
         const priority = notePrioritySelect.value;
-        if (!text) return alert(currentLang === "ru" ? "Введите текст заметки" : "Please enter note text");
+        if (!text) return alert("Введите текст заметки");
         notes.push({ text, priority, done: false });
         saveNotes();
         renderNotes();
@@ -535,32 +420,19 @@
         notesModal.classList.remove("show");
       }
 
-      addNoteBtn.addEventListener("click", addNote);
-
-      // --- Открыть/Закрыть заметки ---
       openNotesBtn.addEventListener("click", () => {
         notesModal.classList.add("show");
         noteTextInput.focus();
       });
-
       closeNotesBtn.addEventListener("click", () => {
         notesModal.classList.remove("show");
       });
-
-      // Закрытие модального окна кликом вне контента
       notesModal.addEventListener("click", (e) => {
-        if (e.target === notesModal) {
-          notesModal.classList.remove("show");
-        }
+        if (e.target === notesModal) notesModal.classList.remove("show");
       });
+      addNoteBtn.addEventListener("click", addNote);
 
-      // Инициализация отображения заметок
       renderNotes();
-
-      // При смене языка заново рендерим заметки, т.к. приоритеты меняются
-      langSelect.addEventListener("change", () => {
-        renderNotes();
-      });
     })();
   </script>
 </body>
