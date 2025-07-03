@@ -2,364 +2,251 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Минимал Дашборд</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --bg-light: #f4f4f4;
-      --bg-dark: #1e1e1e;
-      --text-light: #222;
-      --text-dark: #f0f0f0;
+      --bg: #f4f4f4;
+      --text: #222;
       --accent: #007aff;
       --card: white;
-      --radius: 14px;
     }
     body {
-      font-family: 'Inter', sans-serif;
       margin: 0;
-      background: var(--bg-light);
-      color: var(--text-light);
-      transition: 0.3s;
-    }
-    body.dark {
-      background: var(--bg-dark);
-      color: var(--text-dark);
-    }
-    header {
-      text-align: center;
-      padding: 1.5rem 2rem;
-      background: var(--card);
-      font-weight: 700;
-      font-size: 1.8rem;
-      color: var(--accent);
-      letter-spacing: 2px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    .container {
-      max-width: 1200px;
-      margin: 2rem auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      padding: 0 1rem;
-    }
-    .card {
-      background: var(--card);
-      padding: 1.5rem 1.8rem;
-      border-radius: var(--radius);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
       display: flex;
       flex-direction: column;
-      align-items: center;
-      text-align: center;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
-    .card h2 {
-      margin-top: 0;
-      font-size: 1.3rem;
-      margin-bottom: 1rem;
-      color: var(--accent);
-    }
-    .dark .card, .dark header {
-      background: #2a2a2a;
-    }
-    footer {
-      text-align: center;
-      padding: 2rem;
-      color: #888;
-    }
-    #themeToggleBtn {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      font-size: 1.5rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-    #weather {
-      display: flex;
-      align-items: center;
-      font-size: 1.2rem;
-      gap: 10px;
-    }
-    #weather img {
-      width: 48px;
-      height: 48px;
-    }
-    #timezone {
-      margin-bottom: 1rem;
-      padding: 0.5rem 0.7rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    #notesList {
-      width: 100%;
-      text-align: left;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-    .note-item {
-      display: flex;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-    .note-item label {
-      margin-left: 8px;
-      flex-grow: 1;
-    }
-    .completed {
-      text-decoration: line-through;
-      opacity: 0.6;
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .modal.show { display: flex; }
-    .modal-content {
-      background: var(--card);
-      padding: 1.5rem 2rem;
-      border-radius: 10px;
-      max-width: 400px;
-      width: 90%;
-    }
-    .modal-content.dark { background: #2a2a2a; }
-    .modal input, .modal select {
-      width: 100%;
-      padding: 0.6rem;
-      margin-top: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    .modal button {
-      margin-top: 15px;
-      padding: 0.6rem 1.2rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      background: var(--accent);
-      color: white;
-    }
-    .modal .close-btn {
-      background: #ccc;
-      color: #333;
-      margin-left: 10px;
-    }
-    #calendar {
-      width: 100%;
-      user-select: none;
-    }
-    .calendar-header {
+    header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      padding: 1rem 2rem;
+      background: var(--card);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
-    .calendar-header button {
-      background: var(--accent);
+    .logo {
+      font-weight: bold;
+      font-size: 1.4rem;
+      color: var(--accent);
+    }
+    nav {
+      display: flex;
+      gap: 1rem;
+    }
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+    }
+    nav a.active {
+      color: var(--accent);
+    }
+    main {
+      flex: 1;
+      padding: 2rem;
+    }
+    .page {
+      display: none;
+    }
+    .page.active {
+      display: block;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      background: var(--card);
+      color: #888;
+    }
+    .hero {
+      text-align: center;
+      padding: 4rem 1rem;
+      background: linear-gradient(to right, #007aff, #00c6ff);
       color: white;
-      border: none;
-      padding: 5px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1rem;
+      border-radius: 1rem;
+      margin-bottom: 2rem;
+    }
+    .hero img {
+      width: 120px;
+      margin-bottom: 1rem;
+    }
+    #calendarContent, #notesContent, #weatherContent, #currencyContent {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    .note {
+      display: flex;
+      align-items: center;
+      margin: 0.5rem 0;
+    }
+    .note input[type="checkbox"] {
+      margin-right: 0.5rem;
     }
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 5px;
-    }
-    .calendar-grid div {
-      padding: 10px;
       text-align: center;
+    }
+    .calendar-day {
+      padding: 10px;
+      background: #eee;
       border-radius: 6px;
     }
-    .calendar-grid .day-name {
-      font-weight: 600;
-      color: #888;
-    }
-    .calendar-grid .today {
+    .today {
       background: var(--accent);
       color: white;
       font-weight: bold;
     }
-    .dark .calendar-grid .day-name {
-      color: #ccc;
-    }
   </style>
 </head>
 <body>
-  <header>Минимал Дашборд</header>
-  <button id="themeToggleBtn">🌙</button>
-
-  <main class="container">
-    <section class="card">
-      <h2>Погода</h2>
-      <div id="weather">Загрузка...</div>
-    </section>
-
-    <section class="card">
-      <h2>Время</h2>
-      <select id="timezone">
-        <option value="Europe/Moscow">Москва</option>
-        <option value="America/New_York">Нью-Йорк</option>
-      </select>
-      <div id="time" style="font-size: 2rem; font-weight: bold;">--:--</div>
-    </section>
-
-    <section class="card">
-      <h2>Курс валют</h2>
-      <div id="currency">Загрузка...</div>
-    </section>
-
-    <section class="card">
-      <h2>Заметки</h2>
-      <button onclick="document.getElementById('notesModal').classList.add('show')">Добавить заметку</button>
-      <div id="notesList"></div>
-    </section>
-
-    <section class="card">
-      <h2>Календарь</h2>
-      <div id="calendar">
-        <div class="calendar-header">
-          <button id="prevMonth">&lt;</button>
-          <span id="monthYear"></span>
-          <button id="nextMonth">&gt;</button>
-        </div>
-        <div class="calendar-grid" id="calendarGrid"></div>
-      </div>
-    </section>
-  </main>
-
-  <div class="modal" id="notesModal">
-    <div class="modal-content" id="modalContent">
-      <h3>Добавить заметку</h3>
-      <input type="text" id="noteText" placeholder="Текст заметки" />
-      <select id="notePriority">
-        <option value="low">Низкий</option>
-        <option value="medium">Средний</option>
-        <option value="high">Высокий</option>
-      </select>
-      <div>
-        <button id="addNoteBtn">Добавить</button>
-        <button class="close-btn" onclick="document.getElementById('notesModal').classList.remove('show')">Закрыть</button>
+  <header>
+    <div class="logo">Минимал Дашборд</div>
+    <nav>
+      <a href="#home" class="nav-link">Главная</a>
+      <a href="#calendar" class="nav-link">Календарь</a>
+      <a href="#notes" class="nav-link">Заметки</a>
+      <a href="#weather" class="nav-link">Погода</a>
+      <a href="#currency" class="nav-link">Курсы</a>
+    </nav>
+  </header>
+  <main>
+    <div id="home" class="page active">
+      <div class="hero">
+        <img src="https://cdn-icons-png.flaticon.com/512/3909/3909444.png" alt="Dashboard Icon">
+        <h1>Добро пожаловать, Фаиль!</h1>
+        <p>Ваш персональный центр продуктивности</p>
       </div>
     </div>
-  </div>
-
+    <div id="calendar" class="page">
+      <h2>Календарь</h2>
+      <div id="calendarContent">
+        <div id="monthYear"></div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+    </div>
+    <div id="notes" class="page">
+      <h2>Заметки</h2>
+      <div id="notesContent">
+        <input type="text" id="noteInput" placeholder="Введите заметку..." style="width: 100%; padding: 0.5rem;">
+        <button onclick="addNote()" style="margin-top: 0.5rem">Добавить</button>
+        <div id="notesList"></div>
+      </div>
+    </div>
+    <div id="weather" class="page">
+      <h2>Погода</h2>
+      <div id="weatherContent">
+        <p id="weatherInfo">Загрузка...</p>
+      </div>
+    </div>
+    <div id="currency" class="page">
+      <h2>Курсы валют</h2>
+      <div id="currencyContent">
+        <p id="currencyInfo">Загрузка...</p>
+      </div>
+    </div>
+  </main>
   <footer>&copy; 2025 Минимал Дашборд</footer>
-
   <script>
-    // Тема
-    const themeBtn = document.getElementById("themeToggleBtn");
-    const modalContent = document.getElementById("modalContent");
-    themeBtn.onclick = () => {
-      document.body.classList.toggle("dark");
-      modalContent.classList.toggle("dark");
-      themeBtn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
-    };
-    themeBtn.textContent = localStorage.getItem("theme") === "dark" ? "☀️" : "🌙";
-    if (localStorage.getItem("theme") === "dark") {
-      document.body.classList.add("dark");
-      modalContent.classList.add("dark");
-    }
+    const links = document.querySelectorAll('.nav-link');
+    const pages = document.querySelectorAll('.page');
 
-    // Время
-    const timeEl = document.getElementById("time");
-    const timezoneSelect = document.getElementById("timezone");
-    function updateTime() {
-      const options = { hour: '2-digit', minute: '2-digit', timeZone: timezoneSelect.value };
-      timeEl.textContent = new Date().toLocaleTimeString('ru-RU', options);
+    function showPage(hash) {
+      pages.forEach(p => p.classList.remove('active'));
+      links.forEach(l => l.classList.remove('active'));
+      const target = document.querySelector(hash);
+      const link = document.querySelector(`a[href='${hash}']`);
+      if (target) target.classList.add('active');
+      if (link) link.classList.add('active');
     }
-    setInterval(updateTime, 1000);
-    timezoneSelect.onchange = updateTime;
-    updateTime();
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash || '#home';
+      showPage(hash);
+    });
+    showPage(window.location.hash || '#home');
 
-    // Погода
+    function renderCalendar() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = now.getMonth();
+      const days = new Date(y, m + 1, 0).getDate();
+      const grid = document.getElementById('calendarGrid');
+      const monthYear = document.getElementById('monthYear');
+      monthYear.textContent = now.toLocaleString('ru-RU', { month: 'long', year: 'numeric' });
+      grid.innerHTML = '';
+      for (let d = 1; d <= days; d++) {
+        const day = document.createElement('div');
+        day.className = 'calendar-day';
+        if (d === now.getDate()) day.classList.add('today');
+        day.textContent = d;
+        grid.appendChild(day);
+      }
+    }
+    renderCalendar();
+
+    let notes = JSON.parse(localStorage.getItem('notes') || '[]');
+    function renderNotes() {
+      const container = document.getElementById('notesList');
+      container.innerHTML = '';
+      notes.forEach((n, i) => {
+        const div = document.createElement('div');
+        div.className = 'note';
+        const chk = document.createElement('input');
+        chk.type = 'checkbox';
+        chk.checked = n.done;
+        chk.onchange = () => { notes[i].done = !notes[i].done; saveNotes(); };
+        const text = document.createElement('span');
+        text.textContent = n.text;
+        if (n.done) text.style.textDecoration = 'line-through';
+        div.appendChild(chk);
+        div.appendChild(text);
+        container.appendChild(div);
+      });
+    }
+    function addNote() {
+      const input = document.getElementById('noteInput');
+      const value = input.value.trim();
+      if (!value) return;
+      notes.push({ text: value, done: false });
+      input.value = '';
+      saveNotes();
+    }
+    function saveNotes() {
+      localStorage.setItem('notes', JSON.stringify(notes));
+      renderNotes();
+    }
+    renderNotes();
+
     fetch("https://api.openweathermap.org/data/2.5/weather?q=Kazan&appid=87bed00ad1d3b7c292017260b3f9f09e&units=metric&lang=ru")
       .then(res => res.json())
       .then(data => {
-        const icon = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-        document.getElementById("weather").innerHTML =
-          `<img src="${icon}" alt="">${data.name}: ${Math.round(data.main.temp)}°C, ${data.weather[0].description}`;
+        document.getElementById("weatherInfo").textContent = `${data.name}: ${Math.round(data.main.temp)}°C, ${data.weather[0].description}`;
       });
 
-    // Валюта
     fetch("https://api.exchangerate.host/latest?base=RUB&symbols=USD,EUR,CNY")
       .then(r => r.json())
       .then(data => {
         const usd = (1 / data.rates.USD).toFixed(2);
         const eur = (1 / data.rates.EUR).toFixed(2);
         const cny = (1 / data.rates.CNY).toFixed(2);
-        document.getElementById("currency").innerHTML = `USD: ${usd} ₽<br>EUR: ${eur} ₽<br>CNY: ${cny} ₽`;
+        document.getElementById("currencyInfo").innerHTML = `USD: ${usd} ₽<br>EUR: ${eur} ₽<br>CNY: ${cny} ₽`;
       });
-
-    // Заметки
-    let notes = JSON.parse(localStorage.getItem("notes")) || [];
-    const notesList = document.getElementById("notesList");
-    function saveNotes() {
-      localStorage.setItem("notes", JSON.stringify(notes));
-    }
-    function renderNotes() {
-      notesList.innerHTML = notes.map((n, i) =>
-        `<div class="note-item">
-          <input type="checkbox" onchange="toggleNote(${i})" ${n.done ? "checked" : ""}>
-          <label class="${n.done ? 'completed' : ''}">${n.text}</label>
-          <em style="margin-left:8px">[${{low:"Низкий",medium:"Средний",high:"Высокий"}[n.priority]}]</em>
-        </div>`).join('');
-    }
-    function toggleNote(i) {
-      notes[i].done = !notes[i].done;
-      saveNotes(); renderNotes();
-    }
-    document.getElementById("addNoteBtn").onclick = () => {
-      const text = document.getElementById("noteText").value.trim();
-      const priority = document.getElementById("notePriority").value;
-      if (!text) return alert("Введите текст заметки");
-      notes.push({ text, priority, done: false });
-      saveNotes(); renderNotes();
-      document.getElementById("noteText").value = "";
-      document.getElementById("notePriority").value = "low";
-      document.getElementById("notesModal").classList.remove("show");
-    };
-    renderNotes();
-
-    // Календарь
-    const monthNames = ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
-    const dayNames = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
-    const calendarGrid = document.getElementById("calendarGrid");
-    const monthYear = document.getElementById("monthYear");
-    let currentDate = new Date();
-    function renderCalendar(date) {
-      const y = date.getFullYear(), m = date.getMonth();
-      monthYear.textContent = `${monthNames[m]} ${y}`;
-      calendarGrid.innerHTML = dayNames.map(d => `<div class="day-name">${d}</div>`).join('');
-      const firstDay = new Date(y, m, 1).getDay() || 7;
-      for (let i = 1; i < firstDay; i++) calendarGrid.innerHTML += "<div></div>";
-      const daysInMonth = new Date(y, m + 1, 0).getDate();
-      const today = new Date();
-      for (let d = 1; d <= daysInMonth; d++) {
-        const isToday = d === today.getDate() && m === today.getMonth() && y === today.getFullYear();
-        calendarGrid.innerHTML += `<div class="${isToday ? "today" : ""}">${d}</div>`;
-      }
-    }
-    document.getElementById("prevMonth").onclick = () => {
-      currentDate.setMonth(currentDate.getMonth() - 1);
-      renderCalendar(currentDate);
-    };
-    document.getElementById("nextMonth").onclick = () => {
-      currentDate.setMonth(currentDate.getMonth() + 1);
-      renderCalendar(currentDate);
-    };
-    renderCalendar(currentDate);
   </script>
 </body>
 </html>
