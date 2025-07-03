@@ -4,14 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Минимал Дашборд</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
-    rel="stylesheet"
-  />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
       --bg-light: #f4f4f4;
@@ -23,7 +17,7 @@
       --radius: 14px;
     }
     body {
-      font-family: "Inter", sans-serif;
+      font-family: 'Inter', sans-serif;
       margin: 0;
       background: var(--bg-light);
       color: var(--text-light);
@@ -34,23 +28,17 @@
       color: var(--text-dark);
     }
     header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      text-align: center;
       padding: 1.5rem 2rem;
       background: var(--card);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       font-weight: 700;
       font-size: 1.8rem;
       color: var(--accent);
       letter-spacing: 2px;
-      user-select: none;
-    }
-    .lang-switcher {
-      display: none; /* убираем переключатель языка */
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
     .container {
-      max-width: 1000px;
+      max-width: 1200px;
       margin: 2rem auto;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -66,7 +54,6 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      user-select: none;
     }
     .card h2 {
       margin-top: 0;
@@ -74,31 +61,44 @@
       margin-bottom: 1rem;
       color: var(--accent);
     }
-    .dark .card {
+    .dark .card, .dark header {
       background: #2a2a2a;
-    }
-    .dark header {
-      background: #2a2a2a;
-    }
-    .dark select,
-    .dark input,
-    .dark textarea {
-      background: #333;
-      color: #f0f0f0;
     }
     footer {
       text-align: center;
       padding: 2rem;
       color: #888;
-      user-select: none;
     }
-    /* Заметки */
+    #themeToggleBtn {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    #weather {
+      display: flex;
+      align-items: center;
+      font-size: 1.2rem;
+      gap: 10px;
+    }
+    #weather img {
+      width: 48px;
+      height: 48px;
+    }
+    #timezone {
+      margin-bottom: 1rem;
+      padding: 0.5rem 0.7rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
     #notesList {
       width: 100%;
-      max-height: 250px;
-      overflow-y: auto;
-      margin-top: 0.5rem;
       text-align: left;
+      max-height: 200px;
+      overflow-y: auto;
     }
     .note-item {
       display: flex;
@@ -106,16 +106,13 @@
       margin-bottom: 8px;
     }
     .note-item label {
-      flex-grow: 1;
       margin-left: 8px;
-      cursor: pointer;
-      user-select: text;
+      flex-grow: 1;
     }
     .completed {
       text-decoration: line-through;
       opacity: 0.6;
     }
-    /* Модальное окно */
     .modal {
       display: none;
       position: fixed;
@@ -125,28 +122,21 @@
       align-items: center;
       z-index: 1000;
     }
-    .modal.show {
-      display: flex;
-    }
+    .modal.show { display: flex; }
     .modal-content {
       background: var(--card);
       padding: 1.5rem 2rem;
       border-radius: 10px;
+      max-width: 400px;
       width: 90%;
-      max-width: 450px;
-      box-sizing: border-box;
     }
-    .modal-content.dark {
-      background: #2a2a2a;
-    }
+    .modal-content.dark { background: #2a2a2a; }
     .modal input, .modal select {
       width: 100%;
       padding: 0.6rem;
       margin-top: 10px;
       border-radius: 6px;
       border: 1px solid #ccc;
-      box-sizing: border-box;
-      font-size: 1rem;
     }
     .modal button {
       margin-top: 15px;
@@ -157,96 +147,110 @@
       cursor: pointer;
       background: var(--accent);
       color: white;
-      transition: background 0.2s;
     }
-    .modal button:hover {
-      background: #005bb5;
-    }
-    .modal button.close-btn {
+    .modal .close-btn {
       background: #ccc;
       color: #333;
       margin-left: 10px;
     }
-    .modal button.close-btn:hover {
-      background: #aaa;
+    #calendar {
+      width: 100%;
+      user-select: none;
     }
-    /* Погода и иконка */
-    #weather {
+    .calendar-header {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      font-size: 1.3rem;
-      gap: 10px;
+      margin-bottom: 10px;
     }
-    #weather img {
-      width: 48px;
-      height: 48px;
-    }
-    /* Кнопка открытия заметок */
-    #openNotesBtn {
-      margin-top: 0.5rem;
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 8px;
+    .calendar-header button {
       background: var(--accent);
       color: white;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    #openNotesBtn:hover {
-      background: #005bb5;
-    }
-    /* Селектор часовых поясов */
-    #timezone {
-      margin-bottom: 1rem;
-      padding: 0.5rem 0.7rem;
+      border: none;
+      padding: 5px 12px;
       border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
       cursor: pointer;
-      user-select: none;
+      font-size: 1rem;
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+    }
+    .calendar-grid div {
+      padding: 10px;
+      text-align: center;
+      border-radius: 6px;
+    }
+    .calendar-grid .day-name {
+      font-weight: 600;
+      color: #888;
+    }
+    .calendar-grid .today {
+      background: var(--accent);
+      color: white;
+      font-weight: bold;
+    }
+    .dark .calendar-grid .day-name {
+      color: #ccc;
     }
   </style>
 </head>
 <body>
   <header>Минимал Дашборд</header>
+  <button id="themeToggleBtn">🌙</button>
 
   <main class="container">
     <section class="card">
       <h2>Погода</h2>
       <div id="weather">Загрузка...</div>
     </section>
+
     <section class="card">
       <h2>Время</h2>
-      <select id="timezone" aria-label="Выбор часового пояса">
-        <option value="Europe/Moscow" selected>Москва</option>
+      <select id="timezone">
+        <option value="Europe/Moscow">Москва</option>
         <option value="America/New_York">Нью-Йорк</option>
       </select>
-      <div id="time" style="font-size: 2rem; font-weight: 600; user-select:none;">--:--</div>
+      <div id="time" style="font-size: 2rem; font-weight: bold;">--:--</div>
     </section>
+
     <section class="card">
       <h2>Курс валют</h2>
       <div id="currency">Загрузка...</div>
     </section>
+
     <section class="card">
       <h2>Заметки</h2>
-      <button id="openNotesBtn">Открыть заметки</button>
+      <button onclick="document.getElementById('notesModal').classList.add('show')">Добавить заметку</button>
       <div id="notesList"></div>
+    </section>
+
+    <section class="card">
+      <h2>Календарь</h2>
+      <div id="calendar">
+        <div class="calendar-header">
+          <button id="prevMonth">&lt;</button>
+          <span id="monthYear"></span>
+          <button id="nextMonth">&gt;</button>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
     </section>
   </main>
 
-  <div class="modal" id="notesModal" role="dialog" aria-modal="true" aria-labelledby="notesTitle">
+  <div class="modal" id="notesModal">
     <div class="modal-content" id="modalContent">
-      <h3 id="notesTitle">Добавить заметку</h3>
-      <input type="text" id="noteText" placeholder="Текст заметки" aria-label="Текст заметки" />
-      <select id="notePriority" aria-label="Приоритет заметки">
+      <h3>Добавить заметку</h3>
+      <input type="text" id="noteText" placeholder="Текст заметки" />
+      <select id="notePriority">
         <option value="low">Низкий</option>
         <option value="medium">Средний</option>
         <option value="high">Высокий</option>
       </select>
-      <div style="margin-top: 1rem;">
+      <div>
         <button id="addNoteBtn">Добавить</button>
-        <button id="closeNotesBtn" class="close-btn">Закрыть</button>
+        <button class="close-btn" onclick="document.getElementById('notesModal').classList.remove('show')">Закрыть</button>
       </div>
     </div>
   </div>
@@ -254,186 +258,108 @@
   <footer>&copy; 2025 Минимал Дашборд</footer>
 
   <script>
-    (() => {
-      // Тема из localStorage
-      const themeBtn = document.createElement("button");
-      themeBtn.id = "themeToggleBtn";
-      themeBtn.style.position = "fixed";
-      themeBtn.style.top = "10px";
-      themeBtn.style.right = "10px";
-      themeBtn.style.fontSize = "1.5rem";
-      themeBtn.style.background = "none";
-      themeBtn.style.border = "none";
-      themeBtn.style.cursor = "pointer";
-      themeBtn.style.userSelect = "none";
-      themeBtn.title = "Переключить тему";
-      document.body.appendChild(themeBtn);
+    // Тема
+    const themeBtn = document.getElementById("themeToggleBtn");
+    const modalContent = document.getElementById("modalContent");
+    themeBtn.onclick = () => {
+      document.body.classList.toggle("dark");
+      modalContent.classList.toggle("dark");
+      themeBtn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+    };
+    themeBtn.textContent = localStorage.getItem("theme") === "dark" ? "☀️" : "🌙";
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark");
+      modalContent.classList.add("dark");
+    }
 
-      function updateThemeButton() {
-        themeBtn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
-      }
+    // Время
+    const timeEl = document.getElementById("time");
+    const timezoneSelect = document.getElementById("timezone");
+    function updateTime() {
+      const options = { hour: '2-digit', minute: '2-digit', timeZone: timezoneSelect.value };
+      timeEl.textContent = new Date().toLocaleTimeString('ru-RU', options);
+    }
+    setInterval(updateTime, 1000);
+    timezoneSelect.onchange = updateTime;
+    updateTime();
 
-      themeBtn.onclick = () => {
-        document.body.classList.toggle("dark");
-        modalContent.classList.toggle("dark");
-        updateThemeButton();
-        localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
-      };
-
-      if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark");
-        document.getElementById("modalContent").classList.add("dark");
-      }
-      updateThemeButton();
-
-      // --- Время ---
-      const timezoneSelect = document.getElementById("timezone");
-      const timeDiv = document.getElementById("time");
-
-      function updateTime() {
-        const tz = timezoneSelect.value;
-        const now = new Date();
-        const options = {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-          timeZone: tz,
-        };
-        const timeString = now.toLocaleTimeString("ru-RU", options).slice(0, 5); // без секунд
-        timeDiv.textContent = timeString;
-      }
-      timezoneSelect.addEventListener("change", updateTime);
-      setInterval(updateTime, 1000);
-      updateTime();
-
-      // --- Погода с иконкой ---
-      const weatherDiv = document.getElementById("weather");
-      const apiKey = "87bed00ad1d3b7c292017260b3f9f09e";
-      const city = "Kazan";
-
-      function loadWeather() {
-        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=ru`)
-          .then((r) => r.json())
-          .then((data) => {
-            if (data && data.weather && data.main) {
-              const iconCode = data.weather[0].icon;
-              const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-              const temp = Math.round(data.main.temp);
-              const desc = data.weather[0].description;
-
-              weatherDiv.innerHTML = `
-                <img src="${iconUrl}" alt="${desc}" />
-                <div>${city}: ${temp}°C, ${desc}</div>
-              `;
-            } else {
-              weatherDiv.textContent = "Не удалось загрузить погоду.";
-            }
-          })
-          .catch(() => {
-            weatherDiv.textContent = "Не удалось загрузить погоду.";
-          });
-      }
-      loadWeather();
-
-      // --- Курс валют ---
-      const currencyDiv = document.getElementById("currency");
-      function loadCurrency() {
-        fetch("https://api.exchangerate.host/latest?base=RUB&symbols=USD,EUR,CNY")
-          .then((r) => r.json())
-          .then((data) => {
-            if (data && data.rates) {
-              const usd = (1 / data.rates.USD).toFixed(2);
-              const eur = (1 / data.rates.EUR).toFixed(2);
-              const cny = (1 / data.rates.CNY).toFixed(2);
-
-              currencyDiv.innerHTML = `
-                USD: ${usd} ₽<br/>
-                EUR: ${eur} ₽<br/>
-                CNY: ${cny} ₽
-              `;
-            } else {
-              currencyDiv.textContent = "Не удалось загрузить курсы валют.";
-            }
-          })
-          .catch(() => {
-            currencyDiv.textContent = "Не удалось загрузить курсы валют.";
-          });
-      }
-      loadCurrency();
-
-      // --- Заметки ---
-      let notes = JSON.parse(localStorage.getItem("notes")) || [];
-      const notesList = document.getElementById("notesList");
-      const notesModal = document.getElementById("notesModal");
-      const modalContent = document.getElementById("modalContent");
-      const noteTextInput = document.getElementById("noteText");
-      const notePrioritySelect = document.getElementById("notePriority");
-      const openNotesBtn = document.getElementById("openNotesBtn");
-      const addNoteBtn = document.getElementById("addNoteBtn");
-      const closeNotesBtn = document.getElementById("closeNotesBtn");
-
-      function saveNotes() {
-        localStorage.setItem("notes", JSON.stringify(notes));
-      }
-
-      function translatePriority(p) {
-        const map = {
-          low: "Низкий",
-          medium: "Средний",
-          high: "Высокий",
-        };
-        return map[p] || p;
-      }
-
-      function renderNotes() {
-        if (notes.length === 0) {
-          notesList.innerHTML = "<i>Заметок нет</i>";
-          return;
-        }
-        notesList.innerHTML = notes
-          .map(
-            (n, i) => `
-          <div class="note-item">
-            <input type="checkbox" id="note_${i}" ${n.done ? "checked" : ""} onchange="toggleNote(${i})" />
-            <label for="note_${i}" class="${n.done ? "completed" : ""}">${n.text}</label>
-            <em style="margin-left: 8px;">[${translatePriority(n.priority)}]</em>
-          </div>`
-          )
-          .join("");
-      }
-
-      window.toggleNote = function (index) {
-        notes[index].done = !notes[index].done;
-        saveNotes();
-        renderNotes();
-      };
-
-      function addNote() {
-        const text = noteTextInput.value.trim();
-        const priority = notePrioritySelect.value;
-        if (!text) return alert("Введите текст заметки");
-        notes.push({ text, priority, done: false });
-        saveNotes();
-        renderNotes();
-        noteTextInput.value = "";
-        notePrioritySelect.value = "low";
-        notesModal.classList.remove("show");
-      }
-
-      openNotesBtn.addEventListener("click", () => {
-        notesModal.classList.add("show");
-        noteTextInput.focus();
+    // Погода
+    fetch("https://api.openweathermap.org/data/2.5/weather?q=Kazan&appid=87bed00ad1d3b7c292017260b3f9f09e&units=metric&lang=ru")
+      .then(res => res.json())
+      .then(data => {
+        const icon = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+        document.getElementById("weather").innerHTML =
+          `<img src="${icon}" alt="">${data.name}: ${Math.round(data.main.temp)}°C, ${data.weather[0].description}`;
       });
-      closeNotesBtn.addEventListener("click", () => {
-        notesModal.classList.remove("show");
-      });
-      notesModal.addEventListener("click", (e) => {
-        if (e.target === notesModal) notesModal.classList.remove("show");
-      });
-      addNoteBtn.addEventListener("click", addNote);
 
-      renderNotes();
-    })();
+    // Валюта
+    fetch("https://api.exchangerate.host/latest?base=RUB&symbols=USD,EUR,CNY")
+      .then(r => r.json())
+      .then(data => {
+        const usd = (1 / data.rates.USD).toFixed(2);
+        const eur = (1 / data.rates.EUR).toFixed(2);
+        const cny = (1 / data.rates.CNY).toFixed(2);
+        document.getElementById("currency").innerHTML = `USD: ${usd} ₽<br>EUR: ${eur} ₽<br>CNY: ${cny} ₽`;
+      });
+
+    // Заметки
+    let notes = JSON.parse(localStorage.getItem("notes")) || [];
+    const notesList = document.getElementById("notesList");
+    function saveNotes() {
+      localStorage.setItem("notes", JSON.stringify(notes));
+    }
+    function renderNotes() {
+      notesList.innerHTML = notes.map((n, i) =>
+        `<div class="note-item">
+          <input type="checkbox" onchange="toggleNote(${i})" ${n.done ? "checked" : ""}>
+          <label class="${n.done ? 'completed' : ''}">${n.text}</label>
+          <em style="margin-left:8px">[${{low:"Низкий",medium:"Средний",high:"Высокий"}[n.priority]}]</em>
+        </div>`).join('');
+    }
+    function toggleNote(i) {
+      notes[i].done = !notes[i].done;
+      saveNotes(); renderNotes();
+    }
+    document.getElementById("addNoteBtn").onclick = () => {
+      const text = document.getElementById("noteText").value.trim();
+      const priority = document.getElementById("notePriority").value;
+      if (!text) return alert("Введите текст заметки");
+      notes.push({ text, priority, done: false });
+      saveNotes(); renderNotes();
+      document.getElementById("noteText").value = "";
+      document.getElementById("notePriority").value = "low";
+      document.getElementById("notesModal").classList.remove("show");
+    };
+    renderNotes();
+
+    // Календарь
+    const monthNames = ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
+    const dayNames = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
+    const calendarGrid = document.getElementById("calendarGrid");
+    const monthYear = document.getElementById("monthYear");
+    let currentDate = new Date();
+    function renderCalendar(date) {
+      const y = date.getFullYear(), m = date.getMonth();
+      monthYear.textContent = `${monthNames[m]} ${y}`;
+      calendarGrid.innerHTML = dayNames.map(d => `<div class="day-name">${d}</div>`).join('');
+      const firstDay = new Date(y, m, 1).getDay() || 7;
+      for (let i = 1; i < firstDay; i++) calendarGrid.innerHTML += "<div></div>";
+      const daysInMonth = new Date(y, m + 1, 0).getDate();
+      const today = new Date();
+      for (let d = 1; d <= daysInMonth; d++) {
+        const isToday = d === today.getDate() && m === today.getMonth() && y === today.getFullYear();
+        calendarGrid.innerHTML += `<div class="${isToday ? "today" : ""}">${d}</div>`;
+      }
+    }
+    document.getElementById("prevMonth").onclick = () => {
+      currentDate.setMonth(currentDate.getMonth() - 1);
+      renderCalendar(currentDate);
+    };
+    document.getElementById("nextMonth").onclick = () => {
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      renderCalendar(currentDate);
+    };
+    renderCalendar(currentDate);
   </script>
 </body>
 </html>
