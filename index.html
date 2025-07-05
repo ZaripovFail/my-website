@@ -9,9 +9,9 @@
   <style>
     :root {
       --bg-light: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
-      --bg-dark: url('https://i.ibb.co/z8sz1kZ/f206-pietra-grigio.jpg');
+      --bg-dark: #000000;
       --card-light: #ffffff;
-      --card-dark: #2c2c2c;
+      --card-dark: #222222;
       --text-light: #111;
       --text-dark: #eee;
       --accent: #4f46e5;
@@ -21,17 +21,28 @@
       color: var(--text-light);
     }
     [data-theme="dark"] {
-      background: var(--bg-dark) center center / cover no-repeat fixed;
+      background: var(--bg-dark);
       color: var(--text-dark);
     }
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
+      height: 100%;
       font-family: 'Montserrat', sans-serif;
       transition: background 0.3s, color 0.3s;
+      overflow-y: auto;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
     .container {
+      flex: 1 0 auto;
       padding: 2rem;
       text-align: center;
+      max-width: 960px;
+      margin: 0 auto;
     }
     h1 {
       margin-bottom: 1rem;
@@ -60,6 +71,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1rem;
+      margin-bottom: 2rem;
     }
     .card {
       background: var(--card-light);
@@ -273,13 +285,11 @@
         alert('Телефон должен начинаться с +7');
         return;
       }
-      // Очистим телефон от пробелов и тире для удобства
       phone = phone.replace(/\s+/g, '').replace(/-/g, '');
 
       designers.push({ name, phone, telegram, instagram, website });
       renderCards(designers);
 
-      // Очистить форму и скрыть
       document.getElementById('newName').value = '';
       document.getElementById('newPhone').value = '+7';
       document.getElementById('newTelegram').value = '';
@@ -306,7 +316,6 @@
 
     applyStoredTheme();
     renderCards(designers);
-
   </script>
 </body>
 </html>
