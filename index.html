@@ -9,8 +9,8 @@
   <style>
     :root {
       --bg-light: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
-      --bg-dark: #1a1a1a;
-      --card-light: rgba(255, 255, 255, 0.9);
+      --bg-dark: url('https://www.transparenttextures.com/patterns/marble.png');
+      --card-light: #ffffff;
       --card-dark: #2c2c2c;
       --text-light: #111;
       --text-dark: #eee;
@@ -21,7 +21,7 @@
       color: var(--text-light);
     }
     [data-theme="dark"] {
-      background-color: var(--bg-dark);
+      background: var(--bg-dark);
       color: var(--text-dark);
     }
     body {
@@ -79,12 +79,15 @@
     }
     .icons a {
       margin: 0 8px;
-      font-size: 1rem;
+      font-size: 1.2rem;
       text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
     }
+    .icons a i {
+      color: inherit;
+    }
+    .icons a.telegram i { color: #0088cc; }
+    .icons a.instagram i { color: #e1306c; }
+    .icons a.website i { color: #4f46e5; }
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -127,7 +130,7 @@
     }
   </style>
 </head>
-<body data-theme="light">
+<body>
   <div class="container">
     <h1>Дизайнеры МебельДан</h1>
     <input type="text" class="search" id="searchInput" placeholder="Поиск по имени...">
@@ -137,7 +140,7 @@
 
     <div id="addForm" class="add-form" style="display:none">
       <input type="text" id="newName" placeholder="Имя">
-      <input type="text" id="newPhone" placeholder="Телефон">
+      <input type="text" id="newPhone" placeholder="Телефон (+7...)" value="+7">
       <input type="text" id="newTelegram" placeholder="Telegram URL">
       <input type="text" id="newInstagram" placeholder="Instagram URL">
       <input type="text" id="newWebsite" placeholder="Веб-сайт URL">
@@ -158,8 +161,14 @@
 
   <script>
     let designers = [
-      { name: "Оксана Чугунова", phone: "89375707275", telegram: "https://t.me/ok_interior_design", instagram: "https://www.instagram.com/chug_oks?igsh=Zmthd2Zlc2d6dDJp", website: "" },
-      { name: "Анна Гильмутдинова", phone: "+79934149864", telegram: "https://t.me/notes_ag", instagram: "https://www.instagram.com/rue_de_design?igsh=MWRzcWE4bnJ2NWRqMA==", website: "" }
+      { name: "Оксана Чугунова", phone: "+79375707275", telegram: "https://t.me/ok_interior_design", instagram: "https://www.instagram.com/chug_oks?igsh=Zmthd2Zlc2d6dDJp", website: "" },
+      { name: "Анна Гильмутдинова", phone: "+79934149864", telegram: "https://t.me/notes_ag", instagram: "https://www.instagram.com/rue_de_design?igsh=MWRzcWE4bnJ2NWRqMA==", website: "" },
+      { name: "Регина Бадретдинова", phone: "+79600638617", telegram: "", instagram: "", website: "" },
+      { name: "Ольга Бухарова", phone: "+79050397006", telegram: "", instagram: "", website: "" },
+      { name: "Карасёв Алексей", phone: "+79874236175", telegram: "", instagram: "https://www.instagram.com/karasev.architect/", website: "" },
+      { name: "Ксения Потапова", phone: "+79872254701", telegram: "https://t.me/savin_design_911", instagram: "https://www.instagram.com/kseniia.potapova?igsh=MWlhaDFhajJlZmtvYw==", website: "" },
+      { name: "Ахмет Муллахметов", phone: "+79872142812", telegram: "", instagram: "", website: "https://homedesignrus.ru/" },
+      { name: "Рузанна Гатауллина", phone: "+789222538738", telegram: "", instagram: "https://www.instagram.com/ruzanna.designer/", website: "" }
     ];
 
     const cardsContainer = document.getElementById('cards');
@@ -182,13 +191,11 @@
 
     function openModal(d) {
       modalName.textContent = d.name;
-      modalPhone.innerHTML = `<a href="tel:${d.phone}" onclick="event.stopPropagation()">${d.phone}</a><br>
-        <a href="https://wa.me/${d.phone}" target="_blank">WhatsApp</a> | 
-        <a href="${d.telegram}" target="_blank">Telegram</a>`;
+      modalPhone.innerHTML = `<a href="tel:${d.phone}">${d.phone}</a>`;
       modalLinks.innerHTML = `
-        ${d.telegram ? `<a href="${d.telegram}" target="_blank"><i class='fab fa-telegram'></i> Telegram</a>` : ''}
-        ${d.instagram ? `<a href="${d.instagram}" target="_blank"><i class='fab fa-instagram'></i> Instagram</a>` : ''}
-        ${d.website ? `<a href="${d.website}" target="_blank"><i class='fas fa-globe'></i> Веб-сайт</a>` : ''}
+        ${d.telegram ? `<a href="${d.telegram}" target="_blank" class="telegram"><i class='fab fa-telegram'></i></a>` : ''}
+        ${d.instagram ? `<a href="${d.instagram}" target="_blank" class="instagram"><i class='fab fa-instagram'></i></a>` : ''}
+        ${d.website ? `<a href="${d.website}" target="_blank" class="website"><i class='fas fa-globe'></i></a>` : ''}
       `;
       modalOverlay.style.display = 'flex';
     }
@@ -199,10 +206,16 @@
 
     function toggleTheme() {
       const html = document.body;
-      const current = html.getAttribute('data-theme');
-      const next = current === 'light' ? 'dark' : 'light';
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
       html.setAttribute('data-theme', next);
+      localStorage.setItem('preferredTheme', next);
       document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️ Светлая тема' : '🌙 Тёмная тема';
+    }
+
+    function applyStoredTheme() {
+      const savedTheme = localStorage.getItem('preferredTheme') || 'light';
+      document.body.setAttribute('data-theme', savedTheme);
+      document.querySelector('.theme-toggle').textContent = savedTheme === 'dark' ? '☀️ Светлая тема' : '🌙 Тёмная тема';
     }
 
     function addDesigner() {
@@ -211,7 +224,7 @@
       const telegram = document.getElementById('newTelegram').value;
       const instagram = document.getElementById('newInstagram').value;
       const website = document.getElementById('newWebsite').value;
-      if (name && phone) {
+      if (name && phone.startsWith('+7')) {
         designers.push({ name, phone, telegram, instagram, website });
         renderCards(designers);
         document.getElementById('addForm').style.display = 'none';
@@ -224,6 +237,7 @@
       renderCards(filtered);
     });
 
+    applyStoredTheme();
     renderCards(designers);
   </script>
 </body>
