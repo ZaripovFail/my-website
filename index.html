@@ -15,6 +15,7 @@
       --text-light: #111;
       --text-dark: #eee;
       --accent: #4f46e5;
+      --avatar-bg: #7c3aed;
     }
     [data-theme="light"] {
       background: var(--bg-light);
@@ -25,9 +26,7 @@
       color: var(--text-dark);
     }
     html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
+      margin: 0; padding: 0; height: 100%;
       font-family: 'Montserrat', sans-serif;
       transition: background 0.3s, color 0.3s;
       overflow-y: auto;
@@ -82,12 +81,36 @@
       transition: transform 0.2s ease;
       text-align: center;
       opacity: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     [data-theme="dark"] .card {
       background: var(--card-dark);
     }
     .card:hover {
       transform: translateY(-4px);
+    }
+    .avatar, .avatar-initials {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 0.8rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      font-size: 3rem;
+      color: white;
+      background-color: var(--avatar-bg);
+      user-select: none;
+    }
+    .avatar-initials {
+      background-color: #7c3aed;
+      text-transform: uppercase;
+      font-family: 'Montserrat', sans-serif;
     }
     .icons {
       margin-top: 0.5rem;
@@ -121,6 +144,10 @@
       text-align: center;
       box-shadow: 0 8px 20px rgba(0,0,0,0.3);
       font-size: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
     }
     [data-theme="dark"] .modal {
       background: var(--card-dark);
@@ -154,6 +181,7 @@
       flex-direction: column;
       gap: 0.5rem;
       font-weight: 600;
+      width: 100%;
     }
     .phone-options a, .phone-options button {
       display: flex;
@@ -169,6 +197,7 @@
       font-size: 1rem;
       border-radius: 6px;
       transition: background-color 0.2s;
+      width: 100%;
     }
     .phone-options a:hover, .phone-options button:hover {
       background-color: rgba(79, 70, 229, 0.15);
@@ -198,6 +227,7 @@
   <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
     <div class="modal" onclick="event.stopPropagation()">
       <button class="close-btn" onclick="closeModal()">×</button>
+      <div id="modalAvatar"></div>
       <h2 id="modalName"></h2>
       <div class="phone-options" id="modalPhone"></div>
       <div class="icons" id="modalLinks"></div>
@@ -206,14 +236,14 @@
 
   <script>
     const designers = [
-      { name: 'Оксана Чугунова', phone: '+79375707275', telegram: 'https://t.me/ok_interior_design', instagram: 'https://www.instagram.com/chug_oks?igsh=Zmthd2Zlc2d6dDJp', website: '' },
-      { name: 'Анна Гильмутдинова', phone: '+79934149864', telegram: 'https://t.me/notes_ag', instagram: 'https://www.instagram.com/rue_de_design?igsh=MWRzcWE4bnJ2NWRqMA==', website: '' },
-      { name: 'Регина Бадретдинова', phone: '+79600638617', telegram: '', instagram: '', website: '' },
-      { name: 'Ольга Бухарова', phone: '+79050397006', telegram: '', instagram: '', website: '' },
-      { name: 'Карасёв Алексей', phone: '+79874236175', telegram: '', instagram: 'https://www.instagram.com/karasev.architect/', website: '' },
-      { name: 'Ксения Потапова', phone: '+79872254701', telegram: 'https://t.me/savin_design_911', instagram: 'https://www.instagram.com/kseniia.potapova?igsh=MWlhaDFhajJlZmtvYw==', website: '' },
-      { name: 'Ахмет Муллахметов', phone: '+79872142812', telegram: '', instagram: '', website: 'https://homedesignrus.ru/' },
-      { name: 'Рузанна Гатауллина', phone: '+79222538738', telegram: '', instagram: 'https://www.instagram.com/ruzanna.designer/', website: '' },
+      { name: 'Оксана Чугунова', phone: '+79375707275', telegram: 'https://t.me/ok_interior_design', instagram: 'https://www.instagram.com/chug_oks?igsh=Zmthd2Zlc2d6dDJp', website: '', avatar: '' },
+      { name: 'Анна Гильмутдинова', phone: '+79934149864', telegram: 'https://t.me/notes_ag', instagram: 'https://www.instagram.com/rue_de_design?igsh=MWRzcWE4bnJ2NWRqMA==', website: '', avatar: '' },
+      { name: 'Регина Бадретдинова', phone: '+79600638617', telegram: '', instagram: '', website: '', avatar: '' },
+      { name: 'Ольга Бухарова', phone: '+79050397006', telegram: '', instagram: '', website: '', avatar: '' },
+      { name: 'Карасёв Алексей', phone: '+79874236175', telegram: '', instagram: 'https://www.instagram.com/karasev.architect/', website: '', avatar: '' },
+      { name: 'Ксения Потапова', phone: '+79872254701', telegram: 'https://t.me/savin_design_911', instagram: 'https://www.instagram.com/kseniia.potapova?igsh=MWlhaDFhajJlZmtvYw==', website: '', avatar: '' },
+      { name: 'Ахмет Муллахметов', phone: '+79872142812', telegram: '', instagram: '', website: 'https://homedesignrus.ru/', avatar: '' },
+      { name: 'Рузанна Гатауллина', phone: '+79222538738', telegram: '', instagram: 'https://www.instagram.com/ruzanna.designer/', website: '', avatar: 'ruzanna.jpg' },
     ];
 
     const cardsContainer = document.getElementById('cards');
@@ -221,30 +251,66 @@
     const modalName = document.getElementById('modalName');
     const modalPhone = document.getElementById('modalPhone');
     const modalLinks = document.getElementById('modalLinks');
+    const modalAvatar = document.getElementById('modalAvatar');
     const searchInput = document.getElementById('searchInput');
+
+    // Функция для получения инициалов из полного имени
+    function getInitials(name) {
+      const parts = name.trim().split(/\s+/);
+      if (parts.length === 1) {
+        return parts[0][0].toUpperCase();
+      }
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+
+    // Создание DOM-элемента аватара: либо картинка, либо круг с инициалами
+    function createAvatarElement(d, size = 100) {
+      if (d.avatar && d.avatar.trim() !== '') {
+        const img = document.createElement('img');
+        img.src = d.avatar;
+        img.alt = d.name;
+        img.className = 'avatar';
+        img.style.width = size + 'px';
+        img.style.height = size + 'px';
+        return img;
+      } else {
+        const div = document.createElement('div');
+        div.className = 'avatar-initials';
+        div.textContent = getInitials(d.name);
+        div.style.width = size + 'px';
+        div.style.height = size + 'px';
+        return div;
+      }
+    }
 
     function renderCards(list) {
       cardsContainer.innerHTML = '';
       list.forEach(d => {
         const card = document.createElement('div');
         card.className = 'card';
-        card.innerHTML = `<h3>${d.name}</h3>`;
+
+        const avatarEl = createAvatarElement(d);
+        card.appendChild(avatarEl);
+
+        const nameEl = document.createElement('h3');
+        nameEl.textContent = d.name;
+        card.appendChild(nameEl);
+
         card.onclick = () => openModal(d);
         cardsContainer.appendChild(card);
       });
     }
 
     function openModal(d) {
+      modalAvatar.innerHTML = '';
+      modalAvatar.appendChild(createAvatarElement(d, 120));
+
       modalName.textContent = d.name;
       modalPhone.innerHTML = `
-        <a href="tel:${d.phone}"><i class="fas fa-phone" style="color: #4f46e5;"></i> Позвонить: ${d.phone}</a>
+        <a href="tel:${d.phone}"><i class="fas fa-phone" style="color: var(--accent);"></i> Позвонить: ${d.phone}</a>
         <a href="https://wa.me/${d.phone.replace('+7','7')}" target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="color: #25D366;"></i> WhatsApp</a>
         ${d.telegram ? `<a href="${d.telegram}" target="_blank" rel="noopener"><i class="fab fa-telegram-plane" style="color: #0088cc;"></i> Telegram</a>` : ''}
-        <button onclick="copyPhone('${d.phone}')" title="Скопировать номер" style="background:none; border:none; color: var(--accent); cursor:pointer; font-weight:600; margin-top:8px;">
-          <i class="fas fa-copy"></i> Копировать номер
-        </button>
       `;
-
       modalLinks.innerHTML = `
         ${d.telegram ? `<a href="${d.telegram}" target="_blank" rel="noopener" class="telegram" title="Telegram"><i class='fab fa-telegram' style="color:#0088cc;"></i></a>` : ''}
         ${d.instagram ? `<a href="${d.instagram}" target="_blank" rel="noopener" class="instagram" title="Instagram"><i class='fab fa-instagram' style="color:#e1306c;"></i></a>` : ''}
@@ -287,7 +353,7 @@
       }
       phone = phone.replace(/\s+/g, '').replace(/-/g, '');
 
-      designers.push({ name, phone, telegram, instagram, website });
+      designers.push({ name, phone, telegram, instagram, website, avatar: '' });
       renderCards(designers);
 
       document.getElementById('newName').value = '';
@@ -296,14 +362,6 @@
       document.getElementById('newInstagram').value = '';
       document.getElementById('newWebsite').value = '';
       document.getElementById('addForm').style.display = 'none';
-    }
-
-    function copyPhone(phone) {
-      navigator.clipboard.writeText(phone).then(() => {
-        alert('Номер скопирован: ' + phone);
-      }).catch(() => {
-        alert('Не удалось скопировать номер');
-      });
     }
 
     searchInput.addEventListener('input', () => {
@@ -316,6 +374,11 @@
 
     applyStoredTheme();
     renderCards(designers);
+
+    // Закрытие модального окна по ESC
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
   </script>
 </body>
 </html>
