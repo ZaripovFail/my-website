@@ -4,18 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Дизайнеры МебельДан</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-light: #f9f9f9;
+      --bg-light: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
       --bg-dark: #1a1a1a;
-      --card-light: #fff;
+      --card-light: rgba(255, 255, 255, 0.9);
       --card-dark: #2c2c2c;
       --text-light: #111;
       --text-dark: #eee;
       --accent: #4f46e5;
     }
     [data-theme="light"] {
-      background-color: var(--bg-light);
+      background: var(--bg-light);
       color: var(--text-light);
     }
     [data-theme="dark"] {
@@ -24,20 +25,33 @@
     }
     body {
       margin: 0;
-      font-family: sans-serif;
+      font-family: 'Montserrat', sans-serif;
       transition: background 0.3s, color 0.3s;
     }
     .container {
       padding: 2rem;
+      text-align: center;
     }
-    .theme-toggle {
+    h1 {
       margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .theme-toggle, .add-button {
+      margin: 0.5rem;
       padding: 0.5rem 1rem;
       background: var(--accent);
       color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
+    }
+    .search {
+      padding: 0.5rem;
+      width: 80%;
+      max-width: 400px;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
     }
     .cards {
       display: grid;
@@ -51,6 +65,7 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       cursor: pointer;
       transition: transform 0.2s ease;
+      text-align: center;
     }
     [data-theme="dark"] .card {
       background: var(--card-dark);
@@ -58,8 +73,11 @@
     .card:hover {
       transform: translateY(-4px);
     }
+    .icons {
+      margin-top: 0.5rem;
+    }
     .icons a {
-      margin-right: 10px;
+      margin: 0 8px;
       font-size: 1.3rem;
       text-decoration: none;
     }
@@ -79,6 +97,7 @@
       position: relative;
       max-width: 400px;
       width: 90%;
+      text-align: center;
     }
     [data-theme="dark"] .modal {
       background: var(--card-dark);
@@ -97,7 +116,11 @@
 </head>
 <body data-theme="light">
   <div class="container">
+    <h1>Дизайнеры МебельДан</h1>
+    <input type="text" class="search" id="searchInput" placeholder="Поиск по имени...">
+    <br />
     <button class="theme-toggle" onclick="toggleTheme()">🌙 Тёмная тема</button>
+    <button class="add-button" onclick="alert('Добавление нового контакта возможно вручную в коде. В будущем можно реализовать форму.')">➕ Новый контакт</button>
     <div class="cards" id="cards"></div>
   </div>
 
@@ -105,10 +128,7 @@
     <div class="modal" onclick="event.stopPropagation()">
       <button class="close-btn" onclick="closeModal()">×</button>
       <h2 id="modalName"></h2>
-      <p><strong>Телефон:</strong> <a id="modalPhone" href="#"></a></p>
-      <p id="modalTelegram"></p>
-      <p id="modalInstagram"></p>
-      <p id="modalWebsite"></p>
+      <div class="icons" id="modalLinks"></div>
     </div>
   </div>
 
@@ -127,32 +147,28 @@
     const cardsContainer = document.getElementById('cards');
     const modalOverlay = document.getElementById('modalOverlay');
     const modalName = document.getElementById('modalName');
-    const modalPhone = document.getElementById('modalPhone');
-    const modalTelegram = document.getElementById('modalTelegram');
-    const modalInstagram = document.getElementById('modalInstagram');
-    const modalWebsite = document.getElementById('modalWebsite');
+    const modalLinks = document.getElementById('modalLinks');
+    const searchInput = document.getElementById('searchInput');
 
-    designers.forEach(d => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `<h3>${d.name}</h3>
-        <div class="icons">
-          <a href="tel:${d.phone}" title="Позвонить">📞</a>
-          ${d.telegram ? `<a href="${d.telegram}" target="_blank" title="Telegram">✉️</a>` : ''}
-          ${d.instagram ? `<a href="${d.instagram}" target="_blank" title="Instagram">📸</a>` : ''}
-          ${d.website ? `<a href="${d.website}" target="_blank" title="Сайт">🌐</a>` : ''}
-        </div>`;
-      card.onclick = () => openModal(d);
-      cardsContainer.appendChild(card);
-    });
+    function renderCards(list) {
+      cardsContainer.innerHTML = '';
+      list.forEach(d => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<h3>${d.name}</h3>`;
+        card.onclick = () => openModal(d);
+        cardsContainer.appendChild(card);
+      });
+    }
 
     function openModal(d) {
       modalName.textContent = d.name;
-      modalPhone.href = `tel:${d.phone}`;
-      modalPhone.textContent = d.phone;
-      modalTelegram.innerHTML = d.telegram ? `<strong>Telegram:</strong> <a href="${d.telegram}" target="_blank">Ссылка</a>` : '';
-      modalInstagram.innerHTML = d.instagram ? `<strong>Instagram:</strong> <a href="${d.instagram}" target="_blank">Профиль</a>` : '';
-      modalWebsite.innerHTML = d.website ? `<strong>Веб-сайт:</strong> <a href="${d.website}" target="_blank">Перейти</a>` : '';
+      modalLinks.innerHTML = `
+        <a href="tel:${d.phone}" title="Позвонить">📞</a>
+        ${d.telegram ? `<a href="${d.telegram}" target="_blank" title="Telegram">✉️</a>` : ''}
+        ${d.instagram ? `<a href="${d.instagram}" target="_blank" title="Instagram">📸</a>` : ''}
+        ${d.website ? `<a href="${d.website}" target="_blank" title="Сайт">🌐</a>` : ''}
+      `;
       modalOverlay.style.display = 'flex';
     }
 
@@ -167,6 +183,14 @@
       html.setAttribute('data-theme', next);
       document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️ Светлая тема' : '🌙 Тёмная тема';
     }
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+      const filtered = designers.filter(d => d.name.toLowerCase().includes(query));
+      renderCards(filtered);
+    });
+
+    renderCards(designers);
   </script>
 </body>
 </html>
