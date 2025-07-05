@@ -2,14 +2,14 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Дизайнеры МебельДан</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     :root {
       --bg-light: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
-      --bg-dark: url('https://www.transparenttextures.com/patterns/marble.png');
+      --bg-dark: url('https://i.ibb.co/z8sz1kZ/f206-pietra-grigio.jpg');
       --card-light: #ffffff;
       --card-dark: #2c2c2c;
       --text-light: #111;
@@ -21,7 +21,7 @@
       color: var(--text-light);
     }
     [data-theme="dark"] {
-      background: var(--bg-dark);
+      background: var(--bg-dark) center center / cover no-repeat fixed;
       color: var(--text-dark);
     }
     body {
@@ -45,6 +45,7 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      font-weight: 600;
     }
     .search {
       padding: 0.5rem;
@@ -53,6 +54,7 @@
       border-radius: 6px;
       margin-bottom: 1rem;
       border: 1px solid #ccc;
+      font-size: 1rem;
     }
     .cards {
       display: grid;
@@ -67,6 +69,7 @@
       cursor: pointer;
       transition: transform 0.2s ease;
       text-align: center;
+      opacity: 1;
     }
     [data-theme="dark"] .card {
       background: var(--card-dark);
@@ -79,11 +82,9 @@
     }
     .icons a {
       margin: 0 8px;
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       text-decoration: none;
-    }
-    .icons a i {
-      color: inherit;
+      vertical-align: middle;
     }
     .icons a.telegram i { color: #0088cc; }
     .icons a.instagram i { color: #e1306c; }
@@ -96,6 +97,7 @@
       justify-content: center;
       align-items: center;
       display: none;
+      z-index: 1000;
     }
     .modal {
       background: var(--card-light);
@@ -105,6 +107,8 @@
       max-width: 400px;
       width: 90%;
       text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      font-size: 1rem;
     }
     [data-theme="dark"] .modal {
       background: var(--card-dark);
@@ -113,38 +117,67 @@
       position: absolute;
       top: 10px;
       right: 12px;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       background: none;
       border: none;
       color: var(--accent);
       cursor: pointer;
+      font-weight: 700;
     }
     .add-form {
       margin-top: 1rem;
     }
     .add-form input {
       padding: 0.5rem;
-      margin: 0.3rem;
+      margin: 0.3rem 0;
       border-radius: 6px;
       border: 1px solid #aaa;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+    .phone-options {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-weight: 600;
+    }
+    .phone-options a, .phone-options button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+      color: var(--accent);
+      text-decoration: none;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 1rem;
+      border-radius: 6px;
+      transition: background-color 0.2s;
+    }
+    .phone-options a:hover, .phone-options button:hover {
+      background-color: rgba(79, 70, 229, 0.15);
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Дизайнеры МебельДан</h1>
-    <input type="text" class="search" id="searchInput" placeholder="Поиск по имени...">
+    <input type="text" class="search" id="searchInput" placeholder="Поиск по имени..." />
     <br />
     <button class="theme-toggle" onclick="toggleTheme()">🌙 Тёмная тема</button>
     <button class="add-button" onclick="document.getElementById('addForm').style.display='block'">➕ Новый контакт</button>
 
-    <div id="addForm" class="add-form" style="display:none">
-      <input type="text" id="newName" placeholder="Имя">
-      <input type="text" id="newPhone" placeholder="Телефон (+7...)" value="+7">
-      <input type="text" id="newTelegram" placeholder="Telegram URL">
-      <input type="text" id="newInstagram" placeholder="Instagram URL">
-      <input type="text" id="newWebsite" placeholder="Веб-сайт URL">
-      <button onclick="addDesigner()">Добавить</button>
+    <div id="addForm" class="add-form" style="display:none; max-width:400px; margin: 0 auto;">
+      <input type="text" id="newName" placeholder="Имя" />
+      <input type="text" id="newPhone" placeholder="Телефон (+7...)" value="+7" />
+      <input type="text" id="newTelegram" placeholder="Telegram URL" />
+      <input type="text" id="newInstagram" placeholder="Instagram URL" />
+      <input type="text" id="newWebsite" placeholder="Веб-сайт URL" />
+      <button onclick="addDesigner()" style="margin-top: 0.5rem; background: var(--accent); color: white; border: none; border-radius:6px; width:100%; font-weight: 600; cursor: pointer;">Добавить</button>
     </div>
 
     <div class="cards" id="cards"></div>
@@ -154,21 +187,21 @@
     <div class="modal" onclick="event.stopPropagation()">
       <button class="close-btn" onclick="closeModal()">×</button>
       <h2 id="modalName"></h2>
-      <p id="modalPhone"></p>
+      <div class="phone-options" id="modalPhone"></div>
       <div class="icons" id="modalLinks"></div>
     </div>
   </div>
 
   <script>
-    let designers = [
-      { name: "Оксана Чугунова", phone: "+79375707275", telegram: "https://t.me/ok_interior_design", instagram: "https://www.instagram.com/chug_oks?igsh=Zmthd2Zlc2d6dDJp", website: "" },
-      { name: "Анна Гильмутдинова", phone: "+79934149864", telegram: "https://t.me/notes_ag", instagram: "https://www.instagram.com/rue_de_design?igsh=MWRzcWE4bnJ2NWRqMA==", website: "" },
-      { name: "Регина Бадретдинова", phone: "+79600638617", telegram: "", instagram: "", website: "" },
-      { name: "Ольга Бухарова", phone: "+79050397006", telegram: "", instagram: "", website: "" },
-      { name: "Карасёв Алексей", phone: "+79874236175", telegram: "", instagram: "https://www.instagram.com/karasev.architect/", website: "" },
-      { name: "Ксения Потапова", phone: "+79872254701", telegram: "https://t.me/savin_design_911", instagram: "https://www.instagram.com/kseniia.potapova?igsh=MWlhaDFhajJlZmtvYw==", website: "" },
-      { name: "Ахмет Муллахметов", phone: "+79872142812", telegram: "", instagram: "", website: "https://homedesignrus.ru/" },
-      { name: "Рузанна Гатауллина", phone: "+789222538738", telegram: "", instagram: "https://www.instagram.com/ruzanna.designer/", website: "" }
+    const designers = [
+      { name: 'Оксана Чугунова', phone: '+79375707275', telegram: 'https://t.me/ok_interior_design', instagram: 'https://www.instagram.com/chug_oks?igsh=Zmthd2Zlc2d6dDJp', website: '' },
+      { name: 'Анна Гильмутдинова', phone: '+79934149864', telegram: 'https://t.me/notes_ag', instagram: 'https://www.instagram.com/rue_de_design?igsh=MWRzcWE4bnJ2NWRqMA==', website: '' },
+      { name: 'Регина Бадретдинова', phone: '+79600638617', telegram: '', instagram: '', website: '' },
+      { name: 'Ольга Бухарова', phone: '+79050397006', telegram: '', instagram: '', website: '' },
+      { name: 'Карасёв Алексей', phone: '+79874236175', telegram: '', instagram: 'https://www.instagram.com/karasev.architect/', website: '' },
+      { name: 'Ксения Потапова', phone: '+79872254701', telegram: 'https://t.me/savin_design_911', instagram: 'https://www.instagram.com/kseniia.potapova?igsh=MWlhaDFhajJlZmtvYw==', website: '' },
+      { name: 'Ахмет Муллахметов', phone: '+79872142812', telegram: '', instagram: '', website: 'https://homedesignrus.ru/' },
+      { name: 'Рузанна Гатауллина', phone: '+79222538738', telegram: '', instagram: 'https://www.instagram.com/ruzanna.designer/', website: '' },
     ];
 
     const cardsContainer = document.getElementById('cards');
@@ -191,12 +224,21 @@
 
     function openModal(d) {
       modalName.textContent = d.name;
-      modalPhone.innerHTML = `<a href="tel:${d.phone}">${d.phone}</a>`;
-      modalLinks.innerHTML = `
-        ${d.telegram ? `<a href="${d.telegram}" target="_blank" class="telegram"><i class='fab fa-telegram'></i></a>` : ''}
-        ${d.instagram ? `<a href="${d.instagram}" target="_blank" class="instagram"><i class='fab fa-instagram'></i></a>` : ''}
-        ${d.website ? `<a href="${d.website}" target="_blank" class="website"><i class='fas fa-globe'></i></a>` : ''}
+      modalPhone.innerHTML = `
+        <a href="tel:${d.phone}"><i class="fas fa-phone" style="color: #4f46e5;"></i> Позвонить: ${d.phone}</a>
+        <a href="https://wa.me/${d.phone.replace('+7','7')}" target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="color: #25D366;"></i> WhatsApp</a>
+        ${d.telegram ? `<a href="${d.telegram}" target="_blank" rel="noopener"><i class="fab fa-telegram-plane" style="color: #0088cc;"></i> Telegram</a>` : ''}
+        <button onclick="copyPhone('${d.phone}')" title="Скопировать номер" style="background:none; border:none; color: var(--accent); cursor:pointer; font-weight:600; margin-top:8px;">
+          <i class="fas fa-copy"></i> Копировать номер
+        </button>
       `;
+
+      modalLinks.innerHTML = `
+        ${d.telegram ? `<a href="${d.telegram}" target="_blank" rel="noopener" class="telegram" title="Telegram"><i class='fab fa-telegram' style="color:#0088cc;"></i></a>` : ''}
+        ${d.instagram ? `<a href="${d.instagram}" target="_blank" rel="noopener" class="instagram" title="Instagram"><i class='fab fa-instagram' style="color:#e1306c;"></i></a>` : ''}
+        ${d.website ? `<a href="${d.website}" target="_blank" rel="noopener" class="website" title="Веб-сайт"><i class='fas fa-globe' style="color:#4f46e5;"></i></a>` : ''}
+      `;
+
       modalOverlay.style.display = 'flex';
     }
 
@@ -205,40 +247,66 @@
     }
 
     function toggleTheme() {
-      const html = document.body;
-      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      html.setAttribute('data-theme', next);
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      body.setAttribute('data-theme', next);
       localStorage.setItem('preferredTheme', next);
       document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️ Светлая тема' : '🌙 Тёмная тема';
     }
 
     function applyStoredTheme() {
-      const savedTheme = localStorage.getItem('preferredTheme') || 'light';
-      document.body.setAttribute('data-theme', savedTheme);
-      document.querySelector('.theme-toggle').textContent = savedTheme === 'dark' ? '☀️ Светлая тема' : '🌙 Тёмная тема';
+      const saved = localStorage.getItem('preferredTheme') || 'light';
+      document.body.setAttribute('data-theme', saved);
+      document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️ Светлая тема' : '🌙 Тёмная тема';
     }
 
     function addDesigner() {
-      const name = document.getElementById('newName').value;
-      const phone = document.getElementById('newPhone').value;
-      const telegram = document.getElementById('newTelegram').value;
-      const instagram = document.getElementById('newInstagram').value;
-      const website = document.getElementById('newWebsite').value;
-      if (name && phone.startsWith('+7')) {
-        designers.push({ name, phone, telegram, instagram, website });
-        renderCards(designers);
-        document.getElementById('addForm').style.display = 'none';
+      const name = document.getElementById('newName').value.trim();
+      let phone = document.getElementById('newPhone').value.trim();
+      const telegram = document.getElementById('newTelegram').value.trim();
+      const instagram = document.getElementById('newInstagram').value.trim();
+      const website = document.getElementById('newWebsite').value.trim();
+
+      if (!name) { alert('Введите имя'); return; }
+      if (!phone.startsWith('+7')) {
+        alert('Телефон должен начинаться с +7');
+        return;
       }
+      // Очистим телефон от пробелов и тире для удобства
+      phone = phone.replace(/\s+/g, '').replace(/-/g, '');
+
+      designers.push({ name, phone, telegram, instagram, website });
+      renderCards(designers);
+
+      // Очистить форму и скрыть
+      document.getElementById('newName').value = '';
+      document.getElementById('newPhone').value = '+7';
+      document.getElementById('newTelegram').value = '';
+      document.getElementById('newInstagram').value = '';
+      document.getElementById('newWebsite').value = '';
+      document.getElementById('addForm').style.display = 'none';
+    }
+
+    function copyPhone(phone) {
+      navigator.clipboard.writeText(phone).then(() => {
+        alert('Номер скопирован: ' + phone);
+      }).catch(() => {
+        alert('Не удалось скопировать номер');
+      });
     }
 
     searchInput.addEventListener('input', () => {
       const query = searchInput.value.toLowerCase();
-      const filtered = designers.sort((a, b) => a.name.localeCompare(b.name)).filter(d => d.name.toLowerCase().includes(query));
+      const filtered = designers
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .filter(d => d.name.toLowerCase().includes(query));
       renderCards(filtered);
     });
 
     applyStoredTheme();
     renderCards(designers);
+
   </script>
 </body>
 </html>
