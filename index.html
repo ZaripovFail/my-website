@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Дизайнеры МебельДан</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
       --bg-light: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
@@ -78,8 +79,11 @@
     }
     .icons a {
       margin: 0 8px;
-      font-size: 1.3rem;
+      font-size: 1rem;
       text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
     .modal-overlay {
       position: fixed;
@@ -112,6 +116,15 @@
       color: var(--accent);
       cursor: pointer;
     }
+    .add-form {
+      margin-top: 1rem;
+    }
+    .add-form input {
+      padding: 0.5rem;
+      margin: 0.3rem;
+      border-radius: 6px;
+      border: 1px solid #aaa;
+    }
   </style>
 </head>
 <body data-theme="light">
@@ -120,7 +133,17 @@
     <input type="text" class="search" id="searchInput" placeholder="Поиск по имени...">
     <br />
     <button class="theme-toggle" onclick="toggleTheme()">🌙 Тёмная тема</button>
-    <button class="add-button" onclick="alert('Добавление нового контакта возможно вручную в коде. В будущем можно реализовать форму.')">➕ Новый контакт</button>
+    <button class="add-button" onclick="document.getElementById('addForm').style.display='block'">➕ Новый контакт</button>
+
+    <div id="addForm" class="add-form" style="display:none">
+      <input type="text" id="newName" placeholder="Имя">
+      <input type="text" id="newPhone" placeholder="Телефон">
+      <input type="text" id="newTelegram" placeholder="Telegram URL">
+      <input type="text" id="newInstagram" placeholder="Instagram URL">
+      <input type="text" id="newWebsite" placeholder="Веб-сайт URL">
+      <button onclick="addDesigner()">Добавить</button>
+    </div>
+
     <div class="cards" id="cards"></div>
   </div>
 
@@ -128,25 +151,21 @@
     <div class="modal" onclick="event.stopPropagation()">
       <button class="close-btn" onclick="closeModal()">×</button>
       <h2 id="modalName"></h2>
+      <p id="modalPhone"></p>
       <div class="icons" id="modalLinks"></div>
     </div>
   </div>
 
   <script>
-    const designers = [
+    let designers = [
       { name: "Оксана Чугунова", phone: "89375707275", telegram: "https://t.me/ok_interior_design", instagram: "https://www.instagram.com/chug_oks?igsh=Zmthd2Zlc2d6dDJp", website: "" },
-      { name: "Анна Гильмутдинова", phone: "+79934149864", telegram: "https://t.me/notes_ag", instagram: "https://www.instagram.com/rue_de_design?igsh=MWRzcWE4bnJ2NWRqMA==", website: "" },
-      { name: "Регина Бадретдинова", phone: "89600638617", telegram: "", instagram: "", website: "" },
-      { name: "Ольга Бухарова", phone: "89050397006", telegram: "", instagram: "", website: "" },
-      { name: "Карасёв Алексей", phone: "89874236175", telegram: "", instagram: "https://www.instagram.com/karasev.architect/", website: "" },
-      { name: "Ксения Потапова", phone: "89872254701", telegram: "https://t.me/savin_design_911", instagram: "https://www.instagram.com/kseniia.potapova?igsh=MWlhaDFhajJlZmtvYw==", website: "" },
-      { name: "Ахмет Муллахметов", phone: "89872142812", telegram: "", instagram: "", website: "https://homedesignrus.ru/" },
-      { name: "Рузанна Гатауллина", phone: "89222538738", telegram: "", instagram: "https://www.instagram.com/ruzanna.designer/", website: "" }
+      { name: "Анна Гильмутдинова", phone: "+79934149864", telegram: "https://t.me/notes_ag", instagram: "https://www.instagram.com/rue_de_design?igsh=MWRzcWE4bnJ2NWRqMA==", website: "" }
     ];
 
     const cardsContainer = document.getElementById('cards');
     const modalOverlay = document.getElementById('modalOverlay');
     const modalName = document.getElementById('modalName');
+    const modalPhone = document.getElementById('modalPhone');
     const modalLinks = document.getElementById('modalLinks');
     const searchInput = document.getElementById('searchInput');
 
@@ -163,11 +182,13 @@
 
     function openModal(d) {
       modalName.textContent = d.name;
+      modalPhone.innerHTML = `<a href="tel:${d.phone}" onclick="event.stopPropagation()">${d.phone}</a><br>
+        <a href="https://wa.me/${d.phone}" target="_blank">WhatsApp</a> | 
+        <a href="${d.telegram}" target="_blank">Telegram</a>`;
       modalLinks.innerHTML = `
-        <a href="tel:${d.phone}" title="Позвонить">📞</a>
-        ${d.telegram ? `<a href="${d.telegram}" target="_blank" title="Telegram">✉️</a>` : ''}
-        ${d.instagram ? `<a href="${d.instagram}" target="_blank" title="Instagram">📸</a>` : ''}
-        ${d.website ? `<a href="${d.website}" target="_blank" title="Сайт">🌐</a>` : ''}
+        ${d.telegram ? `<a href="${d.telegram}" target="_blank"><i class='fab fa-telegram'></i> Telegram</a>` : ''}
+        ${d.instagram ? `<a href="${d.instagram}" target="_blank"><i class='fab fa-instagram'></i> Instagram</a>` : ''}
+        ${d.website ? `<a href="${d.website}" target="_blank"><i class='fas fa-globe'></i> Веб-сайт</a>` : ''}
       `;
       modalOverlay.style.display = 'flex';
     }
@@ -184,9 +205,22 @@
       document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️ Светлая тема' : '🌙 Тёмная тема';
     }
 
+    function addDesigner() {
+      const name = document.getElementById('newName').value;
+      const phone = document.getElementById('newPhone').value;
+      const telegram = document.getElementById('newTelegram').value;
+      const instagram = document.getElementById('newInstagram').value;
+      const website = document.getElementById('newWebsite').value;
+      if (name && phone) {
+        designers.push({ name, phone, telegram, instagram, website });
+        renderCards(designers);
+        document.getElementById('addForm').style.display = 'none';
+      }
+    }
+
     searchInput.addEventListener('input', () => {
       const query = searchInput.value.toLowerCase();
-      const filtered = designers.filter(d => d.name.toLowerCase().includes(query));
+      const filtered = designers.sort((a, b) => a.name.localeCompare(b.name)).filter(d => d.name.toLowerCase().includes(query));
       renderCards(filtered);
     });
 
