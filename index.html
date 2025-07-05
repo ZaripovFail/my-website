@@ -1,207 +1,172 @@
-import React, { useState, useEffect } from "react";
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Дизайнеры МебельДан</title>
+  <style>
+    :root {
+      --bg-light: #f9f9f9;
+      --bg-dark: #1a1a1a;
+      --card-light: #fff;
+      --card-dark: #2c2c2c;
+      --text-light: #111;
+      --text-dark: #eee;
+      --accent: #4f46e5;
+    }
+    [data-theme="light"] {
+      background-color: var(--bg-light);
+      color: var(--text-light);
+    }
+    [data-theme="dark"] {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container {
+      padding: 2rem;
+    }
+    .theme-toggle {
+      margin-bottom: 1rem;
+      padding: 0.5rem 1rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: var(--card-light);
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    [data-theme="dark"] .card {
+      background: var(--card-dark);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+    }
+    .icons a {
+      margin-right: 10px;
+      font-size: 1.3rem;
+      text-decoration: none;
+    }
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      display: none;
+    }
+    .modal {
+      background: var(--card-light);
+      padding: 2rem;
+      border-radius: 12px;
+      position: relative;
+      max-width: 400px;
+      width: 90%;
+    }
+    [data-theme="dark"] .modal {
+      background: var(--card-dark);
+    }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body data-theme="light">
+  <div class="container">
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Тёмная тема</button>
+    <div class="cards" id="cards"></div>
+  </div>
 
-const designers = [
-  {
-    id: 1,
-    name: "Оксана Чугунова",
-    phone: "89375707275",
-    telegram: "https://t.me/ok_interior_design",
-    instagram: "https://www.instagram.com/chug_oks?igsh=Zmthd2Zlc2d6dDJp",
-    website: "",
-  },
-  {
-    id: 2,
-    name: "Анна Гильмутдинова",
-    phone: "+79934149864",
-    telegram: "https://t.me/notes_ag",
-    instagram: "https://www.instagram.com/rue_de_design?igsh=MWRzcWE4bnJ2NWRqMA==",
-    website: "",
-  },
-  {
-    id: 3,
-    name: "Регина Бадретдинова",
-    phone: "89600638617",
-    telegram: "",
-    instagram: "",
-    website: "",
-  },
-  {
-    id: 4,
-    name: "Ольга Бухарова",
-    phone: "89050397006",
-    telegram: "",
-    instagram: "",
-    website: "",
-  },
-  {
-    id: 5,
-    name: "Карасёв Алексей",
-    phone: "89874236175",
-    telegram: "",
-    instagram: "https://www.instagram.com/karasev.architect/",
-    website: "",
-  },
-  {
-    id: 6,
-    name: "Ксения Потапова",
-    phone: "89872254701",
-    telegram: "https://t.me/savin_design_911",
-    instagram: "https://www.instagram.com/kseniia.potapova?igsh=MWlhaDFhajJlZmtvYw==",
-    website: "",
-  },
-  {
-    id: 7,
-    name: "Ахмет Муллахметов",
-    phone: "89872142812",
-    telegram: "",
-    instagram: "",
-    website: "https://homedesignrus.ru/",
-  },
-  {
-    id: 8,
-    name: "Рузанна Гатауллина",
-    phone: "89222538738",
-    telegram: "",
-    instagram: "https://www.instagram.com/ruzanna.designer/",
-    website: "",
-  },
-];
-
-const Designers = () => {
-  const [selected, setSelected] = useState(null);
-  const [theme, setTheme] = useState("light");
-
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme") || "light";
-    setTheme(storedTheme);
-    document.documentElement.setAttribute("data-theme", storedTheme);
-  }, []);
-
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    document.documentElement.setAttribute("data-theme", newTheme);
-  };
-
-  return (
-    <div className="app">
-      <button className="theme-toggle" onClick={toggleTheme}>
-        {theme === "light" ? "🌙 Тёмная тема" : "☀️ Светлая тема"}
-      </button>
-      <div className="card-list">
-        {designers.map((d) => (
-          <div className="card" key={d.id} onClick={() => setSelected(d)}>
-            <h3>{d.name}</h3>
-            <div className="icons">
-              <a href={`tel:${d.phone}`} onClick={(e) => e.stopPropagation()} title="Позвонить">📞</a>
-              {d.telegram && (
-                <a href={d.telegram} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} title="Telegram">✉️</a>
-              )}
-              {d.instagram && (
-                <a href={d.instagram} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} title="Instagram">📸</a>
-              )}
-              {d.website && (
-                <a href={d.website} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} title="Веб-сайт">🌐</a>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {selected && (
-        <div className="modal-overlay" onClick={() => setSelected(null)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <button className="close" onClick={() => setSelected(null)}>×</button>
-            <h2>{selected.name}</h2>
-            <p><strong>Телефон:</strong> <a href={`tel:${selected.phone}`}>{selected.phone}</a></p>
-            {selected.telegram && <p><strong>Telegram:</strong> <a href={selected.telegram} target="_blank" rel="noopener noreferrer">Ссылка</a></p>}
-            {selected.instagram && <p><strong>Instagram:</strong> <a href={selected.instagram} target="_blank" rel="noopener noreferrer">Профиль</a></p>}
-            {selected.website && <p><strong>Веб-сайт:</strong> <a href={selected.website} target="_blank" rel="noopener noreferrer">Перейти</a></p>}
-          </div>
-        </div>
-      )}
-
-      <style jsx>{`
-        :root {
-          --bg-light: #f9f9f9;
-          --bg-dark: #1a1a1a;
-          --card-light: #fff;
-          --card-dark: #2c2c2c;
-          --text-light: #111;
-          --text-dark: #eee;
-        }
-        [data-theme="light"] {
-          background-color: var(--bg-light);
-          color: var(--text-light);
-        }
-        [data-theme="dark"] {
-          background-color: var(--bg-dark);
-          color: var(--text-dark);
-        }
-        .app {
-          padding: 2rem;
-        }
-        .theme-toggle {
-          margin-bottom: 1rem;
-        }
-        .card-list {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 1rem;
-        }
-        .card {
-          background: var(--card-light);
-          padding: 1rem;
-          border-radius: 10px;
-          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-          cursor: pointer;
-          transition: transform 0.2s ease;
-        }
-        [data-theme="dark"] .card {
-          background: var(--card-dark);
-        }
-        .card:hover {
-          transform: translateY(-4px);
-        }
-        .icons a {
-          margin-right: 10px;
-          font-size: 1.2rem;
-        }
-        .modal-overlay {
-          position: fixed;
-          top: 0; left: 0; right: 0; bottom: 0;
-          background: rgba(0,0,0,0.5);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        .modal {
-          background: var(--card-light);
-          padding: 2rem;
-          border-radius: 12px;
-          position: relative;
-          animation: fadeIn 0.3s ease;
-        }
-        [data-theme="dark"] .modal {
-          background: var(--card-dark);
-        }
-        .close {
-          position: absolute;
-          top: 10px;
-          right: 12px;
-          font-size: 1.5rem;
-          background: none;
-          border: none;
-          cursor: pointer;
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <button class="close-btn" onclick="closeModal()">×</button>
+      <h2 id="modalName"></h2>
+      <p><strong>Телефон:</strong> <a id="modalPhone" href="#"></a></p>
+      <p id="modalTelegram"></p>
+      <p id="modalInstagram"></p>
+      <p id="modalWebsite"></p>
     </div>
-  );
-};
+  </div>
 
-export default Designers;
+  <script>
+    const designers = [
+      { name: "Оксана Чугунова", phone: "89375707275", telegram: "https://t.me/ok_interior_design", instagram: "https://www.instagram.com/chug_oks?igsh=Zmthd2Zlc2d6dDJp", website: "" },
+      { name: "Анна Гильмутдинова", phone: "+79934149864", telegram: "https://t.me/notes_ag", instagram: "https://www.instagram.com/rue_de_design?igsh=MWRzcWE4bnJ2NWRqMA==", website: "" },
+      { name: "Регина Бадретдинова", phone: "89600638617", telegram: "", instagram: "", website: "" },
+      { name: "Ольга Бухарова", phone: "89050397006", telegram: "", instagram: "", website: "" },
+      { name: "Карасёв Алексей", phone: "89874236175", telegram: "", instagram: "https://www.instagram.com/karasev.architect/", website: "" },
+      { name: "Ксения Потапова", phone: "89872254701", telegram: "https://t.me/savin_design_911", instagram: "https://www.instagram.com/kseniia.potapova?igsh=MWlhaDFhajJlZmtvYw==", website: "" },
+      { name: "Ахмет Муллахметов", phone: "89872142812", telegram: "", instagram: "", website: "https://homedesignrus.ru/" },
+      { name: "Рузанна Гатауллина", phone: "89222538738", telegram: "", instagram: "https://www.instagram.com/ruzanna.designer/", website: "" }
+    ];
+
+    const cardsContainer = document.getElementById('cards');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalName = document.getElementById('modalName');
+    const modalPhone = document.getElementById('modalPhone');
+    const modalTelegram = document.getElementById('modalTelegram');
+    const modalInstagram = document.getElementById('modalInstagram');
+    const modalWebsite = document.getElementById('modalWebsite');
+
+    designers.forEach(d => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `<h3>${d.name}</h3>
+        <div class="icons">
+          <a href="tel:${d.phone}" title="Позвонить">📞</a>
+          ${d.telegram ? `<a href="${d.telegram}" target="_blank" title="Telegram">✉️</a>` : ''}
+          ${d.instagram ? `<a href="${d.instagram}" target="_blank" title="Instagram">📸</a>` : ''}
+          ${d.website ? `<a href="${d.website}" target="_blank" title="Сайт">🌐</a>` : ''}
+        </div>`;
+      card.onclick = () => openModal(d);
+      cardsContainer.appendChild(card);
+    });
+
+    function openModal(d) {
+      modalName.textContent = d.name;
+      modalPhone.href = `tel:${d.phone}`;
+      modalPhone.textContent = d.phone;
+      modalTelegram.innerHTML = d.telegram ? `<strong>Telegram:</strong> <a href="${d.telegram}" target="_blank">Ссылка</a>` : '';
+      modalInstagram.innerHTML = d.instagram ? `<strong>Instagram:</strong> <a href="${d.instagram}" target="_blank">Профиль</a>` : '';
+      modalWebsite.innerHTML = d.website ? `<strong>Веб-сайт:</strong> <a href="${d.website}" target="_blank">Перейти</a>` : '';
+      modalOverlay.style.display = 'flex';
+    }
+
+    function closeModal() {
+      modalOverlay.style.display = 'none';
+    }
+
+    function toggleTheme() {
+      const html = document.body;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️ Светлая тема' : '🌙 Тёмная тема';
+    }
+  </script>
+</body>
+</html>
