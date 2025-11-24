@@ -3,313 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Автоматизация бизнеса - Экономьте время на рутине</title>
+    <title>Трекер настроения</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            font-family: 'Arial', sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f5f5f5;
+            padding: 15px;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
         }
-        
-        .container { 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            padding: 0 20px;
-        }
-        
-        /* Header */
-        .header {
-            background: rgba(255,255,255,0.95);
+        .app {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
         }
-        
-        .nav {
+        h1 { text-align: center; margin-bottom: 20px; color: #333; }
+        .mood-section { margin-bottom: 25px; }
+        .mood-title { margin-bottom: 15px; font-weight: 600; }
+        .mood-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: space-between;
+        }
+        .mood-btn {
+            flex: 1;
+            padding: 15px 5px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .mood-btn.active {
+            border-color: #007AFF;
+            background: #007AFF;
+            color: white;
+        }
+        .factors {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .factor-btn {
+            padding: 12px 8px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            font-size: 14px;
+        }
+        .factor-btn.active {
+            border-color: #34C759;
+            background: #34C759;
+            color: white;
+        }
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            min-height: 80px;
+            font-family: inherit;
+        }
+        .save-btn {
+            width: 100%;
+            padding: 16px;
+            background: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .save-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .stats {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .stat-item {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
+            margin-bottom: 8px;
+            padding: 8px 0;
         }
-        
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #4285f4;
+        .history {
+            margin-top: 20px;
         }
-        
-        /* Hero Section */
-        .hero {
-            background: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            text-align: center;
-            color: white;
-            position: relative;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-        }
-        
-        .cta-button {
-            display: inline-block;
-            background: #4285f4;
-            color: white;
-            padding: 15px 40px;
-            text-decoration: none;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            border: 2px solid #4285f4;
-        }
-        
-        .cta-button:hover {
-            background: transparent;
-            border-color: white;
-        }
-        
-        /* Services */
-        .services {
-            padding: 100px 0;
-            background: white;
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-            font-size: 2.5rem;
-            color: #333;
-        }
-        
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        
-        .service-card {
-            background: #f8f9fa;
-            padding: 2rem;
-            border-radius: 10px;
-            text-align: center;
-            transition: transform 0.3s ease;
-            border: 1px solid #e9ecef;
-        }
-        
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        
-        .service-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        /* Contact Form */
-        .contact {
-            padding: 100px 0;
-            background: #f8f9fa;
-        }
-        
-        .form-container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            padding: 3rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: #333;
-        }
-        
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
+        .history-item {
             padding: 12px;
-            border: 2px solid #e9ecef;
+            border: 1px solid #eee;
             border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-        
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #4285f4;
-        }
-        
-        .submit-btn {
-            width: 100%;
-            background: #4285f4;
-            color: white;
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        
-        .submit-btn:hover {
-            background: #3367d6;
-        }
-        
-        /* Footer */
-        .footer {
-            background: #333;
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2rem; }
-            .hero p { font-size: 1.1rem; }
-            .services-grid { grid-template-columns: 1fr; }
+            margin-bottom: 8px;
+            background: #f9f9f9;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <nav class="nav">
-                <div class="logo">🚀 Автоматизация</div>
-                <div class="nav-links">
-                    <a href="#services" style="color: #333; text-decoration: none; margin-left: 2rem;">Услуги</a>
-                    <a href="#contact" style="color: #333; text-decoration: none; margin-left: 2rem;">Контакты</a>
-                </div>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Перестаньте тратить время на рутину</h1>
-                <p>Автоматизирую ваши бизнес-процессы и сэкономлю 2-3 часа в день с помощью Google Workspace</p>
-                <a href="#contact" class="cta-button">Получить консультацию</a>
+    <div class="app">
+        <h1>📊 Трекер настроения</h1>
+        
+        <div class="mood-section">
+            <div class="mood-title">Как вы себя чувствуете?</div>
+            <div class="mood-buttons">
+                <button class="mood-btn" data-mood="1">😢</button>
+                <button class="mood-btn" data-mood="2">😞</button>
+                <button class="mood-btn" data-mood="3">😐</button>
+                <button class="mood-btn" data-mood="4">😊</button>
+                <button class="mood-btn" data-mood="5">😄</button>
             </div>
         </div>
-    </section>
 
-    <!-- Services Section -->
-    <section id="services" class="services">
-        <div class="container">
-            <h2 class="section-title">Мои услуги</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">📊</div>
-                    <h3>Авто-отчеты</h3>
-                    <p>Ежедневные отчеты в 9:00 утра без вашего участия. Данные автоматически собираются из разных источников.</p>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">🤖</div>
-                    <h3>Telegram уведомления</h3>
-                    <p>Мгновенные оповещения в Telegram о важных событиях: новые заказы, изменения цен, критические ошибки.</p>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">🔄</div>
-                    <h3>Интеграции сервисов</h3>
-                    <p>Связываю Google Таблицы, Gmail, Календарь, Telegram и другие сервисы в единую систему.</p>
-                </div>
+        <div class="mood-section">
+            <div class="mood-title">Что повлияло?</div>
+            <div class="factors">
+                <button class="factor-btn" data-factor="sleep">💤 Сон</button>
+                <button class="factor-btn" data-factor="work">💼 Работа</button>
+                <button class="factor-btn" data-factor="social">👥 Общение</button>
+                <button class="factor-btn" data-factor="health">🏥 Здоровье</button>
+                <button class="factor-btn" data-factor="hobby">🎨 Хобби</button>
+                <button class="factor-btn" data-factor="family">❤️ Семья</button>
             </div>
         </div>
-    </section>
 
-    <!-- Contact Form -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2 class="section-title">Бесплатная консультация</h2>
-            <div class="form-container">
-                <p style="text-align: center; margin-bottom: 2rem; color: #666;">
-                    Опишите вашу проблему - я предложу решение автоматизации в течение 24 часов
-                </p>
-                
-                <!-- ВСТАВЬТЕ СЮДА ВАШ GAS URL -->
-                <iframe 
-                    src="https://script.google.com/macros/s/AKfycbzxsAIotZRiZCAx1fuFnRLJFeEmQUZQ2MtMyzWRapvQFMn0BryM8hNFNFa9ZxbwTCBP/exec" 
-                    width="100%" 
-                    height="600" 
-                    frameborder="0" 
-                    style="border: none; border-radius: 10px;">
-                </iframe>
-                
-                <div style="text-align: center; margin-top: 2rem; color: #666;">
-                    <p>Или напишите напрямую:</p>
-                    <p>📧 Email: ваш-email@gmail.com</p>
-                    <p>✈️ Telegram: @ваш_телеграм</p>
-                </div>
+        <textarea placeholder="Заметки о вашем дне..."></textarea>
+
+        <button class="save-btn" id="saveBtn" disabled>💾 Сохранить настроение</button>
+
+        <div class="stats">
+            <div class="mood-title">Статистика</div>
+            <div class="stat-item">
+                <span>Среднее настроение:</span>
+                <span id="avgMood">-</span>
+            </div>
+            <div class="stat-item">
+                <span>Всего записей:</span>
+                <span id="totalEntries">0</span>
+            </div>
+            <div class="stat-item">
+                <span>Лучший день:</span>
+                <span id="bestDay">-</span>
             </div>
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 Автоматизация бизнеса. Все права защищены.</p>
+        <div class="history">
+            <div class="mood-title">Последние записи</div>
+            <div id="historyList"></div>
         </div>
-    </footer>
+    </div>
 
     <script>
-        // Плавная прокрутка для навигации
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+        // Простая логика приложения
+        let currentMood = null;
+        let selectedFactors = [];
+        let entries = JSON.parse(localStorage.getItem('moodEntries') || '[]');
+
+        // Обновление статистики
+        function updateStats() {
+            if (entries.length === 0) {
+                document.getElementById('avgMood').textContent = '-';
+                document.getElementById('totalEntries').textContent = '0';
+                document.getElementById('bestDay').textContent = '-';
+                return;
+            }
+
+            const totalMood = entries.reduce((sum, entry) => sum + entry.mood, 0);
+            const avgMood = (totalMood / entries.length).toFixed(1);
+            const bestDay = Math.max(...entries.map(entry => entry.mood));
+
+            document.getElementById('avgMood').textContent = avgMood;
+            document.getElementById('totalEntries').textContent = entries.length;
+            document.getElementById('bestDay').textContent = bestDay;
+        }
+
+        // Обновление истории
+        function updateHistory() {
+            const historyList = document.getElementById('historyList');
+            const recentEntries = entries.slice(-5).reverse();
+            
+            if (recentEntries.length === 0) {
+                historyList.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">Записей пока нет</div>';
+                return;
+            }
+
+            historyList.innerHTML = recentEntries.map(entry => `
+                <div class="history-item">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>${getMoodEmoji(entry.mood)} Настроение: ${entry.mood}/5</span>
+                        <span style="color: #666; font-size: 12px;">${entry.date}</span>
+                    </div>
+                    ${entry.factors.length > 0 ? 
+                        `<div style="font-size: 12px; color: #666;">Факторы: ${entry.factors.join(', ')}</div>` : ''}
+                    ${entry.notes ? 
+                        `<div style="font-size: 12px; color: #666; margin-top: 5px;">${entry.notes}</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function getMoodEmoji(mood) {
+            const emojis = ['😢', '😞', '😐', '😊', '😄'];
+            return emojis[mood - 1] || '😐';
+        }
+
+        // Обработчики событий
+        document.querySelectorAll('.mood-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentMood = parseInt(this.dataset.mood);
+                updateSaveButton();
             });
         });
+
+        document.querySelectorAll('.factor-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const factor = this.dataset.factor;
+                
+                if (this.classList.contains('active')) {
+                    selectedFactors.push(factor);
+                } else {
+                    selectedFactors = selectedFactors.filter(f => f !== factor);
+                }
+            });
+        });
+
+        function updateSaveButton() {
+            document.getElementById('saveBtn').disabled = currentMood === null;
+        }
+
+        // Сохранение записи
+        document.getElementById('saveBtn').addEventListener('click', function() {
+            if (currentMood === null) return;
+
+            const entry = {
+                mood: currentMood,
+                factors: [...selectedFactors],
+                notes: document.querySelector('textarea').value,
+                date: new Date().toLocaleDateString('ru-RU')
+            };
+
+            entries.push(entry);
+            localStorage.setItem('moodEntries', JSON.stringify(entries));
+            
+            // Сброс формы
+            resetForm();
+            updateStats();
+            updateHistory();
+            
+            // Визуальный фидбэк
+            const originalText = this.textContent;
+            this.textContent = '✅ Сохранено!';
+            this.style.background = '#34C759';
+            
+            setTimeout(() => {
+                this.textContent = originalText;
+                this.style.background = '';
+            }, 1500);
+        });
+
+        function resetForm() {
+            currentMood = null;
+            selectedFactors = [];
+            document.querySelectorAll('.mood-btn, .factor-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector('textarea').value = '';
+            updateSaveButton();
+        }
+
+        // Инициализация
+        updateStats();
+        updateHistory();
     </script>
 </body>
 </html>
