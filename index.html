@@ -7,22 +7,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #8B5FBF;
-            --primary-light: #9D76D0;
-            --primary-dark: #6A4A9C;
-            --secondary: #FF9E7A;
-            --accent: #6CD4C4;
+            --primary: #8D6E63;
+            --primary-light: #A1887F;
+            --secondary: #D7CCC8;
+            --accent: #BCAAA4;
             --background: #F9ECCC;
             --surface: #FFFFFF;
-            --text: #2D3047;
-            --text-light: #6C757D;
-            --border: #E8DFCA;
-            --success: #4CAF50;
-            --warning: #FFB74D;
-            --error: #F44336;
-            --shadow: 0 8px 30px rgba(0,0,0,0.08);
-            --radius: 16px;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --text: #5D4037;
+            --text-light: #8D6E63;
+            --border: #E0D1B4;
+            --success: #5D8D63;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
         }
         
         * { 
@@ -32,7 +28,7 @@
         }
         
         body { 
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--background);
             line-height: 1.6;
             color: var(--text);
@@ -48,54 +44,64 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: var(--background);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transition: opacity 0.8s ease;
         }
         
         .splash-content {
             text-align: center;
-            animation: float 3s ease-in-out infinite;
+            animation: fadeIn 1.5s ease;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         .app-logo {
-            font-size: 72px;
+            font-size: 64px;
             margin-bottom: 20px;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+            color: var(--primary);
         }
         
         .app-title {
             font-size: 32px;
-            font-weight: 800;
-            color: white;
-            letter-spacing: -0.5px;
+            font-weight: 700;
+            color: var(--text);
             margin-bottom: 10px;
+            letter-spacing: -0.5px;
         }
         
         .app-subtitle {
             font-size: 16px;
-            color: rgba(255,255,255,0.8);
+            color: var(--text-light);
             font-weight: 500;
+            margin-bottom: 40px;
+        }
+        
+        .loading-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         .loading-bar {
             width: 200px;
             height: 4px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 4px;
-            margin-top: 30px;
+            background: var(--border);
             overflow: hidden;
+            margin-top: 10px;
         }
         
         .loading-progress {
             height: 100%;
             width: 0%;
-            background: white;
-            border-radius: 4px;
+            background: var(--primary);
             transition: width 2s ease;
         }
         
@@ -104,12 +110,9 @@
             max-width: 100%;
             margin: 0 auto;
             background: var(--surface);
-            border-radius: 30px 30px 0 0;
-            min-height: calc(100vh - 80px);
-            margin-top: 80px;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.08);
+            min-height: calc(100vh - 70px);
+            margin-top: 70px;
             position: relative;
-            overflow: hidden;
         }
         
         /* Заголовок */
@@ -121,12 +124,12 @@
             background: var(--primary);
             padding: 15px 20px;
             z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             color: white;
-            height: 80px;
+            height: 70px;
         }
         
         .header-title {
@@ -135,13 +138,27 @@
             letter-spacing: -0.5px;
         }
         
+        .menu-toggle {
+            position: absolute;
+            left: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .menu-toggle:hover {
+            transform: scale(1.1);
+        }
+        
         .header-actions {
+            position: absolute;
+            right: 20px;
             display: flex;
             gap: 15px;
         }
         
         .header-icon {
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
             transition: var(--transition);
         }
@@ -150,30 +167,66 @@
             transform: scale(1.1);
         }
         
-        /* Навигация */
-        .nav-tabs {
-            display: flex;
-            border-bottom: 1px solid var(--border);
+        /* Боковое меню */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
             background: var(--surface);
-            position: sticky;
-            top: 80px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
             z-index: 999;
+            transition: var(--transition);
+            padding-top: 80px;
         }
         
-        .nav-tab {
-            flex: 1;
-            text-align: center;
-            padding: 16px 0;
+        .side-menu.active {
+            left: 0;
+        }
+        
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+        
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .menu-item {
+            padding: 18px 25px;
             font-weight: 600;
-            color: var(--text-light);
+            color: var(--text);
             cursor: pointer;
             transition: var(--transition);
-            border-bottom: 3px solid transparent;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
         
-        .nav-tab.active {
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-item:hover, .menu-item.active {
+            background: var(--background);
             color: var(--primary);
-            border-bottom: 3px solid var(--primary);
+        }
+        
+        .menu-item i {
+            width: 20px;
+            text-align: center;
         }
         
         /* Контент вкладок */
@@ -209,18 +262,17 @@
         /* Кнопки настроения */
         .mood-buttons {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: space-between;
             margin-bottom: 10px;
         }
         
         .mood-btn {
             flex: 1;
-            padding: 20px 5px;
+            padding: 18px 5px;
             border: 2px solid var(--border);
-            border-radius: var(--radius);
             background: var(--surface);
-            font-size: 32px;
+            font-size: 28px;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
@@ -238,7 +290,7 @@
             left: 0;
             width: 100%;
             height: 0%;
-            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.05));
+            background: rgba(0,0,0,0.03);
             transition: height 0.3s ease;
         }
         
@@ -250,15 +302,17 @@
             border-color: var(--primary);
             background: var(--primary);
             color: white;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(139, 95, 191, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(141, 110, 99, 0.3);
         }
         
         .mood-label {
-            font-size: 12px;
+            font-size: 11px;
             margin-top: 8px;
             font-weight: 600;
-            opacity: 0.7;
+            opacity: 0.8;
+            text-align: center;
+            line-height: 1.2;
         }
         
         .mood-btn.active .mood-label {
@@ -270,38 +324,35 @@
         .factors {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
             margin-bottom: 20px;
         }
         
         .factor-btn {
-            padding: 16px 8px;
+            padding: 14px 8px;
             border: 2px solid var(--border);
-            border-radius: 12px;
             background: var(--surface);
             cursor: pointer;
             text-align: center;
-            font-size: 14px;
+            font-size: 13px;
             transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
         }
         
         .factor-btn.active {
-            border-color: var(--accent);
-            background: var(--accent);
+            border-color: var(--primary-light);
+            background: var(--primary-light);
             color: white;
-            transform: scale(1.03);
         }
         
         /* Текстовое поле */
         textarea {
             width: 100%;
-            padding: 18px;
+            padding: 16px;
             border: 2px solid var(--border);
-            border-radius: var(--radius);
             margin-bottom: 25px;
             min-height: 120px;
             font-family: inherit;
@@ -314,18 +365,16 @@
         textarea:focus {
             border-color: var(--primary);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(139, 95, 191, 0.1);
         }
         
         /* Кнопка сохранения */
         .save-btn {
             width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 16px;
+            background: var(--primary);
             color: white;
             border: none;
-            border-radius: var(--radius);
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             transition: var(--transition);
@@ -350,7 +399,6 @@
         /* Календарь */
         .calendar {
             background: var(--surface);
-            border-radius: var(--radius);
             padding: 20px;
             box-shadow: var(--shadow);
             margin-bottom: 25px;
@@ -370,15 +418,14 @@
         
         .calendar-nav {
             display: flex;
-            gap: 15px;
+            gap: 10px;
         }
         
         .calendar-nav-btn {
             background: var(--background);
             border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
+            width: 34px;
+            height: 34px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -404,7 +451,7 @@
         .calendar-days {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
+            gap: 6px;
         }
         
         .calendar-day {
@@ -412,15 +459,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
             cursor: pointer;
             transition: var(--transition);
             font-weight: 600;
             position: relative;
+            background: var(--background);
         }
         
         .calendar-day:hover {
-            background: var(--background);
+            background: var(--border);
         }
         
         .calendar-day.active {
@@ -434,8 +481,7 @@
             bottom: 4px;
             width: 6px;
             height: 6px;
-            border-radius: 50%;
-            background: var(--accent);
+            background: var(--primary-light);
         }
         
         .calendar-day.mood-1 { background-color: rgba(244, 67, 54, 0.1); }
@@ -448,48 +494,45 @@
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 25px;
         }
         
         .stat-card {
             background: var(--surface);
-            border-radius: var(--radius);
-            padding: 20px;
+            padding: 18px;
             box-shadow: var(--shadow);
             text-align: center;
             transition: var(--transition);
         }
         
         .stat-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
         }
         
         .stat-value {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 800;
             margin-bottom: 5px;
             color: var(--primary);
         }
         
         .stat-label {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-light);
         }
         
         /* График */
         .chart-container {
             background: var(--surface);
-            border-radius: var(--radius);
             padding: 20px;
             box-shadow: var(--shadow);
             margin-bottom: 25px;
         }
         
         .chart-placeholder {
-            height: 200px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-            border-radius: 12px;
+            height: 180px;
+            background: var(--background);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -499,17 +542,16 @@
         
         /* История */
         .history-item {
-            padding: 20px;
+            padding: 18px;
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             background: var(--surface);
             transition: var(--transition);
+            box-shadow: var(--shadow);
         }
         
         .history-item:hover {
-            transform: translateX(5px);
-            box-shadow: var(--shadow);
+            transform: translateX(3px);
         }
         
         .history-header {
@@ -519,7 +561,7 @@
         }
         
         .history-mood {
-            font-size: 24px;
+            font-size: 22px;
         }
         
         .history-date {
@@ -530,27 +572,21 @@
         .history-factors {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
             margin-bottom: 10px;
         }
         
         .history-factor {
-            background: var(--accent);
+            background: var(--primary-light);
             color: white;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
+            padding: 4px 8px;
+            font-size: 11px;
             font-weight: 600;
         }
         
         /* Анимации */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
@@ -570,7 +606,7 @@
         }
         
         .mood-btn:hover .mood-emoji {
-            transform: scale(1.2);
+            transform: scale(1.1);
         }
         
         .mood-btn.active .mood-emoji {
@@ -586,6 +622,10 @@
             .stats-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .mood-label {
+                font-size: 10px;
+            }
         }
         
         /* Улучшение для iOS */
@@ -595,15 +635,75 @@
             }
         }
         
-        /* Темная тема */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --background: #1A1A2E;
-                --surface: #16213E;
-                --text: #E6E6E6;
-                --text-light: #B0B0B0;
-                --border: #2D3047;
-            }
+        /* Настройки */
+        .settings-panel {
+            background: var(--surface);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border);
+            transition: .4s;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .slider.round {
+            border-radius: 24px;
+        }
+        
+        .slider.round:before {
+            border-radius: 50%;
         }
     </style>
 </head>
@@ -611,39 +711,52 @@
     <!-- Splash Screen -->
     <div id="splashScreen">
         <div class="splash-content">
-            <div class="app-logo">🌊</div>
+            <div class="app-logo">📊</div>
             <div class="app-title">MoodFlow</div>
             <div class="app-subtitle">Трекер настроения и аналитика</div>
-            <div class="loading-bar">
-                <div class="loading-progress" id="loadingProgress"></div>
+            <div class="loading-container">
+                <div class="loading-bar">
+                    <div class="loading-progress" id="loadingProgress"></div>
+                </div>
             </div>
         </div>
     </div>
     
     <!-- Заголовок приложения -->
     <div class="header">
+        <div class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
         <div class="header-title">MoodFlow</div>
         <div class="header-actions">
-            <i class="header-icon fas fa-chart-line"></i>
-            <i class="header-icon fas fa-cog"></i>
+            <i class="header-icon fas fa-chart-line" id="analyticsBtn"></i>
+            <i class="header-icon fas fa-cog" id="settingsBtn"></i>
         </div>
     </div>
     
-    <!-- Навигация -->
-    <div class="nav-tabs">
-        <div class="nav-tab active" data-tab="tracker">
-            <i class="fas fa-plus-circle"></i> Запись
+    <!-- Боковое меню -->
+    <div class="side-menu">
+        <div class="menu-item active" data-tab="tracker">
+            <i class="fas fa-plus-circle"></i> Новая запись
         </div>
-        <div class="nav-tab" data-tab="calendar">
+        <div class="menu-item" data-tab="calendar">
             <i class="fas fa-calendar-alt"></i> Календарь
         </div>
-        <div class="nav-tab" data-tab="analytics">
+        <div class="menu-item" data-tab="analytics">
             <i class="fas fa-chart-bar"></i> Аналитика
         </div>
-        <div class="nav-tab" data-tab="history">
+        <div class="menu-item" data-tab="history">
             <i class="fas fa-history"></i> История
         </div>
+        <div class="menu-item" data-tab="insights">
+            <i class="fas fa-lightbulb"></i> Инсайты
+        </div>
+        <div class="menu-item" data-tab="settings">
+            <i class="fas fa-sliders-h"></i> Настройки
+        </div>
     </div>
+    
+    <div class="menu-overlay"></div>
     
     <!-- Основной контейнер -->
     <div class="app-container">
@@ -787,7 +900,7 @@
                 </div>
                 <div class="chart-container">
                     <div class="chart-placeholder">
-                        <i class="fas fa-chart-line" style="font-size: 48px; margin-right: 15px;"></i>
+                        <i class="fas fa-chart-line" style="font-size: 40px; margin-right: 15px;"></i>
                         График настроения за последние 30 дней
                     </div>
                 </div>
@@ -799,7 +912,7 @@
                 </div>
                 <div class="chart-container">
                     <div class="chart-placeholder">
-                        <i class="fas fa-chart-pie" style="font-size: 48px; margin-right: 15px;"></i>
+                        <i class="fas fa-chart-pie" style="font-size: 40px; margin-right: 15px;"></i>
                         Визуализация влияния факторов на настроение
                     </div>
                 </div>
@@ -841,6 +954,117 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Вкладка Инсайты -->
+        <div class="tab-content" id="insights">
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-chart-bar"></i> Ваши паттерны настроения
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">78%</div>
+                        <div class="stat-label">Позитивных дней</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">22%</div>
+                        <div class="stat-label">Дней с низким настроением</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">Сон</div>
+                        <div class="stat-label">Наибольшее влияние</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">Вторник</div>
+                        <div class="stat-label">Самый стабильный день</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-bullseye"></i> Рекомендации
+                </div>
+                <div class="history-item">
+                    <div class="history-header">
+                        <div style="font-weight: 700;">Улучшите качество сна</div>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 14px;">
+                        Ваше настроение значительно улучшается при достаточном количестве сна. 
+                        Попробуйте ложиться на 30 минут раньше в течение недели.
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-header">
+                        <div style="font-weight: 700;">Прогулки на свежем воздухе</div>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 14px;">
+                        В дни с прогулками ваше настроение в среднем на 0.7 балла выше. 
+                        Попробуйте включить 20-минутные прогулки в свой распорядок дня.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Вкладка Настройки -->
+        <div class="tab-content" id="settings">
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-cog"></i> Настройки приложения
+                </div>
+                <div class="settings-panel">
+                    <div class="setting-item">
+                        <span>Уведомления</span>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <span>Темная тема</span>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <span>Еженедельный отчет</span>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <span>Синхронизация с облаком</span>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-shield-alt"></i> Конфиденциальность
+                </div>
+                <div class="settings-panel">
+                    <div class="setting-item">
+                        <span>Резервное копирование данных</span>
+                        <button class="save-btn" style="padding: 8px 16px; width: auto;">
+                            <i class="fas fa-download"></i> Создать бэкап
+                        </button>
+                    </div>
+                    <div class="setting-item">
+                        <span>Очистить историю</span>
+                        <button class="save-btn" style="padding: 8px 16px; width: auto; background: var(--text-light);">
+                            <i class="fas fa-trash"></i> Очистить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -869,23 +1093,69 @@
         let selectedFactors = [];
         let entries = JSON.parse(localStorage.getItem('moodEntries') || '[]');
         
-        // Навигация по вкладкам
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                // Убираем активный класс у всех вкладок
-                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                
-                // Добавляем активный класс текущей вкладке
+        // Управление боковым меню
+        const menuToggle = document.querySelector('.menu-toggle');
+        const sideMenu = document.querySelector('.side-menu');
+        const menuOverlay = document.querySelector('.menu-overlay');
+        const menuItems = document.querySelectorAll('.menu-item');
+        
+        menuToggle.addEventListener('click', function() {
+            sideMenu.classList.add('active');
+            menuOverlay.classList.add('active');
+        });
+        
+        menuOverlay.addEventListener('click', function() {
+            sideMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+        });
+        
+        // Навигация по меню
+        menuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Убираем активный класс у всех пунктов меню
+                menuItems.forEach(i => i.classList.remove('active'));
+                // Добавляем активный класс текущему пункту
                 this.classList.add('active');
-                const tabId = this.getAttribute('data-tab');
-                document.getElementById(tabId).classList.add('active');
                 
-                // Если открыли календарь, обновляем его
-                if (tabId === 'calendar') {
-                    generateCalendar();
-                }
+                // Закрываем меню
+                sideMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                
+                // Переключаем вкладку
+                const tabId = this.getAttribute('data-tab');
+                switchTab(tabId);
             });
+        });
+        
+        // Функция переключения вкладок
+        function switchTab(tabId) {
+            // Скрываем все вкладки
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Показываем выбранную вкладку
+            document.getElementById(tabId).classList.add('active');
+            
+            // Если открыли календарь, обновляем его
+            if (tabId === 'calendar') {
+                generateCalendar();
+            }
+        }
+        
+        // Обработчики для иконок в заголовке
+        document.getElementById('analyticsBtn').addEventListener('click', function() {
+            switchTab('analytics');
+            // Активируем соответствующий пункт меню
+            menuItems.forEach(item => item.classList.remove('active'));
+            document.querySelector('.menu-item[data-tab="analytics"]').classList.add('active');
+        });
+        
+        document.getElementById('settingsBtn').addEventListener('click', function() {
+            switchTab('settings');
+            // Активируем соответствующий пункт меню
+            menuItems.forEach(item => item.classList.remove('active'));
+            document.querySelector('.menu-item[data-tab="settings"]').classList.add('active');
         });
         
         // Генерация календаря
@@ -1049,11 +1319,6 @@
 
         // Инициализация приложения
         updateHistory();
-        
-        // Генерация календаря при первой загрузке (если активна вкладка календаря)
-        if (document.querySelector('.nav-tab[data-tab="calendar"]').classList.contains('active')) {
-            generateCalendar();
-        }
     </script>
 </body>
 </html>
