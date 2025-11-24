@@ -475,6 +475,10 @@
             color: white;
         }
         
+        .calendar-day.today {
+            border: 2px solid var(--primary);
+        }
+        
         .calendar-day.has-entry::after {
             content: '';
             position: absolute;
@@ -705,6 +709,25 @@
         .slider.round:before {
             border-radius: 50%;
         }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1001;
+            display: none;
+        }
+        
+        .notification.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
     </style>
 </head>
 <body>
@@ -721,6 +744,9 @@
             </div>
         </div>
     </div>
+    
+    <!-- Уведомление -->
+    <div class="notification" id="notification"></div>
     
     <!-- Заголовок приложения -->
     <div class="header">
@@ -842,12 +868,12 @@
                 </div>
                 <div class="calendar">
                     <div class="calendar-header">
-                        <div class="calendar-title">Май 2023</div>
+                        <div class="calendar-title" id="calendarTitle"></div>
                         <div class="calendar-nav">
-                            <button class="calendar-nav-btn">
+                            <button class="calendar-nav-btn" id="prevMonth">
                                 <i class="fas fa-chevron-left"></i>
                             </button>
-                            <button class="calendar-nav-btn">
+                            <button class="calendar-nav-btn" id="nextMonth">
                                 <i class="fas fa-chevron-right"></i>
                             </button>
                         </div>
@@ -873,19 +899,19 @@
                 </div>
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-value">3.8</div>
+                        <div class="stat-value" id="monthAvgMood">-</div>
                         <div class="stat-label">Среднее настроение</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">24</div>
+                        <div class="stat-value" id="monthEntries">0</div>
                         <div class="stat-label">Записей в месяце</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">5</div>
+                        <div class="stat-value" id="monthBestDays">-</div>
                         <div class="stat-label">Лучших дней</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">Работа</div>
+                        <div class="stat-value" id="mainFactor">-</div>
                         <div class="stat-label">Основной фактор</div>
                     </div>
                 </div>
@@ -1017,28 +1043,21 @@
                     <div class="setting-item">
                         <span>Уведомления</span>
                         <label class="switch">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" id="notificationsToggle" checked>
                             <span class="slider round"></span>
                         </label>
                     </div>
                     <div class="setting-item">
                         <span>Темная тема</span>
                         <label class="switch">
-                            <input type="checkbox">
+                            <input type="checkbox" id="darkModeToggle">
                             <span class="slider round"></span>
                         </label>
                     </div>
                     <div class="setting-item">
                         <span>Еженедельный отчет</span>
                         <label class="switch">
-                            <input type="checkbox" checked>
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <div class="setting-item">
-                        <span>Синхронизация с облаком</span>
-                        <label class="switch">
-                            <input type="checkbox">
+                            <input type="checkbox" id="weeklyReportToggle" checked>
                             <span class="slider round"></span>
                         </label>
                     </div>
@@ -1047,18 +1066,18 @@
             
             <div class="section">
                 <div class="section-title">
-                    <i class="fas fa-shield-alt"></i> Конфиденциальность
+                    <i class="fas fa-database"></i> Управление данными
                 </div>
                 <div class="settings-panel">
                     <div class="setting-item">
                         <span>Резервное копирование данных</span>
-                        <button class="save-btn" style="padding: 8px 16px; width: auto;">
+                        <button class="save-btn" id="backupBtn" style="padding: 8px 16px; width: auto;">
                             <i class="fas fa-download"></i> Создать бэкап
                         </button>
                     </div>
                     <div class="setting-item">
                         <span>Очистить историю</span>
-                        <button class="save-btn" style="padding: 8px 16px; width: auto; background: var(--text-light);">
+                        <button class="save-btn" id="clearDataBtn" style="padding: 8px 16px; width: auto; background: var(--text-light);">
                             <i class="fas fa-trash"></i> Очистить
                         </button>
                     </div>
@@ -1092,6 +1111,9 @@
         let currentMood = null;
         let selectedFactors = [];
         let entries = JSON.parse(localStorage.getItem('moodEntries') || '[]');
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = currentDate.getFullYear();
         
         // Управление боковым меню
         const menuToggle = document.querySelector('.menu-toggle');
@@ -1140,6 +1162,7 @@
             // Если открыли календарь, обновляем его
             if (tabId === 'calendar') {
                 generateCalendar();
+                updateMonthStats();
             }
         }
         
@@ -1161,14 +1184,22 @@
         // Генерация календаря
         function generateCalendar() {
             const calendarDays = document.getElementById('calendarDays');
+            const calendarTitle = document.getElementById('calendarTitle');
             calendarDays.innerHTML = '';
             
-            // Заглушка для демонстрации
-            const daysInMonth = 31;
-            const startDay = 1; // Понедельник
+            // Установка заголовка календаря
+            const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
+                "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+            calendarTitle.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+            
+            // Получение первого дня месяца и количества дней в месяце
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDay = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1; // Понедельник = 0
             
             // Добавляем пустые ячейки для дней до начала месяца
-            for (let i = 0; i < startDay; i++) {
+            for (let i = 0; i < startingDay; i++) {
                 const emptyDay = document.createElement('div');
                 emptyDay.className = 'calendar-day';
                 calendarDays.appendChild(emptyDay);
@@ -1180,25 +1211,90 @@
                 day.className = 'calendar-day';
                 day.textContent = i;
                 
-                // Случайным образом добавляем записи настроения для демонстрации
-                if (Math.random() > 0.4) {
-                    const mood = Math.floor(Math.random() * 5) + 1;
-                    day.classList.add(`mood-${mood}`);
+                // Проверяем, есть ли запись для этого дня
+                const dayDate = new Date(currentYear, currentMonth, i);
+                const dateString = dayDate.toLocaleDateString('ru-RU');
+                const dayEntry = entries.find(entry => entry.date === dateString);
+                
+                if (dayEntry) {
+                    day.classList.add(`mood-${dayEntry.mood}`);
                     day.classList.add('has-entry');
                     
                     day.addEventListener('click', function() {
-                        alert(`Настроение ${i} мая: ${mood}/5`);
+                        showNotification(`Настроение ${i} ${monthNames[currentMonth]}: ${dayEntry.mood}/5`);
                     });
                 }
                 
                 // Выделяем текущий день
-                if (i === 15) {
-                    day.classList.add('active');
+                const today = new Date();
+                if (i === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+                    day.classList.add('today');
                 }
                 
                 calendarDays.appendChild(day);
             }
         }
+        
+        // Обновление статистики за месяц
+        function updateMonthStats() {
+            const monthEntries = entries.filter(entry => {
+                const entryDate = new Date(entry.timestamp);
+                return entryDate.getMonth() === currentMonth && entryDate.getFullYear() === currentYear;
+            });
+            
+            if (monthEntries.length === 0) {
+                document.getElementById('monthAvgMood').textContent = '-';
+                document.getElementById('monthEntries').textContent = '0';
+                document.getElementById('monthBestDays').textContent = '-';
+                document.getElementById('mainFactor').textContent = '-';
+                return;
+            }
+            
+            const totalMood = monthEntries.reduce((sum, entry) => sum + entry.mood, 0);
+            const avgMood = (totalMood / monthEntries.length).toFixed(1);
+            const bestDays = Math.max(...monthEntries.map(entry => entry.mood));
+            
+            // Находим наиболее частый фактор
+            const factorCounts = {};
+            monthEntries.forEach(entry => {
+                entry.factors.forEach(factor => {
+                    factorCounts[factor] = (factorCounts[factor] || 0) + 1;
+                });
+            });
+            
+            let mainFactor = '-';
+            if (Object.keys(factorCounts).length > 0) {
+                mainFactor = Object.keys(factorCounts).reduce((a, b) => 
+                    factorCounts[a] > factorCounts[b] ? a : b);
+                mainFactor = getFactorName(mainFactor);
+            }
+            
+            document.getElementById('monthAvgMood').textContent = avgMood;
+            document.getElementById('monthEntries').textContent = monthEntries.length;
+            document.getElementById('monthBestDays').textContent = bestDays;
+            document.getElementById('mainFactor').textContent = mainFactor;
+        }
+        
+        // Навигация по месяцам
+        document.getElementById('prevMonth').addEventListener('click', function() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            generateCalendar();
+            updateMonthStats();
+        });
+        
+        document.getElementById('nextMonth').addEventListener('click', function() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            generateCalendar();
+            updateMonthStats();
+        });
         
         // Обработчики событий для кнопок настроения
         document.querySelectorAll('.mood-btn').forEach(btn => {
@@ -1316,9 +1412,60 @@
             const emojis = ['😢', '😞', '😐', '😊', '😄'];
             return emojis[mood - 1] || '😐';
         }
+        
+        // Функция показа уведомлений
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Обработчики для настроек
+        document.getElementById('notificationsToggle').addEventListener('change', function() {
+            if (this.checked) {
+                showNotification('Уведомления включены');
+            } else {
+                showNotification('Уведомления отключены');
+            }
+        });
+        
+        document.getElementById('darkModeToggle').addEventListener('change', function() {
+            if (this.checked) {
+                showNotification('Темная тема включена');
+            } else {
+                showNotification('Темная тема отключена');
+            }
+        });
+        
+        document.getElementById('weeklyReportToggle').addEventListener('change', function() {
+            if (this.checked) {
+                showNotification('Еженедельные отчеты включены');
+            } else {
+                showNotification('Еженедельные отчеты отключены');
+            }
+        });
+        
+        document.getElementById('backupBtn').addEventListener('click', function() {
+            showNotification('Резервная копия создана');
+        });
+        
+        document.getElementById('clearDataBtn').addEventListener('click', function() {
+            if (confirm('Вы уверены, что хотите удалить все данные? Это действие нельзя отменить.')) {
+                localStorage.removeItem('moodEntries');
+                entries = [];
+                updateHistory();
+                showNotification('Все данные удалены');
+            }
+        });
 
         // Инициализация приложения
         updateHistory();
+        generateCalendar();
+        updateMonthStats();
     </script>
 </body>
 </html>
