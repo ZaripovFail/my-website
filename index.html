@@ -3,288 +3,836 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Трекер настроения</title>
+    <title>Mood Tracker - Трекер настроения</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #f5f5f5;
-            padding: 15px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark);
             line-height: 1.6;
-        }
-        .app {
-            max-width: 400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
+            min-height: 100vh;
             padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        h1 { text-align: center; margin-bottom: 20px; color: #333; }
-        .mood-section { margin-bottom: 25px; }
-        .mood-title { margin-bottom: 15px; font-weight: 600; }
-        .mood-buttons {
-            display: flex;
-            gap: 8px;
-            justify-content: space-between;
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        .mood-btn {
-            flex: 1;
-            padding: 15px 5px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+
+        .app {
             background: white;
-            font-size: 24px;
-            cursor: pointer;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            min-height: 85vh;
         }
-        .mood-btn.active {
-            border-color: #007AFF;
-            background: #007AFF;
+
+        /* Header */
+        .header {
+            background: var(--primary);
             color: white;
-        }
-        .factors {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .factor-btn {
-            padding: 12px 8px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
+            padding: 20px;
             text-align: center;
-            font-size: 14px;
         }
-        .factor-btn.active {
-            border-color: #34C759;
-            background: #34C759;
-            color: white;
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
         }
-        textarea {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+
+        .header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        /* Main Layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr 2fr;
+            }
+        }
+
+        /* Tracking Section */
+        .tracking-section {
+            background: var(--light);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
             margin-bottom: 20px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            font-size: 1.1rem;
+        }
+
+        /* Mood Scale */
+        .mood-scale {
+            margin-bottom: 25px;
+        }
+
+        .mood-options {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .mood-option {
+            background: white;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--radius);
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mood-option:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+
+        .mood-option.selected {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .mood-emoji {
+            font-size: 1.8rem;
+        }
+
+        .mood-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Factors */
+        .factors-section {
+            margin-bottom: 25px;
+        }
+
+        .factors-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .factor {
+            background: white;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--radius);
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .factor:hover {
+            border-color: var(--primary);
+        }
+
+        .factor.selected {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .factor-icon {
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .factor-name {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Notes */
+        .notes-section {
+            margin-bottom: 20px;
+        }
+
+        .notes-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--radius);
+            resize: vertical;
             min-height: 80px;
             font-family: inherit;
+            transition: var(--transition);
         }
-        .save-btn {
-            width: 100%;
-            padding: 16px;
-            background: #007AFF;
+
+        .notes-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Buttons */
+        .btn {
+            background: var(--primary);
             color: white;
             border: none;
-            border-radius: 10px;
-            font-size: 16px;
+            padding: 12px 20px;
+            border-radius: var(--radius);
             font-weight: 600;
             cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
         }
-        .save-btn:disabled {
-            background: #ccc;
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            background: var(--gray);
             cursor: not-allowed;
+            transform: none;
         }
-        .stats {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
+
+        /* Analytics Section */
+        .analytics-section {
+            background: var(--light);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
         }
-        .stat-item {
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* Charts */
+        .chart-container {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .chart-placeholder {
+            height: 200px;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Mood Calendar */
+        .mood-calendar {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .calendar-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
-            padding: 8px 0;
+            align-items: center;
+            margin-bottom: 15px;
         }
-        .history {
-            margin-top: 20px;
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
         }
-        .history-item {
-            padding: 12px;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            background: #f9f9f9;
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .calendar-day.header {
+            background: transparent;
+            color: var(--gray);
+            font-weight: 600;
+        }
+
+        .calendar-day.mood-1 { background: #fee2e2; color: #dc2626; }
+        .calendar-day.mood-2 { background: #fef3c7; color: #d97706; }
+        .calendar-day.mood-3 { background: #fef3c7; color: #d97706; }
+        .calendar-day.mood-4 { background: #d1fae5; color: #059669; }
+        .calendar-day.mood-5 { background: #d1fae5; color: #059669; }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--gray-light);
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .mood-options {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .factors-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .calendar-grid {
+                grid-template-columns: repeat(7, 1fr);
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
         }
     </style>
 </head>
 <body>
-    <div class="app">
-        <h1>📊 Трекер настроения</h1>
-        
-        <div class="mood-section">
-            <div class="mood-title">Как вы себя чувствуете?</div>
-            <div class="mood-buttons">
-                <button class="mood-btn" data-mood="1">😢</button>
-                <button class="mood-btn" data-mood="2">😞</button>
-                <button class="mood-btn" data-mood="3">😐</button>
-                <button class="mood-btn" data-mood="4">😊</button>
-                <button class="mood-btn" data-mood="5">😄</button>
+    <div class="container">
+        <div class="app">
+            <!-- Header -->
+            <div class="header">
+                <h1><i class="fas fa-heart"></i> Mood Tracker</h1>
+                <p>Отслеживайте настроение и находите закономерности</p>
             </div>
-        </div>
 
-        <div class="mood-section">
-            <div class="mood-title">Что повлияло?</div>
-            <div class="factors">
-                <button class="factor-btn" data-factor="sleep">💤 Сон</button>
-                <button class="factor-btn" data-factor="work">💼 Работа</button>
-                <button class="factor-btn" data-factor="social">👥 Общение</button>
-                <button class="factor-btn" data-factor="health">🏥 Здоровье</button>
-                <button class="factor-btn" data-factor="hobby">🎨 Хобби</button>
-                <button class="factor-btn" data-factor="family">❤️ Семья</button>
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Tracking Section -->
+                <div class="tracking-section">
+                    <div class="section-title">
+                        <i class="fas fa-edit"></i>
+                        <span>Сегодняшнее настроение</span>
+                    </div>
+
+                    <!-- Mood Scale -->
+                    <div class="mood-scale">
+                        <div class="mood-options" id="moodOptions">
+                            <div class="mood-option" data-value="1">
+                                <div class="mood-emoji">😢</div>
+                                <div class="mood-label">Очень плохо</div>
+                            </div>
+                            <div class="mood-option" data-value="2">
+                                <div class="mood-emoji">😞</div>
+                                <div class="mood-label">Плохо</div>
+                            </div>
+                            <div class="mood-option" data-value="3">
+                                <div class="mood-emoji">😐</div>
+                                <div class="mood-label">Нормально</div>
+                            </div>
+                            <div class="mood-option" data-value="4">
+                                <div class="mood-emoji">😊</div>
+                                <div class="mood-label">Хорошо</div>
+                            </div>
+                            <div class="mood-option" data-value="5">
+                                <div class="mood-emoji">😄</div>
+                                <div class="mood-label">Отлично</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Factors -->
+                    <div class="factors-section">
+                        <div class="section-title">
+                            <i class="fas fa-chart-pie"></i>
+                            <span>Факторы влияния</span>
+                        </div>
+                        <div class="factors-grid" id="factorsGrid">
+                            <div class="factor" data-factor="sleep">
+                                <div class="factor-icon">💤</div>
+                                <div class="factor-name">Сон</div>
+                            </div>
+                            <div class="factor" data-factor="work">
+                                <div class="factor-icon">💼</div>
+                                <div class="factor-name">Работа</div>
+                            </div>
+                            <div class="factor" data-factor="social">
+                                <div class="factor-icon">👥</div>
+                                <div class="factor-name">Общение</div>
+                            </div>
+                            <div class="factor" data-factor="health">
+                                <div class="factor-icon">🏥</div>
+                                <div class="factor-name">Здоровье</div>
+                            </div>
+                            <div class="factor" data-factor="hobby">
+                                <div class="factor-icon">🎨</div>
+                                <div class="factor-name">Хобби</div>
+                            </div>
+                            <div class="factor" data-factor="family">
+                                <div class="factor-icon">👨‍👩‍👧‍👦</div>
+                                <div class="factor-name">Семья</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="notes-section">
+                        <div class="section-title">
+                            <i class="fas fa-sticky-note"></i>
+                            <span>Заметки (необязательно)</span>
+                        </div>
+                        <textarea class="notes-input" id="notesInput" placeholder="Что повлияло на ваше настроение сегодня?"></textarea>
+                    </div>
+
+                    <!-- Save Button -->
+                    <button class="btn" id="saveBtn">
+                        <i class="fas fa-save"></i>
+                        Сохранить настроение
+                    </button>
+                </div>
+
+                <!-- Analytics Section -->
+                <div class="analytics-section">
+                    <div class="tabs">
+                        <div class="tab active" data-tab="stats">Статистика</div>
+                        <div class="tab" data-tab="calendar">Календарь</div>
+                        <div class="tab" data-tab="insights">Инсайты</div>
+                    </div>
+
+                    <!-- Stats Tab -->
+                    <div class="tab-content" id="statsTab">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value" id="avgMood">-</div>
+                                <div class="stat-label">Среднее настроение</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="entriesCount">0</div>
+                                <div class="stat-label">Всего записей</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="bestMood">-</div>
+                                <div class="stat-label">Лучший день</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="consistency">-</div>
+                                <div class="stat-label">Последовательность</div>
+                            </div>
+                        </div>
+
+                        <div class="chart-container">
+                            <div class="section-title">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Динамика настроения</span>
+                            </div>
+                            <div class="chart-placeholder">
+                                График настроения за 7 дней
+                            </div>
+                        </div>
+
+                        <div class="chart-container">
+                            <div class="section-title">
+                                <i class="fas fa-chart-bar"></i>
+                                <span>Распределение факторов</span>
+                            </div>
+                            <div class="chart-placeholder">
+                                Влияние факторов на настроение
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calendar Tab -->
+                    <div class="tab-content" id="calendarTab" style="display: none;">
+                        <div class="mood-calendar">
+                            <div class="calendar-header">
+                                <button class="btn" style="width: auto; padding: 8px 16px;">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <div>Январь 2024</div>
+                                <button class="btn" style="width: auto; padding: 8px 16px;">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-grid">
+                                <div class="calendar-day header">Пн</div>
+                                <div class="calendar-day header">Вт</div>
+                                <div class="calendar-day header">Ср</div>
+                                <div class="calendar-day header">Чт</div>
+                                <div class="calendar-day header">Пт</div>
+                                <div class="calendar-day header">Сб</div>
+                                <div class="calendar-day header">Вс</div>
+                                
+                                <!-- Calendar days will be generated here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Insights Tab -->
+                    <div class="tab-content" id="insightsTab" style="display: none;">
+                        <div class="empty-state">
+                            <i class="fas fa-lightbulb"></i>
+                            <h3>Инсайты появятся здесь</h3>
+                            <p>Добавьте больше записей, чтобы увидеть персональные рекомендации</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <textarea placeholder="Заметки о вашем дне..."></textarea>
-
-        <button class="save-btn" id="saveBtn" disabled>💾 Сохранить настроение</button>
-
-        <div class="stats">
-            <div class="mood-title">Статистика</div>
-            <div class="stat-item">
-                <span>Среднее настроение:</span>
-                <span id="avgMood">-</span>
-            </div>
-            <div class="stat-item">
-                <span>Всего записей:</span>
-                <span id="totalEntries">0</span>
-            </div>
-            <div class="stat-item">
-                <span>Лучший день:</span>
-                <span id="bestDay">-</span>
-            </div>
-        </div>
-
-        <div class="history">
-            <div class="mood-title">Последние записи</div>
-            <div id="historyList"></div>
         </div>
     </div>
 
     <script>
-        // Простая логика приложения
-        let currentMood = null;
-        let selectedFactors = [];
-        let entries = JSON.parse(localStorage.getItem('moodEntries') || '[]');
-
-        // Обновление статистики
-        function updateStats() {
-            if (entries.length === 0) {
-                document.getElementById('avgMood').textContent = '-';
-                document.getElementById('totalEntries').textContent = '0';
-                document.getElementById('bestDay').textContent = '-';
-                return;
+        // Data Management
+        class MoodTracker {
+            constructor() {
+                this.entries = this.loadEntries();
+                this.currentEntry = {
+                    mood: null,
+                    factors: [],
+                    notes: '',
+                    date: new Date().toISOString().split('T')[0]
+                };
+                this.init();
             }
 
-            const totalMood = entries.reduce((sum, entry) => sum + entry.mood, 0);
-            const avgMood = (totalMood / entries.length).toFixed(1);
-            const bestDay = Math.max(...entries.map(entry => entry.mood));
-
-            document.getElementById('avgMood').textContent = avgMood;
-            document.getElementById('totalEntries').textContent = entries.length;
-            document.getElementById('bestDay').textContent = bestDay;
-        }
-
-        // Обновление истории
-        function updateHistory() {
-            const historyList = document.getElementById('historyList');
-            const recentEntries = entries.slice(-5).reverse();
-            
-            if (recentEntries.length === 0) {
-                historyList.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">Записей пока нет</div>';
-                return;
+            init() {
+                this.setupEventListeners();
+                this.renderStats();
+                this.generateCalendar();
             }
 
-            historyList.innerHTML = recentEntries.map(entry => `
-                <div class="history-item">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                        <span>${getMoodEmoji(entry.mood)} Настроение: ${entry.mood}/5</span>
-                        <span style="color: #666; font-size: 12px;">${entry.date}</span>
-                    </div>
-                    ${entry.factors.length > 0 ? 
-                        `<div style="font-size: 12px; color: #666;">Факторы: ${entry.factors.join(', ')}</div>` : ''}
-                    ${entry.notes ? 
-                        `<div style="font-size: 12px; color: #666; margin-top: 5px;">${entry.notes}</div>` : ''}
-                </div>
-            `).join('');
-        }
+            loadEntries() {
+                const saved = localStorage.getItem('moodTrackerEntries');
+                return saved ? JSON.parse(saved) : [];
+            }
 
-        function getMoodEmoji(mood) {
-            const emojis = ['😢', '😞', '😐', '😊', '😄'];
-            return emojis[mood - 1] || '😐';
-        }
+            saveEntries() {
+                localStorage.setItem('moodTrackerEntries', JSON.stringify(this.entries));
+            }
 
-        // Обработчики событий
-        document.querySelectorAll('.mood-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                currentMood = parseInt(this.dataset.mood);
-                updateSaveButton();
-            });
-        });
-
-        document.querySelectorAll('.factor-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                this.classList.toggle('active');
-                const factor = this.dataset.factor;
+            addEntry(entry) {
+                // Check if entry for today exists
+                const today = new Date().toISOString().split('T')[0];
+                const existingIndex = this.entries.findIndex(e => e.date === today);
                 
-                if (this.classList.contains('active')) {
-                    selectedFactors.push(factor);
+                if (existingIndex !== -1) {
+                    this.entries[existingIndex] = entry;
                 } else {
-                    selectedFactors = selectedFactors.filter(f => f !== factor);
+                    this.entries.push(entry);
                 }
-            });
-        });
+                
+                this.saveEntries();
+                this.renderStats();
+                this.generateCalendar();
+            }
 
-        function updateSaveButton() {
-            document.getElementById('saveBtn').disabled = currentMood === null;
+            getStats() {
+                if (this.entries.length === 0) {
+                    return {
+                        avgMood: 0,
+                        entriesCount: 0,
+                        bestMood: 0,
+                        consistency: 0,
+                        moodDistribution: [],
+                        factorDistribution: {}
+                    };
+                }
+
+                const moods = this.entries.map(entry => entry.mood);
+                const avgMood = (moods.reduce((a, b) => a + b, 0) / moods.length).toFixed(1);
+                const bestMood = Math.max(...moods);
+                
+                // Calculate consistency (percentage of days with entries in last 7 days)
+                const last7Days = this.getLastNDays(7);
+                const entriesLast7Days = this.entries.filter(entry => 
+                    last7Days.includes(entry.date)
+                );
+                const consistency = Math.round((entriesLast7Days.length / 7) * 100);
+
+                // Factor distribution
+                const factorDistribution = {};
+                this.entries.forEach(entry => {
+                    entry.factors.forEach(factor => {
+                        factorDistribution[factor] = (factorDistribution[factor] || 0) + 1;
+                    });
+                });
+
+                return {
+                    avgMood,
+                    entriesCount: this.entries.length,
+                    bestMood,
+                    consistency,
+                    factorDistribution
+                };
+            }
+
+            getLastNDays(n) {
+                const dates = [];
+                for (let i = 0; i < n; i++) {
+                    const date = new Date();
+                    date.setDate(date.getDate() - i);
+                    dates.push(date.toISOString().split('T')[0]);
+                }
+                return dates;
+            }
+
+            setupEventListeners() {
+                // Mood selection
+                document.querySelectorAll('.mood-option').forEach(option => {
+                    option.addEventListener('click', () => {
+                        document.querySelectorAll('.mood-option').forEach(opt => 
+                            opt.classList.remove('selected')
+                        );
+                        option.classList.add('selected');
+                        this.currentEntry.mood = parseInt(option.dataset.value);
+                        this.updateSaveButton();
+                    });
+                });
+
+                // Factor selection
+                document.querySelectorAll('.factor').forEach(factor => {
+                    factor.addEventListener('click', () => {
+                        factor.classList.toggle('selected');
+                        const factorName = factor.dataset.factor;
+                        
+                        if (factor.classList.contains('selected')) {
+                            this.currentEntry.factors.push(factorName);
+                        } else {
+                            this.currentEntry.factors = this.currentEntry.factors.filter(
+                                f => f !== factorName
+                            );
+                        }
+                    });
+                });
+
+                // Notes
+                document.getElementById('notesInput').addEventListener('input', (e) => {
+                    this.currentEntry.notes = e.target.value;
+                });
+
+                // Save button
+                document.getElementById('saveBtn').addEventListener('click', () => {
+                    if (this.currentEntry.mood) {
+                        this.addEntry({...this.currentEntry});
+                        this.showSuccessMessage();
+                        this.resetForm();
+                    }
+                });
+
+                // Tabs
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        document.querySelectorAll('.tab').forEach(t => 
+                            t.classList.remove('active')
+                        );
+                        document.querySelectorAll('.tab-content').forEach(content => 
+                            content.style.display = 'none'
+                        );
+                        
+                        tab.classList.add('active');
+                        document.getElementById(tab.dataset.tab + 'Tab').style.display = 'block';
+                    });
+                });
+            }
+
+            updateSaveButton() {
+                const saveBtn = document.getElementById('saveBtn');
+                saveBtn.disabled = !this.currentEntry.mood;
+            }
+
+            showSuccessMessage() {
+                const btn = document.getElementById('saveBtn');
+                const originalHTML = btn.innerHTML;
+                
+                btn.innerHTML = '<i class="fas fa-check"></i> Сохранено!';
+                btn.style.background = 'var(--success)';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.style.background = '';
+                }, 2000);
+            }
+
+            resetForm() {
+                document.querySelectorAll('.mood-option').forEach(opt => 
+                    opt.classList.remove('selected')
+                );
+                document.querySelectorAll('.factor').forEach(factor => 
+                    factor.classList.remove('selected')
+                );
+                document.getElementById('notesInput').value = '';
+                
+                this.currentEntry = {
+                    mood: null,
+                    factors: [],
+                    notes: '',
+                    date: new Date().toISOString().split('T')[0]
+                };
+                
+                this.updateSaveButton();
+            }
+
+            renderStats() {
+                const stats = this.getStats();
+                
+                document.getElementById('avgMood').textContent = stats.avgMood || '-';
+                document.getElementById('entriesCount').textContent = stats.entriesCount;
+                document.getElementById('bestMood').textContent = stats.bestMood || '-';
+                document.getElementById('consistency').textContent = stats.consistency + '%';
+            }
+
+            generateCalendar() {
+                const calendarGrid = document.querySelector('.calendar-grid');
+                // Clear existing days (keep headers)
+                const headers = Array.from(calendarGrid.children).slice(0, 7);
+                calendarGrid.innerHTML = '';
+                headers.forEach(header => calendarGrid.appendChild(header));
+                
+                const today = new Date();
+                const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+                const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                
+                // Add empty cells for days before the first day of month
+                for (let i = 0; i < firstDay.getDay(); i++) {
+                    const emptyDay = document.createElement('div');
+                    emptyDay.className = 'calendar-day';
+                    calendarGrid.appendChild(emptyDay);
+                }
+                
+                // Add days of the month
+                for (let day = 1; day <= lastDay.getDate(); day++) {
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day';
+                    dayElement.textContent = day;
+                    
+                    const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    const entry = this.entries.find(e => e.date === dateStr);
+                    
+                    if (entry) {
+                        dayElement.classList.add(`mood-${entry.mood}`);
+                    }
+                    
+                    calendarGrid.appendChild(dayElement);
+                }
+            }
         }
 
-        // Сохранение записи
-        document.getElementById('saveBtn').addEventListener('click', function() {
-            if (currentMood === null) return;
-
-            const entry = {
-                mood: currentMood,
-                factors: [...selectedFactors],
-                notes: document.querySelector('textarea').value,
-                date: new Date().toLocaleDateString('ru-RU')
-            };
-
-            entries.push(entry);
-            localStorage.setItem('moodEntries', JSON.stringify(entries));
-            
-            // Сброс формы
-            resetForm();
-            updateStats();
-            updateHistory();
-            
-            // Визуальный фидбэк
-            const originalText = this.textContent;
-            this.textContent = '✅ Сохранено!';
-            this.style.background = '#34C759';
-            
-            setTimeout(() => {
-                this.textContent = originalText;
-                this.style.background = '';
-            }, 1500);
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            new MoodTracker();
         });
-
-        function resetForm() {
-            currentMood = null;
-            selectedFactors = [];
-            document.querySelectorAll('.mood-btn, .factor-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector('textarea').value = '';
-            updateSaveButton();
-        }
-
-        // Инициализация
-        updateStats();
-        updateHistory();
     </script>
 </body>
 </html>
