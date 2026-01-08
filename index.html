@@ -3,227 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>СТИЛЬ & УЮТ — Премиальный салон</title>
-<meta name="description" content="Премиальный салон красоты. Стрижки, окрашивание, уход. Онлайн-запись.">
+<title>Стиль & Уют — Премиальный салон</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-/* ================== ROOT ================== */
 :root{
   --bg:#0b0b0b;
-  --bg-soft:#141414;
-  --card:#1b1b1b;
+  --card:#151515;
   --text:#f2f2f2;
   --muted:#9a9a9a;
   --gold:#c7a25c;
-  --radius:22px;
 }
 
-/* ================== BASE ================== */
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
 body{
+  font-family:'Inter',sans-serif;
   background:var(--bg);
   color:var(--text);
-  font-family:'Inter',sans-serif;
-  line-height:1.6;
 }
-h1,h2,h3{
-  font-family:'Playfair Display',serif;
-  font-weight:500;
-}
-.container{
-  max-width:1200px;
-  margin:0 auto;
-  padding:0 20px;
-}
-section{padding:110px 0}
+h1,h2,h3{font-family:'Playfair Display',serif}
+a{text-decoration:none;color:inherit}
 
-/* ================== HEADER ================== */
 header{
   position:fixed;
   top:0;width:100%;
-  z-index:1000;
-  background:rgba(0,0,0,.65);
+  background:rgba(0,0,0,.7);
   backdrop-filter:blur(12px);
+  z-index:100;
 }
 .header-inner{
-  height:76px;
+  height:72px;
   display:flex;
-  align-items:center;
   justify-content:space-between;
-}
-.logo{
-  letter-spacing:2px;
-  font-size:18px;
-}
-.burger{
-  font-size:28px;
-  cursor:pointer;
-  user-select:none;
-}
-
-/* ================== MOBILE MENU ================== */
-.menu{
-  position:fixed;
-  inset:0;
-  background:#000;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
   align-items:center;
-  gap:34px;
-  opacity:0;
-  pointer-events:none;
-  transition:.4s;
+  padding:0 20px;
 }
-.menu.active{
-  opacity:1;
-  pointer-events:auto;
-}
-.menu a{
-  color:#fff;
-  text-decoration:none;
-  font-size:26px;
-}
+nav a{margin-left:24px;font-size:14px}
 
-/* ================== HERO ================== */
 .hero{
-  min-height:100vh;
+  height:100vh;
   background:
     linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.9)),
-    url("https://picsum.photos/1600/900?random=11") center/cover;
+    url("https://source.unsplash.com/1600x900/?hair,salon") center/cover;
   display:flex;
   align-items:center;
 }
-.hero h1{
-  font-size:46px;
-  margin-bottom:24px;
+.hero-content{
+  max-width:560px;
+  padding:0 20px;
 }
-.hero p{
-  font-size:18px;
-  color:var(--muted);
-}
+.hero h1{font-size:44px;margin-bottom:20px}
+.hero p{color:var(--muted)}
+
 .btn{
   margin-top:40px;
   display:inline-block;
   background:var(--gold);
   color:#000;
-  padding:16px 42px;
+  padding:14px 38px;
   border-radius:40px;
-  text-decoration:none;
   font-weight:500;
 }
 
-/* ================== TRUST ================== */
-.trust{
-  background:var(--bg-soft);
-}
-.trust-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:30px;
-  text-align:center;
-}
-.trust h3{
-  font-size:36px;
-  color:var(--gold);
-}
-.trust p{color:var(--muted)}
+section{padding:120px 20px}
 
-/* ================== ABOUT ================== */
-.about-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:50px;
-  align-items:center;
+.fade{
+  opacity:0;
+  transform:translateY(40px);
+  transition:1s cubic-bezier(.2,.8,.2,1);
 }
-.about img{
-  width:100%;
-  border-radius:var(--radius);
+.fade.show{
+  opacity:1;
+  transform:none;
 }
 
-/* ================== SERVICES ================== */
-.services{
-  background:var(--bg-soft);
-}
-.services-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:30px;
-}
-.card{
-  background:var(--card);
-  padding:40px;
-  border-radius:var(--radius);
-}
-.card span{
-  display:block;
-  margin-top:20px;
-  color:var(--gold);
-}
-
-/* ================== MASTERS ================== */
-.masters-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:30px;
-}
-.master img{
-  width:100%;
-  height:340px;
-  object-fit:cover;
-  border-radius:18px;
-}
-.master p{color:var(--muted)}
-
-/* ================== GALLERY ================== */
-.gallery{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:16px;
-}
-.gallery img{
-  width:100%;
-  height:240px;
-  object-fit:cover;
-  border-radius:16px;
-}
-
-/* ================== CONTACT ================== */
-.contact{
-  background:var(--bg-soft);
-}
-.contact p{
-  color:var(--muted);
-  margin-bottom:14px;
-}
-
-/* ================== FOOTER ================== */
 footer{
   padding:60px 20px;
   text-align:center;
   color:var(--muted);
-}
-
-/* ================== MOBILE ================== */
-@media(max-width:900px){
-  section{padding:80px 0}
-  .about-grid,.trust-grid{grid-template-columns:1fr}
-}
-
-/* ================== MOBILE CTA ================== */
-.mobile-cta{
-  position:fixed;
-  bottom:16px;
-  left:16px;
-  right:16px;
-  z-index:900;
-}
-@media(min-width:900px){
-  .burger,.mobile-cta{display:none}
 }
 </style>
 </head>
@@ -231,120 +89,43 @@ footer{
 <body>
 
 <header>
-  <div class="container header-inner">
-    <div class="logo">СТИЛЬ & УЮТ</div>
-    <div class="burger" id="burger">☰</div>
+  <div class="header-inner">
+    <div>СТИЛЬ & УЮТ</div>
+    <nav>
+      <a href="services.html">Услуги</a>
+      <a href="masters.html">Мастера</a>
+      <a href="contact.html">Контакты</a>
+    </nav>
   </div>
 </header>
 
-<!-- MOBILE MENU -->
-<nav class="menu" id="menu">
-  <a href="#about">Философия</a>
-  <a href="#services">Услуги</a>
-  <a href="#masters">Мастера</a>
-  <a href="#gallery">Галерея</a>
-  <a href="#contact">Контакты</a>
-</nav>
-
-<!-- HERO -->
 <section class="hero">
-  <div class="container">
-    <h1>Красота без шума.<br>Стиль без компромиссов.</h1>
-    <p>Премиальный салон индивидуального подхода</p>
-    <a href="#contact" class="btn">Записаться</a>
+  <div class="hero-content fade">
+    <h1>Красота — это тишина и уверенность</h1>
+    <p>Индивидуальный подход. Премиальный сервис.</p>
+    <a href="contact.html" class="btn">Записаться</a>
   </div>
 </section>
 
-<!-- TRUST -->
-<section class="trust">
-  <div class="container trust-grid">
-    <div><h3>15+</h3><p>лет опыта</p></div>
-    <div><h3>8 000+</h3><p>клиентов</p></div>
-    <div><h3>100%</h3><p>индивидуально</p></div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="container about-grid">
-    <div>
-      <h2>Философия</h2>
-      <p>Мы работаем медленно. Вдумчиво. Без потока.</p>
-      <p>Каждый образ — отражение личности.</p>
-    </div>
-    <img src="https://picsum.photos/600/500?random=21">
-  </div>
-</section>
-
-<!-- SERVICES -->
-<section id="services" class="services">
-  <div class="container">
-    <h2 style="margin-bottom:40px">Услуги</h2>
-    <div class="services-grid">
-      <div class="card"><h3>Женские стрижки</h3><span>от 1 200 ₽</span></div>
-      <div class="card"><h3>Мужские стрижки</h3><span>от 800 ₽</span></div>
-      <div class="card"><h3>Окрашивание</h3><span>от 2 500 ₽</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- MASTERS -->
-<section id="masters">
-  <div class="container">
-    <h2 style="margin-bottom:40px">Мастера</h2>
-    <div class="masters-grid">
-      <div class="master">
-        <img src="https://picsum.photos/400/500?random=31">
-        <h3>Анна</h3><p>Топ-мастер · 12 лет</p>
-      </div>
-      <div class="master">
-        <img src="https://picsum.photos/400/500?random=32">
-        <h3>Сергей</h3><p>Барбер · 10 лет</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- GALLERY -->
-<section id="gallery">
-  <div class="container">
-    <h2 style="margin-bottom:40px">Атмосфера</h2>
-    <div class="gallery">
-      <img src="https://picsum.photos/400/400?random=41">
-      <img src="https://picsum.photos/400/400?random=42">
-      <img src="https://picsum.photos/400/400?random=43">
-      <img src="https://picsum.photos/400/400?random=44">
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact" class="contact">
-  <div class="container">
-    <h2>Контакты</h2>
-    <p>Москва, ул. Пушкинская, 15</p>
-    <p>+7 (495) 123-45-67</p>
-    <a href="#" class="btn">Записаться</a>
-  </div>
+<section class="fade">
+  <h2>Философия</h2>
+  <p style="max-width:600px;margin-top:20px;color:var(--muted)">
+    Мы не работаем на поток. Мы создаём образы, которые живут долго.
+  </p>
 </section>
 
 <footer>
-  © 2026 Салон «Стиль & Уют»
+  © 2026 Стиль & Уют
 </footer>
 
-<div class="mobile-cta">
-  <a href="#contact" class="btn" style="display:block;text-align:center">Записаться онлайн</a>
-</div>
-
 <script>
-const burger = document.getElementById('burger');
-const menu = document.getElementById('menu');
-
-burger.onclick = () => menu.classList.toggle('active');
-
-menu.querySelectorAll('a').forEach(link=>{
-  link.onclick = () => menu.classList.remove('active');
-});
+const items = document.querySelectorAll('.fade');
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('show');
+  });
+},{threshold:.2});
+items.forEach(i=>observer.observe(i));
 </script>
 
 </body>
