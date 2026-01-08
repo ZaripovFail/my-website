@@ -2,279 +2,1805 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>MoodFlow Pro</title>
-
-    <!-- PWA Manifest (GitHub Pages compatible) -->
-    <link rel="manifest" href="./manifest.json">
-
-    <meta name="theme-color" content="#4a90e2">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Парикмахерская "Стиль и Уют" | Качественные стрижки в Москве</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; margin:0; background:#f3f3f3; }
-        header { background:#4a90e2; color:#fff; padding:14px; font-size:22px; text-align:center; }
-        nav { background:white; padding:10px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
-        nav button { border:none; background:#4a90e2; color:white; padding:8px 14px; border-radius:6px; cursor:pointer; }
-
-        section { padding:20px; display:none; }
-        section.active { display:block; }
-
-        .mood-btn {
-            padding:12px; margin:4px;
-            border-radius:10px; border:2px solid #ccc;
-            display:inline-block; cursor:pointer;
-        }
-        .mood-btn.selected { background:#4a90e2; color:white; border-color:#4a90e2; }
-
-        .history-item {
-            background:white; padding:10px; margin-bottom:10px;
-            border-radius:8px; border-left:5px solid #4a90e2;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .chart-box { background:white; padding:20px; border-radius:10px; margin-top:20px; }
+        :root {
+            --primary-color: #8B5A2B;
+            --secondary-color: #D4A76A;
+            --accent-color: #F5E6D3;
+            --light-color: #FFF9F0;
+            --dark-color: #5D4037;
+            --text-color: #333;
+            --white: #FFFFFF;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s ease;
+            --mobile-padding: 15px;
+        }
 
-        .lang-select { padding:8px; width:170px; margin-top:12px; }
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            overflow-x: hidden;
+            background-color: var(--light-color);
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+        }
 
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--mobile-padding);
+        }
+
+        /* Header - Mobile First */
+        header {
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 12px 0;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        header.scrolled {
+            padding: 8px 0;
+            background-color: rgba(255, 255, 255, 0.99);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .logo i {
+            margin-right: 8px;
+            color: var(--secondary-color);
+            font-size: 18px;
+        }
+
+        .nav-menu {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            background-color: var(--white);
+            flex-direction: column;
+            text-align: center;
+            transition: var(--transition);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px 0;
+            z-index: 999;
+            max-height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        .nav-menu.active {
+            display: flex;
+        }
+
+        .nav-item {
+            margin: 12px 0;
+            width: 100%;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 18px;
+            transition: var(--transition);
+            position: relative;
+            display: block;
+            padding: 10px 20px;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+            background-color: var(--accent-color);
+        }
+
+        .mobile-toggle {
+            display: block;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--primary-color);
+            background: none;
+            border: none;
+            padding: 5px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        .mobile-toggle:hover {
+            background-color: var(--accent-color);
+        }
+
+        /* Hero Section - Mobile Optimized */
+        .hero {
+            height: 100vh;
+            min-height: 600px;
+            max-height: 900px;
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.6)),
+                url('https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            padding-top: 70px;
+            padding-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                background: 
+                    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.6)),
+                    url('https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') no-repeat center center/cover;
+            }
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            line-height: 1.3;
+        }
+
+        @media (min-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        @media (min-width: 768px) {
+            .hero p {
+                font-size: 1.3rem;
+            }
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--white);
+            padding: 14px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(212, 167, 106, 0.3);
+            min-width: 200px;
+            touch-action: manipulation;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(212, 167, 106, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Sections - Mobile Optimized */
+        section {
+            padding: 60px 0;
+        }
+
+        @media (min-width: 768px) {
+            section {
+                padding: 80px 0;
+            }
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        @media (min-width: 768px) {
+            .section-title {
+                margin-bottom: 60px;
+            }
+        }
+
+        .section-title h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .section-title h2 {
+                font-size: 2.5rem;
+                padding-bottom: 15px;
+            }
+        }
+
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--secondary-color);
+        }
+
+        /* About Section */
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+        }
+
+        @media (min-width: 992px) {
+            .about-content {
+                flex-direction: row;
+                gap: 50px;
+            }
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-text p {
+            margin-bottom: 20px;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        @media (min-width: 768px) {
+            .about-text p {
+                font-size: 1.1rem;
+            }
+        }
+
+        .about-image {
+            flex: 1;
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: var(--transition);
+            min-height: 300px;
+            object-fit: cover;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Services Grid - Mobile Optimized */
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 576px) {
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .services-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 30px;
+            }
+        }
+
+        .service-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            text-align: center;
+            padding: 30px 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .service-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: var(--primary-color);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .service-card p {
+            margin-bottom: 15px;
+            color: #666;
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+
+        .service-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-top: 10px;
+        }
+
+        /* Pricing Table - Mobile Optimized */
+        .pricing-table-container {
+            overflow-x: auto;
+            margin: 0 -15px;
+            padding: 0 15px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .pricing-table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+            margin: 0 auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .pricing-table th {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 15px 10px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+
+        .pricing-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.95rem;
+        }
+
+        .pricing-table tr:nth-child(even) {
+            background-color: var(--accent-color);
+        }
+
+        .pricing-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .price {
+            color: var(--secondary-color);
+            font-weight: 700;
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+
+        /* Masters Grid */
+        .masters-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        @media (min-width: 576px) {
+            .masters-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 992px) {
+            .masters-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .master-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            text-align: center;
+            height: 100%;
+        }
+
+        .master-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .master-img {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .master-img::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 70%, rgba(0,0,0,0.1));
+            z-index: 1;
+        }
+
+        .master-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .master-card:hover .master-img img {
+            transform: scale(1.1);
+        }
+
+        .master-info {
+            padding: 20px 15px;
+        }
+
+        .master-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+
+        .master-info p {
+            color: #666;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .master-experience {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        @media (min-width: 576px) {
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+        }
+
+        .gallery-item {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            height: 180px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        @media (min-width: 576px) {
+            .gallery-item {
+                height: 200px;
+            }
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.03);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Contacts Section - Mobile Optimized */
+        .contacts-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .contacts-grid {
+                flex-direction: row;
+                gap: 40px;
+            }
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .contact-icon {
+            flex-shrink: 0;
+            width: 45px;
+            height: 45px;
+            background-color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-text h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        .contact-text a, .contact-text p {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .contact-text a:hover {
+            color: var(--primary-color);
+        }
+
+        .messenger-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        @media (min-width: 400px) {
+            .messenger-links {
+                flex-direction: row;
+                gap: 15px;
+            }
+        }
+
+        .messenger-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background-color: var(--white);
+            border-radius: 25px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .messenger-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .messenger-link.whatsapp {
+            color: #25D366;
+        }
+
+        .messenger-link.telegram {
+            color: #0088cc;
+        }
+
+        .map-container {
+            flex: 1;
+            height: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            min-height: 300px;
+        }
+
+        @media (min-width: 768px) {
+            .map-container {
+                height: 400px;
+            }
+        }
+
+        /* Working Hours */
+        .working-hours {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .working-hours h4 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .hours-list {
+            list-style: none;
+        }
+
+        .hours-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.9rem;
+        }
+
+        .hours-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Footer - Mobile Optimized */
+        footer {
+            background-color: var(--dark-color);
+            color: var(--white);
+            padding: 40px 0 20px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .footer-content {
+                flex-direction: row;
+                gap: 40px;
+            }
+        }
+
+        .footer-about {
+            flex: 1;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .footer-about p {
+            opacity: 0.8;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .footer-links, .footer-contact {
+            flex: 1;
+        }
+
+        .footer-links h4, .footer-contact h4 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .footer-links h4:after, .footer-contact h4:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--secondary-color);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--accent-color);
+            padding-left: 5px;
+        }
+
+        .footer-contact p {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            font-size: 0.95rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .footer-contact i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .footer-contact a {
+            color: var(--white);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .footer-contact a:hover {
+            opacity: 1;
+            color: var(--accent-color);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+            font-size: 0.85rem;
+        }
+
+        /* Modal - Mobile Optimized */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            animation: fadeIn 0.3s ease;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            border-radius: 10px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.5s ease;
+        }
+
+        .modal-header {
+            padding: 20px 20px 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background-color: var(--white);
+            z-index: 1;
+        }
+
+        .modal-header h3 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: var(--transition);
+            padding: 5px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+        }
+
+        .close-modal:hover {
+            color: var(--primary-color);
+            background-color: var(--accent-color);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        /* Form Styles - Mobile Optimized */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: var(--transition);
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 2px rgba(212, 167, 106, 0.2);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        /* Image Placeholder Fallback */
+        .image-fallback {
+            background: linear-gradient(45deg, var(--accent-color), var(--light-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Safe Area for iPhone X and newer */
+        @supports (padding: max(0px)) {
+            .container {
+                padding-left: max(var(--mobile-padding), env(safe-area-inset-left));
+                padding-right: max(var(--mobile-padding), env(safe-area-inset-right));
+            }
+            
+            .hero {
+                padding-top: max(70px, env(safe-area-inset-top));
+            }
+            
+            footer {
+                padding-bottom: max(20px, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            
+            .modal {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-scissors"></i> Стиль и Уют
+            </a>
+            
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Открыть меню">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#about" class="nav-link">О нас</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#services" class="nav-link">Услуги</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#pricing" class="nav-link">Цены</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#masters" class="nav-link">Мастера</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contacts" class="nav-link">Контакты</a>
+                </li>
+                <li class="nav-item">
+                    <button class="btn nav-btn" id="navBookBtn">Записаться</button>
+                </li>
+            </ul>
+        </div>
+    </header>
 
-<header>MoodFlow Pro</header>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Парикмахерская "Стиль и Уют"</h1>
+            <p>Профессиональные стрижки, окрашивание и укладки в уютной атмосфере для всей семьи. Качество, которому доверяют с 2010 года.</p>
+            <a href="#contacts" class="btn">Записаться онлайн</a>
+        </div>
+    </section>
 
-<nav>
-    <button onclick="openPage('new')">Новая запись</button>
-    <button onclick="openPage('calendar')">Календарь</button>
-    <button onclick="openPage('history')">История</button>
-    <button onclick="openPage('analytics')">Аналитика</button>
-    <button onclick="openPage('settings')">Настройки</button>
-</nav>
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>О нашей парикмахерской</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Мы — классическая парикмахерская, где ценят традиции и качество. Более 10 лет мы создаем стильные и аккуратные образы для наших клиентов в атмосфере домашнего уюта.</p>
+                    <p>Наш принцип — индивидуальный подход к каждому. Мы внимательно слушаем пожелания клиентов и предлагаем оптимальные решения, учитывая тип волос, особенности лица и стиль жизни.</p>
+                    <p>Мы работаем с проверенными профессиональными средствами для ухода за волосами, гарантируя не только прекрасный результат, но и здоровье ваших волос.</p>
+                    <p>У нас комфортно и детям, и взрослым. Мы создали пространство, где каждый чувствует себя как дома.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Интерьер парикмахерской" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- New Entry -->
-<section id="new" class="active">
-    <h2 data-i18n="new_entry">Новая запись</h2>
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Наши услуги</h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-female"></i>
+                    </div>
+                    <h3>Женские стрижки</h3>
+                    <p>Классические и современные стрижки, каскад, лесенка, каре, пикси и другие моделирующие стрижки</p>
+                    <div class="service-price">от 1200 ₽</div>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-male"></i>
+                    </div>
+                    <h3>Мужские стрижки</h3>
+                    <p>Классические и спортивные стрижки, стрижка машинкой, оформление бороды и усов</p>
+                    <div class="service-price">от 800 ₽</div>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-child"></i>
+                    </div>
+                    <h3>Детские стрижки</h3>
+                    <p>Аккуратные стрижки для детей любого возраста в игровой форме, без слёз и стресса</p>
+                    <div class="service-price">от 600 ₽</div>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3>Окрашивание</h3>
+                    <p>Тонирование, мелирование, блондирование, колорирование, окрашивание в один тон</p>
+                    <div class="service-price">от 2500 ₽</div>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-wind"></i>
+                    </div>
+                    <h3>Укладки</h3>
+                    <p>Вечерние и свадебные укладки, укладка феном, утюжком, на бигуди, химическая завивка</p>
+                    <div class="service-price">от 800 ₽</div>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <h3>Уход за волосами</h3>
+                    <p>Профессиональные маски, ламинирование, кератиновое восстановление, лечение волос</p>
+                    <div class="service-price">от 1500 ₽</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <h3 data-i18n="mood">Настроение</h3>
-    <div id="moodButtons"></div>
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-title">
+                <h2>Прайс-лист</h2>
+            </div>
+            <div class="pricing-table-container">
+                <table class="pricing-table">
+                    <thead>
+                        <tr>
+                            <th>Услуга</th>
+                            <th>Описание</th>
+                            <th>Стоимость</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Женская стрижка</td>
+                            <td>Моделирующая стрижка с мытьем головы и укладкой</td>
+                            <td class="price">1200-2500 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>Мужская стрижка</td>
+                            <td>Стрижка с оформлением, машинкой или ножницами</td>
+                            <td class="price">800-1500 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>Детская стрижка (до 10 лет)</td>
+                            <td>Аккуратная стрижка в игровой форме</td>
+                            <td class="price">600-1000 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>Окрашивание в один тон</td>
+                            <td>Окрашивание корней или всей длины</td>
+                            <td class="price">2500-4000 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>Мелирование</td>
+                            <td>Частичное или полное мелирование</td>
+                            <td class="price">3500-6000 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>Укладка</td>
+                            <td>Укладка феном или на бигуди</td>
+                            <td class="price">800-2000 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>Ламинирование волос</td>
+                            <td>Профессиональное ламинирование</td>
+                            <td class="price">3000-5000 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>Кератиновое восстановление</td>
+                            <td>Восстановление и выпрямление волос</td>
+                            <td class="price">4000-7000 ₽</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 
-    <h3 data-i18n="factors">Факторы</h3>
-    <div id="factorList"></div>
+    <!-- Masters Section -->
+    <section class="masters" id="masters">
+        <div class="container">
+            <div class="section-title">
+                <h2>Наши мастера</h2>
+            </div>
+            <div class="masters-grid">
+                <div class="master-card fade-in">
+                    <div class="master-img">
+                        <img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Мастер Анна" loading="lazy">
+                    </div>
+                    <div class="master-info">
+                        <h3>Анна</h3>
+                        <p>Старший мастер, специалист по женским стрижкам и окрашиванию</p>
+                        <div class="master-experience">Опыт: 12 лет</div>
+                    </div>
+                </div>
+                
+                <div class="master-card fade-in">
+                    <div class="master-img">
+                        <img src="https://images.unsplash.com/photo-1562169179-090b5d3b49ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Мастер Мария" loading="lazy">
+                    </div>
+                    <div class="master-info">
+                        <h3>Мария</h3>
+                        <p>Специалист по укладкам, вечерним и свадебным прическам</p>
+                        <div class="master-experience">Опыт: 8 лет</div>
+                    </div>
+                </div>
+                
+                <div class="master-card fade-in">
+                    <div class="master-img">
+                        <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Мастер Сергей" loading="lazy">
+                    </div>
+                    <div class="master-info">
+                        <h3>Сергей</h3>
+                        <p>Барбер, специалист по мужским стрижкам и оформлению бороды</p>
+                        <div class="master-experience">Опыт: 10 лет</div>
+                    </div>
+                </div>
+                
+                <div class="master-card fade-in">
+                    <div class="master-img">
+                        <img src="https://images.unsplash.com/photo-1596703923338-48f1c07e4f2e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Мастер Елена" loading="lazy">
+                    </div>
+                    <div class="master-info">
+                        <h3>Елена</h3>
+                        <p>Детский мастер, специалист по стрижкам для всей семьи</p>
+                        <div class="master-experience">Опыт: 6 лет</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <h3 data-i18n="notes">Заметки</h3>
-    <textarea id="notes" style="width:100%; height:80px;"></textarea>
+    <!-- Gallery Section -->
+    <section class="gallery">
+        <div class="container">
+            <div class="section-title">
+                <h2>Наши работы</h2>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1522338140262-f46f5913618a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Женская стрижка" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Мужская стрижка" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Окрашивание" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Укладка" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <button onclick="saveEntry()" style="margin-top:10px;">💾 Сохранить</button>
-</section>
+    <!-- Contacts Section -->
+    <section class="contacts" id="contacts">
+        <div class="container">
+            <div class="section-title">
+                <h2>Контакты и запись</h2>
+            </div>
+            
+            <div class="contacts-grid">
+                <div class="contact-info">
+                    <h3>Приходите к нам</h3>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Адрес</h4>
+                            <p>
+                                <a href="https://yandex.ru/maps/?text=Москва, ул. Пушкинская, 15" target="_blank" rel="noopener">
+                                    Москва, ул. Пушкинская, 15
+                                </a>
+                            </p>
+                            <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">5 минут от м. Тверская</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Телефоны</h4>
+                            <p>
+                                <a href="tel:+74951234567">+7 (495) 123-45-67</a><br>
+                                <a href="tel:+79161234567">+7 (916) 123-45-67</a>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Режим работы</h4>
+                            <p>Пн-Пт: 9:00 - 20:00</p>
+                            <p>Сб-Вс: 10:00 - 18:00</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Написать в мессенджер</h4>
+                            <div class="messenger-links">
+                                <a href="https://wa.me/79161234567" class="messenger-link whatsapp" target="_blank" rel="noopener">
+                                    <i class="fab fa-whatsapp"></i> WhatsApp
+                                </a>
+                                <a href="https://t.me/+79161234567" class="messenger-link telegram" target="_blank" rel="noopener">
+                                    <i class="fab fa-telegram"></i> Telegram
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="working-hours">
+                        <h4>Часы работы мастеров</h4>
+                        <ul class="hours-list">
+                            <li><span>Анна:</span> <span>Пн-Сб 10:00-19:00</span></li>
+                            <li><span>Мария:</span> <span>Вт-Вс 11:00-18:00</span></li>
+                            <li><span>Сергей:</span> <span>Пн-Пт 9:00-20:00</span></li>
+                            <li><span>Елена:</span> <span>Вт-Сб 10:00-17:00</span></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="map-container">
+                    <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A3e4a4d8f5f8c5c5f5c5f5c5f5c5f5c5f&amp;source=constructor" width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- Calendar -->
-<section id="calendar">
-    <h2 data-i18n="calendar">Календарь</h2>
-    <div id="calendarRoot"></div>
-</section>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">Стиль и Уют</div>
+                    <p>Классическая парикмахерская в центре Москвы. Качественные стрижки, окрашивание и укладки для всей семьи в атмосфере домашнего уюта.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Навигация</h4>
+                    <ul>
+                        <li><a href="#home">Главная</a></li>
+                        <li><a href="#about">О нас</a></li>
+                        <li><a href="#services">Услуги</a></li>
+                        <li><a href="#pricing">Цены</a></li>
+                        <li><a href="#masters">Мастера</a></li>
+                        <li><a href="#contacts">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h4>Контакты</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> 
+                        <a href="https://yandex.ru/maps/?text=Москва, ул. Пушкинская, 15" target="_blank" rel="noopener">
+                            Москва, ул. Пушкинская, 15
+                        </a>
+                    </p>
+                    <p><i class="fas fa-phone"></i> 
+                        <a href="tel:+74951234567">+7 (495) 123-45-67</a>
+                    </p>
+                    <p><i class="fas fa-envelope"></i> 
+                        <a href="mailto:style-i-uyut@mail.ru">style-i-uyut@mail.ru</a>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2023 Парикмахерская "Стиль и Уют". Все права защищены.
+            </div>
+        </div>
+    </footer>
 
-<!-- History -->
-<section id="history">
-    <h2 data-i18n="history">История</h2>
-    <div id="historyList"></div>
-</section>
+    <!-- Modal for Booking -->
+    <div class="modal" id="bookingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Онлайн-запись</h3>
+                <button class="close-modal" id="closeBookingModal" aria-label="Закрыть">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="bookingForm">
+                    <div class="form-group">
+                        <label for="name">Ваше имя *</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Телефон *</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="+7 (___) ___-__-__" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="service">Услуга</label>
+                        <select id="service" class="form-control">
+                            <option value="">Выберите услугу</option>
+                            <option value="women_haircut">Женская стрижка</option>
+                            <option value="men_haircut">Мужская стрижка</option>
+                            <option value="children_haircut">Детская стрижка</option>
+                            <option value="coloring">Окрашивание</option>
+                            <option value="styling">Укладка</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="master">Предпочтительный мастер</label>
+                        <select id="master" class="form-control">
+                            <option value="">Любой мастер</option>
+                            <option value="anna">Анна (женские стрижки)</option>
+                            <option value="maria">Мария (укладки)</option>
+                            <option value="sergey">Сергей (мужские стрижки)</option>
+                            <option value="elena">Елена (детские стрижки)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date">Желаемая дата *</label>
+                        <input type="date" id="date" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="time">Предпочтительное время</label>
+                        <select id="time" class="form-control">
+                            <option value="">Любое время</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Дополнительные пожелания</label>
+                        <textarea id="message" class="form-control" rows="3"></textarea>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 25px;">
+                        <button type="submit" class="btn">Отправить заявку</button>
+                    </div>
+                    <p style="text-align: center; margin-top: 15px; font-size: 0.85rem; color: #666;">Мы перезвоним вам в течение часа для подтверждения записи</p>
+                </form>
+            </div>
+        </div>
+    </div>
 
-<!-- Analytics -->
-<section id="analytics">
-    <h2 data-i18n="analytics">Аналитика</h2>
-
-    <p id="aiInsights" style="font-weight:bold;"></p>
-
-    <div class="chart-box"><canvas id="moodChart"></canvas></div>
-    <div class="chart-box"><canvas id="factorChart"></canvas></div>
-</section>
-
-<!-- Settings -->
-<section id="settings">
-    <h2 data-i18n="settings">Настройки</h2>
-
-    <h3>Экспорт</h3>
-    <button onclick="exportCSV()">📄 CSV</button>
-    <button onclick="exportXLSX()">📘 XLSX</button>
-
-    <h3>Язык интерфейса</h3>
-    <select id="lang" class="lang-select" onchange="changeLang()">
-        <option value="ru">Русский</option>
-        <option value="tt">Татарча</option>
-        <option value="en">English</option>
-        <option value="ar">العربية</option>
-        <option value="fr">Français</option>
-    </select>
-
-    <h3>Установка</h3>
-    <p>Добавьте сайт на экран смартфона — приложение полностью работает офлайн.</p>
-</section>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-/* -----------------------------
-   DATABASE
-------------------------------*/
-let DB = JSON.parse(localStorage.getItem("moodflow") || "[]");
-let currentMood = null;
-
-/* -----------------------------
-   MULTI-LANGUAGE
-------------------------------*/
-const translations = {
-    ru:{new_entry:"Новая запись", mood:"Настроение", factors:"Факторы", notes:"Заметки", calendar:"Календарь", history:"История", analytics:"Аналитика", settings:"Настройки"},
-    tt:{new_entry:"Яңа язма", mood:"Кайф", factors:"Факторлар", notes:"Искәрмәләр", calendar:"Календарь", history:"Тарих", analytics:"Аналитика", settings:"Көйләүләр"},
-    en:{new_entry:"New Entry", mood:"Mood", factors:"Factors", notes:"Notes", calendar:"Calendar", history:"History", analytics:"Analytics", settings:"Settings"},
-    ar:{new_entry:"إدخال جديد", mood:"المزاج", factors:"العوامل", notes:"ملاحظات", calendar:"التقويم", history:"السجل", analytics:"التحليلات", settings:"الإعدادات"},
-    fr:{new_entry:"Nouvelle entrée", mood:"Humeur", factors:"Facteurs", notes:"Notes", calendar:"Calendrier", history:"Historique", analytics:"Analytique", settings:"Paramètres"},
-};
-
-function applyLang(){
-    let lang = localStorage.getItem("lang") || "ru";
-    document.getElementById("lang").value = lang;
-    document.querySelectorAll("[data-i18n]").forEach(e=>{
-        e.textContent = translations[lang][e.dataset.i18n];
-    });
-}
-applyLang();
-
-function changeLang(){
-    localStorage.setItem("lang", document.getElementById("lang").value);
-    applyLang();
-}
-
-/* -----------------------------
-   NAVIGATION
-------------------------------*/
-function openPage(id){
-    document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
-}
-
-/* -----------------------------
-   UI Buttons
-------------------------------*/
-const moods = [
-    {id:1, icon:"😞", text:"Очень плохо"},
-    {id:2, icon:"😕", text:"Плохо"},
-    {id:3, icon:"😐", text:"Нормально"},
-    {id:4, icon:"🙂", text:"Хорошо"},
-    {id:5, icon:"😄", text:"Отлично"}
-];
-
-const factors = ["Сон","Стресс","Работа","Отдых","Семья","Еда","Здоровье","Погода"];
-
-moods.forEach(m=>{
-    let div=document.createElement("div");
-    div.className="mood-btn";
-    div.innerHTML=m.icon+" "+m.text;
-    div.onclick=()=>{
-        currentMood=m.id;
-        document.querySelectorAll(".mood-btn").forEach(x=>x.classList.remove("selected"));
-        div.classList.add("selected");
-    };
-    document.getElementById("moodButtons").appendChild(div);
-});
-
-factors.forEach(f=>{
-    let div=document.createElement("div");
-    div.innerHTML=`<label><input type="checkbox" value="${f}"> ${f}</label>`;
-    document.getElementById("factorList").appendChild(div);
-});
-
-/* -----------------------------
-   SAVE ENTRY
-------------------------------*/
-function saveEntry(){
-    if(!currentMood){ alert("Выберите настроение"); return; }
-
-    let fs=[...document.querySelectorAll("input[type=checkbox]:checked")].map(x=>x.value);
-
-    const entry = {
-        id:Date.now(),
-        date:new Date().toISOString(),
-        mood:currentMood,
-        factors:fs,
-        notes:document.getElementById("notes").value
-    };
-
-    DB.push(entry);
-    localStorage.setItem("moodflow", JSON.stringify(DB));
-    alert("Сохранено!");
-}
-
-/* -----------------------------
-   HISTORY
-------------------------------*/
-function renderHistory(){
-    let root=document.getElementById("historyList");
-    root.innerHTML="";
-
-    DB.slice().reverse().forEach(e=>{
-        let div=document.createElement("div");
-        div.className="history-item";
-        div.innerHTML=`
-            <b>${new Date(e.date).toLocaleString()}</b><br>
-            Настроение: ${moods.find(x=>x.id===e.mood).text}<br>
-            Факторы: ${e.factors.join(", ") || "—"}<br>${e.notes}
-        `;
-        root.appendChild(div);
-    });
-}
-renderHistory();
-
-/* -----------------------------
-   EXPORT CSV
-------------------------------*/
-function exportCSV(){
-    let csv="date,mood,factors,notes\n";
-    DB.forEach(e=>{
-        csv+=`"${e.date}", "${e.mood}", "${e.factors.join("|")}", "${e.notes}"\n`;
-    });
-    download(csv,"moodflow.csv","text/csv");
-}
-
-/* -----------------------------
-   EXPORT XLSX
-------------------------------*/
-function exportXLSX(){
-    let xml=`<?xml version="1.0"?>
-        <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet">
-        <Worksheet ss:Name="MoodFlow"><Table>
-        <Row>
-        <Cell><Data ss:Type="String">date</Data></Cell>
-        <Cell><Data ss:Type="Number">mood</Data></Cell>
-        <Cell><Data ss:Type="String">factors</Data></Cell>
-        <Cell><Data ss:Type="String">notes</Data></Cell>
-        </Row>`;
-
-    DB.forEach(e=>{
-        xml+=`<Row>
-        <Cell><Data ss:Type="String">${e.date}</Data></Cell>
-        <Cell><Data ss:Type="Number">${e.mood}</Data></Cell>
-        <Cell><Data ss:Type="String">${e.factors.join("|")}</Data></Cell>
-        <Cell><Data ss:Type="String">${e.notes}</Data></Cell>
-        </Row>`;
-    });
-
-    xml+="</Table></Worksheet></Workbook>";
-    download(xml,"moodflow.xls","application/vnd.ms-excel");
-}
-
-function download(content,filename,type){
-    let blob=new Blob([content],{type});
-    let url=URL.createObjectURL(blob);
-    let a=document.createElement("a");
-    a.href=url; a.download=filename; a.click();
-    URL.revokeObjectURL(url);
-}
-
-/* -----------------------------
-   PWA REGISTRATION
-------------------------------*/
-if ("serviceWorker" in navigator){
-    navigator.serviceWorker.register("./service-worker.js");
-}
-</script>
-
+    <script>
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navMenu = document.getElementById('navMenu');
+        const navBookBtn = document.getElementById('navBookBtn');
+        
+        // Toggle mobile menu
+        mobileToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navMenu.classList.toggle('active');
+            mobileToggle.innerHTML = navMenu.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target)) {
+                navMenu.classList.remove('active');
+                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // Fade-in animation for elements
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 100;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        });
+        
+        // Trigger fade-in on initial load
+        document.addEventListener('DOMContentLoaded', () => {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 100;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+            
+            // Set current date as min for booking
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('date').min = tomorrow.toISOString().split('T')[0];
+            
+            // Preload critical images
+            const criticalImages = [
+                'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1562322140-8baeececf3df?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+            ];
+            
+            criticalImages.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+        });
+        
+        // Modal functionality
+        const bookingModal = document.getElementById('bookingModal');
+        const closeBookingModal = document.getElementById('closeBookingModal');
+        const bookBtn = document.getElementById('bookBtn');
+        const bookingForm = document.getElementById('bookingForm');
+        
+        // Open booking modal from various buttons
+        const openBookingModal = (e) => {
+            if (e) e.preventDefault();
+            bookingModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+            
+            // Close mobile menu if open
+            navMenu.classList.remove('active');
+            mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            
+            // Focus on first input
+            setTimeout(() => {
+                document.getElementById('name').focus();
+            }, 300);
+        };
+        
+        // Open modal from main CTA button
+        bookBtn.addEventListener('click', openBookingModal);
+        
+        // Open modal from hero button
+        document.querySelector('.hero .btn').addEventListener('click', (e) => {
+            if (e.target.getAttribute('href') === '#contacts') {
+                e.preventDefault();
+                openBookingModal();
+            }
+        });
+        
+        // Open modal from navigation button
+        if (navBookBtn) {
+            navBookBtn.addEventListener('click', openBookingModal);
+        }
+        
+        // Close modal
+        const closeModal = () => {
+            bookingModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            document.body.style.position = 'static';
+        };
+        
+        closeBookingModal.addEventListener('click', closeModal);
+        
+        // Close modal when clicking outside
+        bookingModal.addEventListener('click', (e) => {
+            if (e.target === bookingModal) {
+                closeModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && bookingModal.style.display === 'flex') {
+                closeModal();
+            }
+        });
+        
+        // Booking form submission
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const date = document.getElementById('date').value;
+            
+            if (!name || !phone || !date) {
+                alert('Пожалуйста, заполните обязательные поля (имя, телефон, дата)');
+                return;
+            }
+            
+            // In a real application, you would send this data to a server
+            alert(`Спасибо за заявку, ${name}! Мы свяжемся с вами в течение часа по номеру ${phone} для подтверждения записи.`);
+            
+            closeModal();
+            bookingForm.reset();
+        });
+        
+        // Format phone input
+        const phoneInput = document.getElementById('phone');
+        phoneInput.addEventListener('input', function(e) {
+            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
+            e.target.value = !x[2] ? x[1] : '+7 (' + x[2] + ') ' + x[3] + (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement && targetId !== '#bookingModal') {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Gallery item click
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', () => {
+                // In a real site, this would open a lightbox
+                alert('Для просмотра фото в полном размере нажмите на изображение');
+            });
+        });
+        
+        // Handle image loading errors
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('error', function() {
+                this.style.display = 'none';
+                const fallbackDiv = document.createElement('div');
+                fallbackDiv.className = 'image-fallback';
+                fallbackDiv.style.width = this.width + 'px';
+                fallbackDiv.style.height = this.height + 'px';
+                fallbackDiv.innerHTML = '<i class="fas fa-image"></i>';
+                this.parentNode.insertBefore(fallbackDiv, this.nextSibling);
+            });
+        });
+        
+        // Touch-friendly improvements
+        document.querySelectorAll('.btn, .nav-link, .service-card, .master-card').forEach(element => {
+            element.addEventListener('touchstart', function() {
+                this.classList.add('touch-active');
+            });
+            
+            element.addEventListener('touchend', function() {
+                setTimeout(() => {
+                    this.classList.remove('touch-active');
+                }, 150);
+            });
+        });
+        
+        // Prevent zoom on double-tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+        
+        // Improve performance on scroll
+        let scrollTimeout;
+        window.addEventListener('scroll', function() {
+            if (!scrollTimeout) {
+                scrollTimeout = setTimeout(function() {
+                    scrollTimeout = null;
+                    // Handle scroll actions here
+                }, 100);
+            }
+        });
+    </script>
 </body>
 </html>
