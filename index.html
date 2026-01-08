@@ -1,756 +1,364 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Парикмахерская "Стиль и Уют" | Качественные стрижки в Москве</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
-        /* Все стили остаются такими же как в предыдущей версии */
-        /* Для экономии места оставим их без изменений */
-        
-        /* Добавим стили для запасных изображений */
-        .image-placeholder {
-            background: linear-gradient(135deg, #f5e6d3 0%, #e8d5c4 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #8B5A2B;
-            text-align: center;
-            padding: 20px;
-            height: 100%;
-            width: 100%;
-        }
-        
-        .image-placeholder i {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            opacity: 0.7;
-        }
-        
-        .image-placeholder span {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Стиль и Уют — Премиальный салон красоты</title>
+<meta name="description" content="Премиальный салон красоты. Стрижки, окрашивание, уход. Атмосфера тишины, уверенности и стиля. Онлайн-запись.">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+/* ================= ROOT ================= */
+:root{
+  --bg:#0c0c0c;
+  --bg-soft:#141414;
+  --card:#1c1c1c;
+  --text:#f5f5f5;
+  --muted:#9a9a9a;
+  --gold:#c6a15b;
+  --radius:22px;
+  --shadow:0 40px 80px rgba(0,0,0,.55);
+}
+
+/* ================= BASE ================= */
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.65;
+  overflow-x:hidden;
+}
+h1,h2,h3{
+  font-family:'Playfair Display',serif;
+  font-weight:600;
+}
+.container{
+  max-width:1320px;
+  margin:0 auto;
+  padding:0 28px;
+}
+section{padding:140px 0}
+
+/* ================= HEADER ================= */
+header{
+  position:fixed;
+  top:0;left:0;width:100%;
+  z-index:1000;
+  background:rgba(12,12,12,.65);
+  backdrop-filter:blur(14px);
+}
+.header-inner{
+  height:86px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.logo{
+  font-size:26px;
+  letter-spacing:2px;
+}
+nav ul{
+  display:flex;
+  gap:46px;
+  list-style:none;
+}
+nav a{
+  color:var(--text);
+  text-decoration:none;
+  font-weight:500;
+  position:relative;
+}
+nav a::after{
+  content:"";
+  position:absolute;
+  left:0;bottom:-8px;
+  width:0;height:2px;
+  background:var(--gold);
+  transition:.4s;
+}
+nav a:hover::after{width:100%}
+
+/* ================= HERO ================= */
+.hero{
+  height:100vh;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.9)),
+    url("https://images.unsplash.com/photo-1562322140-8baeececf3df") center/cover;
+  display:flex;
+  align-items:center;
+}
+.hero-content{
+  max-width:860px;
+}
+.hero h1{
+  font-size:72px;
+  margin-bottom:36px;
+}
+.hero p{
+  font-size:22px;
+  color:var(--muted);
+  margin-bottom:60px;
+}
+.btn{
+  background:var(--gold);
+  color:#000;
+  padding:20px 48px;
+  border-radius:50px;
+  border:none;
+  font-weight:600;
+  font-size:16px;
+  cursor:pointer;
+  transition:.4s;
+}
+.btn:hover{
+  transform:translateY(-5px);
+  box-shadow:0 25px 50px rgba(198,161,91,.35);
+}
+
+/* ================= TRUST ================= */
+.trust{
+  background:var(--bg-soft);
+}
+.trust-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:40px;
+}
+.trust-item{
+  text-align:center;
+}
+.trust-item h3{
+  font-size:42px;
+  color:var(--gold);
+}
+.trust-item p{
+  color:var(--muted);
+}
+
+/* ================= ABOUT ================= */
+.about-grid{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:90px;
+  align-items:center;
+}
+.about p{
+  font-size:19px;
+  color:var(--muted);
+  margin-bottom:20px;
+}
+.about img{
+  width:100%;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+
+/* ================= SERVICES ================= */
+.services{
+  background:var(--bg-soft);
+}
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:34px;
+}
+.service{
+  background:var(--card);
+  padding:56px 44px;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.service i{
+  font-size:38px;
+  color:var(--gold);
+  margin-bottom:24px;
+}
+.service p{
+  color:var(--muted);
+}
+.service span{
+  display:block;
+  margin-top:30px;
+  font-weight:600;
+  color:var(--gold);
+}
+
+/* ================= MASTERS ================= */
+.masters-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:46px;
+}
+.master{
+  background:var(--card);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.master img{
+  width:100%;
+  height:420px;
+  object-fit:cover;
+}
+.master-info{
+  padding:34px;
+}
+.master-info p{color:var(--muted)}
+
+/* ================= GALLERY ================= */
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:24px;
+}
+.gallery img{
+  width:100%;
+  height:280px;
+  object-fit:cover;
+  border-radius:18px;
+  cursor:pointer;
+}
+
+/* ================= CONTACT ================= */
+.contact{
+  background:var(--bg-soft);
+}
+.contact-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:70px;
+}
+.contact p{
+  font-size:19px;
+  color:var(--muted);
+  margin-bottom:20px;
+}
+iframe{
+  width:100%;
+  height:460px;
+  border-radius:22px;
+  border:none;
+}
+
+/* ================= FOOTER ================= */
+footer{
+  padding:100px 20px;
+  text-align:center;
+  color:var(--muted);
+}
+
+/* ================= MOBILE ================= */
+@media(max-width:900px){
+  .hero h1{font-size:44px}
+  section{padding:90px 0}
+  .about-grid,.contact-grid,.trust-grid{grid-template-columns:1fr}
+}
+
+/* ================= STICKY CTA ================= */
+.mobile-cta{
+  position:fixed;
+  bottom:20px;
+  left:20px;
+  right:20px;
+  z-index:999;
+}
+@media(min-width:901px){.mobile-cta{display:none}}
+</style>
 </head>
+
 <body>
-    <!-- Header -->
-    <header id="header">
-        <div class="container header-container">
-            <a href="#" class="logo">
-                <i class="fas fa-scissors"></i> Стиль и Уют
-            </a>
-            
-            <button class="mobile-toggle" id="mobileToggle" aria-label="Открыть меню">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <ul class="nav-menu" id="navMenu">
-                <li class="nav-item">
-                    <a href="#home" class="nav-link">Главная</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#about" class="nav-link">О нас</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#services" class="nav-link">Услуги</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#pricing" class="nav-link">Цены</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#masters" class="nav-link">Мастера</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#contacts" class="nav-link">Контакты</a>
-                </li>
-                <li class="nav-item">
-                    <button class="btn nav-btn" id="navBookBtn">Записаться</button>
-                </li>
-            </ul>
-        </div>
-    </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <h1>Парикмахерская "Стиль и Уют"</h1>
-            <p>Профессиональные стрижки, окрашивание и укладки в уютной атмосфере для всей семьи. Качество, которому доверяют с 2010 года.</p>
-            <a href="#contacts" class="btn">Записаться онлайн</a>
-        </div>
-    </section>
+<header>
+  <div class="container header-inner">
+    <div class="logo">СТИЛЬ & УЮТ</div>
+    <nav>
+      <ul>
+        <li><a href="#about">Философия</a></li>
+        <li><a href="#services">Услуги</a></li>
+        <li><a href="#masters">Мастера</a></li>
+        <li><a href="#contact">Контакты</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="container">
-            <div class="section-title">
-                <h2>О нашей парикмахерской</h2>
-            </div>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>Мы — классическая парикмахерская, где ценят традиции и качество. Более 10 лет мы создаем стильные и аккуратные образы для наших клиентов в атмосфере домашнего уюта.</p>
-                    <p>Наш принцип — индивидуальный подход к каждому. Мы внимательно слушаем пожелания клиентов и предлагаем оптимальные решения, учитывая тип волос, особенности лица и стиль жизни.</p>
-                    <p>Мы работаем с проверенными профессиональными средствами для ухода за волосами, гарантируя не только прекрасный результат, но и здоровье ваших волос.</p>
-                    <p>У нас комфортно и детям, и взрослым. Мы создали пространство, где каждый чувствует себя как дома.</p>
-                </div>
-                <div class="about-image">
-                    <div class="image-placeholder">
-                        <i class="fas fa-chair"></i>
-                        <span>Уютный интерьер парикмахерской</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<section class="hero">
+  <div class="container hero-content">
+    <h1>Тишина. Стиль.<br>Уверенность.</h1>
+    <p>Мы создаём образы, которые не кричат — они говорят за вас.</p>
+    <button class="btn">Записаться онлайн</button>
+  </div>
+</section>
 
-    <!-- Services Section -->
-    <section class="services" id="services">
-        <div class="container">
-            <div class="section-title">
-                <h2>Наши услуги</h2>
-            </div>
-            <div class="services-grid">
-                <div class="service-card fade-in">
-                    <div class="service-icon">
-                        <i class="fas fa-female"></i>
-                    </div>
-                    <h3>Женские стрижки</h3>
-                    <p>Классические и современные стрижки, каскад, лесенка, каре, пикси и другие моделирующие стрижки</p>
-                    <div class="service-price">от 1200 ₽</div>
-                </div>
-                
-                <div class="service-card fade-in">
-                    <div class="service-icon">
-                        <i class="fas fa-male"></i>
-                    </div>
-                    <h3>Мужские стрижки</h3>
-                    <p>Классические и спортивные стрижки, стрижка машинкой, оформление бороды и усов</p>
-                    <div class="service-price">от 800 ₽</div>
-                </div>
-                
-                <div class="service-card fade-in">
-                    <div class="service-icon">
-                        <i class="fas fa-child"></i>
-                    </div>
-                    <h3>Детские стрижки</h3>
-                    <p>Аккуратные стрижки для детей любого возраста в игровой форме, без слёз и стресса</p>
-                    <div class="service-price">от 600 ₽</div>
-                </div>
-                
-                <div class="service-card fade-in">
-                    <div class="service-icon">
-                        <i class="fas fa-paint-brush"></i>
-                    </div>
-                    <h3>Окрашивание</h3>
-                    <p>Тонирование, мелирование, блондирование, колорирование, окрашивание в один тон</p>
-                    <div class="service-price">от 2500 ₽</div>
-                </div>
-                
-                <div class="service-card fade-in">
-                    <div class="service-icon">
-                        <i class="fas fa-wind"></i>
-                    </div>
-                    <h3>Укладки</h3>
-                    <p>Вечерние и свадебные укладки, укладка феном, утюжком, на бигуди, химическая завивка</p>
-                    <div class="service-price">от 800 ₽</div>
-                </div>
-                
-                <div class="service-card fade-in">
-                    <div class="service-icon">
-                        <i class="fas fa-spa"></i>
-                    </div>
-                    <h3>Уход за волосами</h3>
-                    <p>Профессиональные маски, ламинирование, кератиновое восстановление, лечение волос</p>
-                    <div class="service-price">от 1500 ₽</div>
-                </div>
-            </div>
-        </div>
-    </section>
+<section class="trust">
+  <div class="container trust-grid">
+    <div class="trust-item"><h3>15+</h3><p>лет опыта</p></div>
+    <div class="trust-item"><h3>8 000+</h3><p>клиентов</p></div>
+    <div class="trust-item"><h3>100%</h3><p>индивидуальный подход</p></div>
+  </div>
+</section>
 
-    <!-- Pricing Section -->
-    <section class="pricing" id="pricing">
-        <div class="container">
-            <div class="section-title">
-                <h2>Прайс-лист</h2>
-            </div>
-            <div class="pricing-table-container">
-                <table class="pricing-table">
-                    <thead>
-                        <tr>
-                            <th>Услуга</th>
-                            <th>Описание</th>
-                            <th>Стоимость</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Женская стрижка</td>
-                            <td>Моделирующая стрижка с мытьем головы и укладкой</td>
-                            <td class="price">1200-2500 ₽</td>
-                        </tr>
-                        <tr>
-                            <td>Мужская стрижка</td>
-                            <td>Стрижка с оформлением, машинкой или ножницами</td>
-                            <td class="price">800-1500 ₽</td>
-                        </tr>
-                        <tr>
-                            <td>Детская стрижка (до 10 лет)</td>
-                            <td>Аккуратная стрижка в игровой форме</td>
-                            <td class="price">600-1000 ₽</td>
-                        </tr>
-                        <tr>
-                            <td>Окрашивание в один тон</td>
-                            <td>Окрашивание корней или всей длины</td>
-                            <td class="price">2500-4000 ₽</td>
-                        </tr>
-                        <tr>
-                            <td>Мелирование</td>
-                            <td>Частичное или полное мелирование</td>
-                            <td class="price">3500-6000 ₽</td>
-                        </tr>
-                        <tr>
-                            <td>Укладка</td>
-                            <td>Укладка феном или на бигуди</td>
-                            <td class="price">800-2000 ₽</td>
-                        </tr>
-                        <tr>
-                            <td>Ламинирование волос</td>
-                            <td>Профессиональное ламинирование</td>
-                            <td class="price">3000-5000 ₽</td>
-                        </tr>
-                        <tr>
-                            <td>Кератиновое восстановление</td>
-                            <td>Восстановление и выпрямление волос</td>
-                            <td class="price">4000-7000 ₽</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-    <!-- Masters Section -->
-    <section class="masters" id="masters">
-        <div class="container">
-            <div class="section-title">
-                <h2>Наши мастера</h2>
-            </div>
-            <div class="masters-grid">
-                <div class="master-card fade-in">
-                    <div class="master-img">
-                        <div class="image-placeholder">
-                            <i class="fas fa-user-tie"></i>
-                            <span>Мастер Анна<br>Опыт: 12 лет</span>
-                        </div>
-                    </div>
-                    <div class="master-info">
-                        <h3>Анна</h3>
-                        <p>Старший мастер, специалист по женским стрижкам и окрашиванию</p>
-                        <div class="master-experience">Опыт: 12 лет</div>
-                    </div>
-                </div>
-                
-                <div class="master-card fade-in">
-                    <div class="master-img">
-                        <div class="image-placeholder">
-                            <i class="fas fa-user-tie"></i>
-                            <span>Мастер Мария<br>Опыт: 8 лет</span>
-                        </div>
-                    </div>
-                    <div class="master-info">
-                        <h3>Мария</h3>
-                        <p>Специалист по укладкам, вечерним и свадебным прическам</p>
-                        <div class="master-experience">Опыт: 8 лет</div>
-                    </div>
-                </div>
-                
-                <div class="master-card fade-in">
-                    <div class="master-img">
-                        <div class="image-placeholder">
-                            <i class="fas fa-user-tie"></i>
-                            <span>Мастер Сергей<br>Опыт: 10 лет</span>
-                        </div>
-                    </div>
-                    <div class="master-info">
-                        <h3>Сергей</h3>
-                        <p>Барбер, специалист по мужским стрижкам и оформлению бороды</p>
-                        <div class="master-experience">Опыт: 10 лет</div>
-                    </div>
-                </div>
-                
-                <div class="master-card fade-in">
-                    <div class="master-img">
-                        <div class="image-placeholder">
-                            <i class="fas fa-user-tie"></i>
-                            <span>Мастер Елена<br>Опыт: 6 лет</span>
-                        </div>
-                    </div>
-                    <div class="master-info">
-                        <h3>Елена</h3>
-                        <p>Детский мастер, специалист по стрижкам для всей семьи</p>
-                        <div class="master-experience">Опыт: 6 лет</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Gallery Section -->
-    <section class="gallery">
-        <div class="container">
-            <div class="section-title">
-                <h2>Наши работы</h2>
-            </div>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <div class="image-placeholder">
-                        <i class="fas fa-cut"></i>
-                        <span>Женская стрижка</span>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <div class="image-placeholder">
-                        <i class="fas fa-cut"></i>
-                        <span>Мужская стрижка</span>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <div class="image-placeholder">
-                        <i class="fas fa-paint-brush"></i>
-                        <span>Окрашивание</span>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <div class="image-placeholder">
-                        <i class="fas fa-wind"></i>
-                        <span>Укладка</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contacts Section -->
-    <section class="contacts" id="contacts">
-        <div class="container">
-            <div class="section-title">
-                <h2>Контакты и запись</h2>
-            </div>
-            
-            <div class="contacts-grid">
-                <div class="contact-info">
-                    <h3>Приходите к нам</h3>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h4>Адрес</h4>
-                            <p>
-                                <a href="https://yandex.ru/maps/?text=Москва, ул. Пушкинская, 15" target="_blank" rel="noopener">
-                                    Москва, ул. Пушкинская, 15
-                                </a>
-                            </p>
-                            <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">5 минут от м. Тверская</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h4>Телефоны</h4>
-                            <p>
-                                <a href="tel:+74951234567">+7 (495) 123-45-67</a><br>
-                                <a href="tel:+79161234567">+7 (916) 123-45-67</a>
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h4>Режим работы</h4>
-                            <p>Пн-Пт: 9:00 - 20:00</p>
-                            <p>Сб-Вс: 10:00 - 18:00</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-comments"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h4>Написать в мессенджер</h4>
-                            <div class="messenger-links">
-                                <a href="https://wa.me/79161234567" class="messenger-link whatsapp" target="_blank" rel="noopener">
-                                    <i class="fab fa-whatsapp"></i> WhatsApp
-                                </a>
-                                <a href="https://t.me/+79161234567" class="messenger-link telegram" target="_blank" rel="noopener">
-                                    <i class="fab fa-telegram"></i> Telegram
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="working-hours">
-                        <h4>Часы работы мастеров</h4>
-                        <ul class="hours-list">
-                            <li><span>Анна:</span> <span>Пн-Сб 10:00-19:00</span></li>
-                            <li><span>Мария:</span> <span>Вт-Вс 11:00-18:00</span></li>
-                            <li><span>Сергей:</span> <span>Пн-Пт 9:00-20:00</span></li>
-                            <li><span>Елена:</span> <span>Вт-Сб 10:00-17:00</span></li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="map-container">
-                    <div class="image-placeholder" style="height: 100%;">
-                        <i class="fas fa-map-marked-alt"></i>
-                        <span>Карта расположения</span>
-                        <p style="font-size: 0.8rem; margin-top: 10px;">Москва, ул. Пушкинская, 15</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-about">
-                    <div class="footer-logo">Стиль и Уют</div>
-                    <p>Классическая парикмахерская в центре Москвы. Качественные стрижки, окрашивание и укладки для всей семьи в атмосфере домашнего уюта.</p>
-                </div>
-                
-                <div class="footer-links">
-                    <h4>Навигация</h4>
-                    <ul>
-                        <li><a href="#home">Главная</a></li>
-                        <li><a href="#about">О нас</a></li>
-                        <li><a href="#services">Услуги</a></li>
-                        <li><a href="#pricing">Цены</a></li>
-                        <li><a href="#masters">Мастера</a></li>
-                        <li><a href="#contacts">Контакты</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-contact">
-                    <h4>Контакты</h4>
-                    <p><i class="fas fa-map-marker-alt"></i> 
-                        <a href="https://yandex.ru/maps/?text=Москва, ул. Пушкинская, 15" target="_blank" rel="noopener">
-                            Москва, ул. Пушкинская, 15
-                        </a>
-                    </p>
-                    <p><i class="fas fa-phone"></i> 
-                        <a href="tel:+74951234567">+7 (495) 123-45-67</a>
-                    </p>
-                    <p><i class="fas fa-envelope"></i> 
-                        <a href="mailto:style-i-uyut@mail.ru">style-i-uyut@mail.ru</a>
-                    </p>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                &copy; 2023 Парикмахерская "Стиль и Уют". Все права защищены.
-            </div>
-        </div>
-    </footer>
-
-    <!-- Modal for Booking -->
-    <div class="modal" id="bookingModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Онлайн-запись</h3>
-                <button class="close-modal" id="closeBookingModal" aria-label="Закрыть">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="bookingForm">
-                    <div class="form-group">
-                        <label for="name">Ваше имя *</label>
-                        <input type="text" id="name" class="form-control" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="phone">Телефон *</label>
-                        <input type="tel" id="phone" class="form-control" placeholder="+7 (___) ___-__-__" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="service">Услуга</label>
-                        <select id="service" class="form-control">
-                            <option value="">Выберите услугу</option>
-                            <option value="women_haircut">Женская стрижка</option>
-                            <option value="men_haircut">Мужская стрижка</option>
-                            <option value="children_haircut">Детская стрижка</option>
-                            <option value="coloring">Окрашивание</option>
-                            <option value="styling">Укладка</option>
-                            <option value="other">Другое</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="master">Предпочтительный мастер</label>
-                        <select id="master" class="form-control">
-                            <option value="">Любой мастер</option>
-                            <option value="anna">Анна (женские стрижки)</option>
-                            <option value="maria">Мария (укладки)</option>
-                            <option value="sergey">Сергей (мужские стрижки)</option>
-                            <option value="elena">Елена (детские стрижки)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="date">Желаемая дата *</label>
-                        <input type="date" id="date" class="form-control" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="time">Предпочтительное время</label>
-                        <select id="time" class="form-control">
-                            <option value="">Любое время</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="12:00">12:00</option>
-                            <option value="13:00">13:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                            <option value="18:00">18:00</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="message">Дополнительные пожелания</label>
-                        <textarea id="message" class="form-control" rows="3"></textarea>
-                    </div>
-                    
-                    <div style="text-align: center; margin-top: 25px;">
-                        <button type="submit" class="btn">Отправить заявку</button>
-                    </div>
-                    <p style="text-align: center; margin-top: 15px; font-size: 0.85rem; color: #666;">Мы перезвоним вам в течение часа для подтверждения записи</p>
-                </form>
-            </div>
-        </div>
+<section id="about" class="about">
+  <div class="container about-grid">
+    <div>
+      <h2>Философия салона</h2><br>
+      <p>Мы верим, что истинная красота — в балансе. В тишине. В уверенности.</p>
+      <p>Каждый образ создаётся персонально, без шаблонов и спешки.</p>
     </div>
+    <img src="https://images.unsplash.com/photo-1559599238-0f3d1a7b1c7d">
+  </div>
+</section>
 
-    <script>
-        // Mobile menu toggle
-        const mobileToggle = document.getElementById('mobileToggle');
-        const navMenu = document.getElementById('navMenu');
-        const navBookBtn = document.getElementById('navBookBtn');
-        
-        // Toggle mobile menu
-        mobileToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            navMenu.classList.toggle('active');
-            mobileToggle.innerHTML = navMenu.classList.contains('active') 
-                ? '<i class="fas fa-times"></i>' 
-                : '<i class="fas fa-bars"></i>';
-        });
-        
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target)) {
-                navMenu.classList.remove('active');
-                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
-            }
-        });
-        
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
-            });
-        });
-        
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            
-            // Fade-in animation for elements
-            const fadeElements = document.querySelectorAll('.fade-in');
-            fadeElements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const elementVisible = 100;
-                
-                if (elementTop < window.innerHeight - elementVisible) {
-                    element.classList.add('visible');
-                }
-            });
-        });
-        
-        // Trigger fade-in on initial load
-        document.addEventListener('DOMContentLoaded', () => {
-            const fadeElements = document.querySelectorAll('.fade-in');
-            fadeElements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const elementVisible = 100;
-                
-                if (elementTop < window.innerHeight - elementVisible) {
-                    element.classList.add('visible');
-                }
-            });
-            
-            // Set current date as min for booking
-            const today = new Date();
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            document.getElementById('date').min = tomorrow.toISOString().split('T')[0];
-        });
-        
-        // Modal functionality
-        const bookingModal = document.getElementById('bookingModal');
-        const closeBookingModal = document.getElementById('closeBookingModal');
-        const bookBtn = document.getElementById('bookBtn');
-        const bookingForm = document.getElementById('bookingForm');
-        
-        // Open booking modal from various buttons
-        const openBookingModal = (e) => {
-            if (e) e.preventDefault();
-            bookingModal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.width = '100%';
-            
-            // Close mobile menu if open
-            navMenu.classList.remove('active');
-            mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
-            
-            // Focus on first input
-            setTimeout(() => {
-                document.getElementById('name').focus();
-            }, 300);
-        };
-        
-        // Open modal from main CTA button
-        bookBtn.addEventListener('click', openBookingModal);
-        
-        // Open modal from hero button
-        document.querySelector('.hero .btn').addEventListener('click', (e) => {
-            if (e.target.getAttribute('href') === '#contacts') {
-                e.preventDefault();
-                openBookingModal();
-            }
-        });
-        
-        // Open modal from navigation button
-        if (navBookBtn) {
-            navBookBtn.addEventListener('click', openBookingModal);
-        }
-        
-        // Close modal
-        const closeModal = () => {
-            bookingModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            document.body.style.position = 'static';
-        };
-        
-        closeBookingModal.addEventListener('click', closeModal);
-        
-        // Close modal when clicking outside
-        bookingModal.addEventListener('click', (e) => {
-            if (e.target === bookingModal) {
-                closeModal();
-            }
-        });
-        
-        // Close modal with Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && bookingModal.style.display === 'flex') {
-                closeModal();
-            }
-        });
-        
-        // Booking form submission
-        bookingForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const date = document.getElementById('date').value;
-            
-            if (!name || !phone || !date) {
-                alert('Пожалуйста, заполните обязательные поля (имя, телефон, дата)');
-                return;
-            }
-            
-            // In a real application, you would send this data to a server
-            alert(`Спасибо за заявку, ${name}! Мы свяжемся с вами в течение часа по номеру ${phone} для подтверждения записи.`);
-            
-            closeModal();
-            bookingForm.reset();
-        });
-        
-        // Format phone input
-        const phoneInput = document.getElementById('phone');
-        phoneInput.addEventListener('input', function(e) {
-            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
-            e.target.value = !x[2] ? x[1] : '+7 (' + x[2] + ') ' + x[3] + (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement && targetId !== '#bookingModal') {
-                    e.preventDefault();
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-        
-        // Gallery item click
-        document.querySelectorAll('.gallery-item').forEach(item => {
-            item.addEventListener('click', () => {
-                // In a real site, this would open a lightbox
-                alert('Для просмотра фото в полном размере нажмите на изображение');
-            });
-        });
-        
-        // Touch-friendly improvements
-        document.querySelectorAll('.btn, .nav-link, .service-card, .master-card').forEach(element => {
-            element.addEventListener('touchstart', function() {
-                this.classList.add('touch-active');
-            });
-            
-            element.addEventListener('touchend', function() {
-                setTimeout(() => {
-                    this.classList.remove('touch-active');
-                }, 150);
-            });
-        });
-        
-        // Prevent zoom on double-tap
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function(event) {
-            const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
-    </script>
+<section id="services" class="services">
+  <div class="container">
+    <h2 style="margin-bottom:70px">Услуги</h2>
+    <div class="services-grid">
+      <div class="service"><i class="fa-solid fa-scissors"></i><h3>Женские стрижки</h3><p>Индивидуальная форма</p><span>от 1200 ₽</span></div>
+      <div class="service"><i class="fa-solid fa-user"></i><h3>Мужские стрижки</h3><p>Чёткие линии</p><span>от 800 ₽</span></div>
+      <div class="service"><i class="fa-solid fa-paintbrush"></i><h3>Окрашивание</h3><p>Премиальные бренды</p><span>от 2500 ₽</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="masters">
+  <div class="container">
+    <h2 style="margin-bottom:70px">Мастера</h2>
+    <div class="masters-grid">
+      <div class="master">
+        <img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f">
+        <div class="master-info"><h3>Анна</h3><p>Топ-мастер · 12 лет</p></div>
+      </div>
+      <div class="master">
+        <img src="https://images.unsplash.com/photo-1596703923338-48f1c07e4f2e">
+        <div class="master-info"><h3>Сергей</h3><p>Барбер · 10 лет</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="container contact-grid">
+    <div>
+      <h2>Контакты</h2><br>
+      <p>Москва, ул. Пушкинская, 15</p>
+      <p>+7 (495) 123-45-67</p>
+      <button class="btn">Записаться</button>
+    </div>
+    <iframe src="https://yandex.ru/map-widget/v1/?text=Москва, ул. Пушкинская, 15"></iframe>
+  </div>
+</section>
+
+<footer>
+  © 2026 Салон «Стиль и Уют». Премиальный уход за образом.
+</footer>
+
+<div class="mobile-cta">
+  <button class="btn">Записаться онлайн</button>
+</div>
+
 </body>
 </html>
