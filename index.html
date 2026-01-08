@@ -1,4 +1,219 @@
-section{padding:90px 0}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>СТИЛЬ & УЮТ — Премиальный салон красоты</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#0b0b0b;
+  --bg-soft:#141414;
+  --card:#1a1a1a;
+  --text:#f2f2f2;
+  --muted:#9a9a9a;
+  --gold:#c7a25c;
+  --radius:22px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+}
+
+h1,h2,h3{
+  font-family:'Playfair Display',serif;
+  font-weight:500;
+}
+
+.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 20px;
+}
+
+section{padding:120px 0}
+
+/* ================= HEADER ================= */
+header{
+  position:fixed;
+  top:0;width:100%;
+  z-index:1000;
+  background:rgba(0,0,0,.7);
+  backdrop-filter:blur(14px);
+}
+.header-inner{
+  height:76px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logo{letter-spacing:2px}
+nav a{
+  margin-left:26px;
+  font-size:14px;
+  text-decoration:none;
+  color:var(--text);
+}
+.burger{
+  display:none;
+  font-size:26px;
+  cursor:pointer;
+}
+
+/* ================= MOBILE MENU ================= */
+.menu{
+  position:fixed;
+  inset:0;
+  background:#000;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:36px;
+  opacity:0;
+  pointer-events:none;
+  transition:.4s;
+}
+.menu.active{
+  opacity:1;
+  pointer-events:auto;
+}
+.menu a{
+  font-size:26px;
+  color:#fff;
+  text-decoration:none;
+}
+
+/* ================= HERO ================= */
+.hero{
+  min-height:100vh;
+  background:
+    linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.9)),
+    url("https://source.unsplash.com/1600x900/?hair,salon,interior") center/cover;
+  display:flex;
+  align-items:center;
+}
+.hero-content{
+  max-width:620px;
+}
+.hero h1{font-size:46px;margin-bottom:26px}
+.hero p{color:var(--muted);font-size:18px}
+
+.btn{
+  margin-top:40px;
+  display:inline-block;
+  background:var(--gold);
+  color:#000;
+  padding:16px 42px;
+  border-radius:40px;
+  font-weight:500;
+  text-decoration:none;
+}
+
+/* ================= FADE ================= */
+.fade{
+  opacity:0;
+  transform:translateY(40px);
+  transition:1s cubic-bezier(.2,.8,.2,1);
+}
+.fade.show{
+  opacity:1;
+  transform:none;
+}
+
+/* ================= ADVANTAGES ================= */
+.adv-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:30px;
+}
+.adv{
+  background:var(--card);
+  padding:40px;
+  border-radius:var(--radius);
+}
+
+/* ================= SERVICES ================= */
+.services{
+  background:var(--bg-soft);
+}
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:30px;
+}
+.card{
+  background:var(--card);
+  padding:40px;
+  border-radius:var(--radius);
+}
+.card span{
+  display:block;
+  margin-top:20px;
+  color:var(--gold);
+}
+
+/* ================= MASTERS ================= */
+.masters-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:30px;
+}
+.master img{
+  width:100%;
+  height:360px;
+  object-fit:cover;
+  border-radius:18px;
+}
+.master p{color:var(--muted)}
+
+/* ================= GALLERY ================= */
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:18px;
+}
+.gallery img{
+  width:100%;
+  height:240px;
+  object-fit:cover;
+  border-radius:16px;
+}
+
+/* ================= REVIEWS ================= */
+.reviews{
+  background:var(--bg-soft);
+}
+.review{
+  background:var(--card);
+  padding:36px;
+  border-radius:var(--radius);
+  margin-bottom:20px;
+  color:var(--muted);
+}
+
+/* ================= CONTACT ================= */
+.contact p{color:var(--muted);margin-bottom:12px}
+
+/* ================= FOOTER ================= */
+footer{
+  padding:60px 20px;
+  text-align:center;
+  color:var(--muted);
+}
+
+/* ================= MOBILE ================= */
+@media(max-width:900px){
+  nav{display:none}
+  .burger{display:block}
+  section{padding:90px 0}
 }
 
 /* ================= MOBILE CTA ================= */
@@ -147,4 +362,4 @@ items.forEach(i=>obs.observe(i));
 </script>
 
 </body>
-</html>  
+</html>
