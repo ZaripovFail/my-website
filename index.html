@@ -4,269 +4,136 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Стиль и Уют — Премиальный салон красоты</title>
-<meta name="description" content="Премиальный салон красоты. Стрижки, окрашивание, уход. Атмосфера тишины, уверенности и стиля. Онлайн-запись.">
+<title>Стиль & Уют — Премиальный салон</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-/* ================= ROOT ================= */
 :root{
-  --bg:#0c0c0c;
-  --bg-soft:#141414;
-  --card:#1c1c1c;
-  --text:#f5f5f5;
-  --muted:#9a9a9a;
-  --gold:#c6a15b;
-  --radius:22px;
-  --shadow:0 40px 80px rgba(0,0,0,.55);
+  --bg:#0b0b0b;
+  --text:#f3f3f3;
+  --muted:#9c9c9c;
+  --gold:#c7a25c;
+  --card:#161616;
 }
 
-/* ================= BASE ================= */
 *{margin:0;padding:0;box-sizing:border-box}
+
 body{
-  font-family:'Inter',sans-serif;
   background:var(--bg);
   color:var(--text);
-  line-height:1.65;
-  overflow-x:hidden;
+  font-family:'Inter',sans-serif;
+  line-height:1.6;
 }
+
 h1,h2,h3{
   font-family:'Playfair Display',serif;
-  font-weight:600;
+  font-weight:500;
 }
-.container{
-  max-width:1320px;
-  margin:0 auto;
-  padding:0 28px;
-}
-section{padding:140px 0}
 
-/* ================= HEADER ================= */
+.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 20px;
+}
+
+/* HEADER */
 header{
   position:fixed;
-  top:0;left:0;width:100%;
-  z-index:1000;
-  background:rgba(12,12,12,.65);
-  backdrop-filter:blur(14px);
+  top:0;width:100%;
+  z-index:100;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(10px);
 }
 .header-inner{
-  height:86px;
+  height:72px;
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
 }
 .logo{
-  font-size:26px;
   letter-spacing:2px;
 }
-nav ul{
-  display:flex;
-  gap:46px;
-  list-style:none;
+.burger{
+  font-size:26px;
+  cursor:pointer;
 }
-nav a{
-  color:var(--text);
-  text-decoration:none;
-  font-weight:500;
-  position:relative;
-}
-nav a::after{
-  content:"";
-  position:absolute;
-  left:0;bottom:-8px;
-  width:0;height:2px;
-  background:var(--gold);
-  transition:.4s;
-}
-nav a:hover::after{width:100%}
 
-/* ================= HERO ================= */
+/* MOBILE MENU */
+.menu{
+  position:fixed;
+  inset:0;
+  background:#000;
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:30px;
+}
+.menu a{
+  color:#fff;
+  text-decoration:none;
+  font-size:24px;
+}
+.menu.active{display:flex}
+
+/* HERO */
 .hero{
-  height:100vh;
+  min-height:100vh;
   background:
-    linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.9)),
-    url("https://images.unsplash.com/photo-1562322140-8baeececf3df") center/cover;
+    linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.9)),
+    url("assets/img/hero.jpg") center/cover;
   display:flex;
   align-items:center;
-}
-.hero-content{
-  max-width:860px;
 }
 .hero h1{
-  font-size:72px;
-  margin-bottom:36px;
+  font-size:44px;
+  margin-bottom:20px;
 }
 .hero p{
-  font-size:22px;
   color:var(--muted);
-  margin-bottom:60px;
+  font-size:18px;
 }
+
+/* BUTTON */
 .btn{
+  margin-top:40px;
   background:var(--gold);
   color:#000;
-  padding:20px 48px;
-  border-radius:50px;
-  border:none;
-  font-weight:600;
-  font-size:16px;
-  cursor:pointer;
-  transition:.4s;
-}
-.btn:hover{
-  transform:translateY(-5px);
-  box-shadow:0 25px 50px rgba(198,161,91,.35);
+  padding:16px 40px;
+  border-radius:40px;
+  display:inline-block;
+  text-decoration:none;
+  font-weight:500;
 }
 
-/* ================= TRUST ================= */
-.trust{
-  background:var(--bg-soft);
-}
-.trust-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:40px;
-}
-.trust-item{
-  text-align:center;
-}
-.trust-item h3{
-  font-size:42px;
-  color:var(--gold);
-}
-.trust-item p{
-  color:var(--muted);
-}
+/* SECTION */
+section{padding:100px 0}
 
-/* ================= ABOUT ================= */
-.about-grid{
-  display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:90px;
-  align-items:center;
-}
-.about p{
-  font-size:19px;
-  color:var(--muted);
-  margin-bottom:20px;
-}
-.about img{
-  width:100%;
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-}
-
-/* ================= SERVICES ================= */
-.services{
-  background:var(--bg-soft);
-}
-.services-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-  gap:34px;
-}
-.service{
+/* CARDS */
+.card{
   background:var(--card);
-  padding:56px 44px;
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-}
-.service i{
-  font-size:38px;
-  color:var(--gold);
-  margin-bottom:24px;
-}
-.service p{
-  color:var(--muted);
-}
-.service span{
-  display:block;
-  margin-top:30px;
-  font-weight:600;
-  color:var(--gold);
+  padding:40px;
+  border-radius:20px;
 }
 
-/* ================= MASTERS ================= */
-.masters-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-  gap:46px;
-}
-.master{
-  background:var(--card);
-  border-radius:var(--radius);
-  overflow:hidden;
-  box-shadow:var(--shadow);
-}
-.master img{
-  width:100%;
-  height:420px;
-  object-fit:cover;
-}
-.master-info{
-  padding:34px;
-}
-.master-info p{color:var(--muted)}
-
-/* ================= GALLERY ================= */
-.gallery{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:24px;
-}
-.gallery img{
-  width:100%;
-  height:280px;
-  object-fit:cover;
-  border-radius:18px;
-  cursor:pointer;
-}
-
-/* ================= CONTACT ================= */
-.contact{
-  background:var(--bg-soft);
-}
-.contact-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:70px;
-}
-.contact p{
-  font-size:19px;
-  color:var(--muted);
-  margin-bottom:20px;
-}
-iframe{
-  width:100%;
-  height:460px;
-  border-radius:22px;
-  border:none;
-}
-
-/* ================= FOOTER ================= */
+/* FOOTER */
 footer{
-  padding:100px 20px;
   text-align:center;
+  padding:60px 20px;
   color:var(--muted);
 }
 
-/* ================= MOBILE ================= */
-@media(max-width:900px){
-  .hero h1{font-size:44px}
-  section{padding:90px 0}
-  .about-grid,.contact-grid,.trust-grid{grid-template-columns:1fr}
-}
-
-/* ================= STICKY CTA ================= */
+/* MOBILE CTA */
 .mobile-cta{
   position:fixed;
-  bottom:20px;
-  left:20px;
-  right:20px;
-  z-index:999;
+  bottom:16px;
+  left:16px;
+  right:16px;
 }
-@media(min-width:901px){.mobile-cta{display:none}}
+@media(min-width:900px){
+  .burger,.mobile-cta{display:none}
+}
 </style>
 </head>
 
@@ -275,90 +142,47 @@ footer{
 <header>
   <div class="container header-inner">
     <div class="logo">СТИЛЬ & УЮТ</div>
-    <nav>
-      <ul>
-        <li><a href="#about">Философия</a></li>
-        <li><a href="#services">Услуги</a></li>
-        <li><a href="#masters">Мастера</a></li>
-        <li><a href="#contact">Контакты</a></li>
-      </ul>
-    </nav>
+    <div class="burger" onclick="menu.classList.toggle('active')">☰</div>
   </div>
 </header>
 
+<div class="menu" id="menu">
+  <a href="#">Философия</a>
+  <a href="#">Услуги</a>
+  <a href="#">Мастера</a>
+  <a href="#">Контакты</a>
+</div>
+
 <section class="hero">
-  <div class="container hero-content">
-    <h1>Тишина. Стиль.<br>Уверенность.</h1>
-    <p>Мы создаём образы, которые не кричат — они говорят за вас.</p>
-    <button class="btn">Записаться онлайн</button>
-  </div>
-</section>
-
-<section class="trust">
-  <div class="container trust-grid">
-    <div class="trust-item"><h3>15+</h3><p>лет опыта</p></div>
-    <div class="trust-item"><h3>8 000+</h3><p>клиентов</p></div>
-    <div class="trust-item"><h3>100%</h3><p>индивидуальный подход</p></div>
-  </div>
-</section>
-
-<section id="about" class="about">
-  <div class="container about-grid">
-    <div>
-      <h2>Философия салона</h2><br>
-      <p>Мы верим, что истинная красота — в балансе. В тишине. В уверенности.</p>
-      <p>Каждый образ создаётся персонально, без шаблонов и спешки.</p>
-    </div>
-    <img src="https://images.unsplash.com/photo-1559599238-0f3d1a7b1c7d">
-  </div>
-</section>
-
-<section id="services" class="services">
   <div class="container">
-    <h2 style="margin-bottom:70px">Услуги</h2>
-    <div class="services-grid">
-      <div class="service"><i class="fa-solid fa-scissors"></i><h3>Женские стрижки</h3><p>Индивидуальная форма</p><span>от 1200 ₽</span></div>
-      <div class="service"><i class="fa-solid fa-user"></i><h3>Мужские стрижки</h3><p>Чёткие линии</p><span>от 800 ₽</span></div>
-      <div class="service"><i class="fa-solid fa-paintbrush"></i><h3>Окрашивание</h3><p>Премиальные бренды</p><span>от 2500 ₽</span></div>
-    </div>
+    <h1>Красота без шума.<br>Стиль без компромиссов.</h1>
+    <p>Премиальный салон индивидуального подхода</p>
+    <a href="#" class="btn">Записаться</a>
   </div>
 </section>
 
-<section id="masters">
+<section>
   <div class="container">
-    <h2 style="margin-bottom:70px">Мастера</h2>
-    <div class="masters-grid">
-      <div class="master">
-        <img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f">
-        <div class="master-info"><h3>Анна</h3><p>Топ-мастер · 12 лет</p></div>
-      </div>
-      <div class="master">
-        <img src="https://images.unsplash.com/photo-1596703923338-48f1c07e4f2e">
-        <div class="master-info"><h3>Сергей</h3><p>Барбер · 10 лет</p></div>
-      </div>
+    <div class="card">
+      <h2>Философия</h2>
+      <p style="margin-top:20px;color:var(--muted)">
+        Мы работаем медленно. Вдумчиво. Без потока.
+      </p>
     </div>
-  </div>
-</section>
-
-<section id="contact" class="contact">
-  <div class="container contact-grid">
-    <div>
-      <h2>Контакты</h2><br>
-      <p>Москва, ул. Пушкинская, 15</p>
-      <p>+7 (495) 123-45-67</p>
-      <button class="btn">Записаться</button>
-    </div>
-    <iframe src="https://yandex.ru/map-widget/v1/?text=Москва, ул. Пушкинская, 15"></iframe>
   </div>
 </section>
 
 <footer>
-  © 2026 Салон «Стиль и Уют». Премиальный уход за образом.
+  © 2026 Стиль & Уют
 </footer>
 
 <div class="mobile-cta">
-  <button class="btn">Записаться онлайн</button>
+  <a href="#" class="btn" style="display:block;text-align:center">Записаться онлайн</a>
 </div>
+
+<script>
+const menu = document.getElementById('menu');
+</script>
 
 </body>
 </html>
