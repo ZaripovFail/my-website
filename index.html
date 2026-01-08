@@ -3,27 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>СТИЛЬ & УЮТ — Премиальный салон красоты</title>
+<title>СТИЛЬ & УЮТ — Премиальная парикмахерская</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
 <style>
 :root{
   --bg:#0b0b0b;
-  --bg-soft:#141414;
+  --bg-soft:#131313;
   --card:#1a1a1a;
+  --gold:#c7a25c;
   --text:#f2f2f2;
   --muted:#9a9a9a;
-  --gold:#c7a25c;
   --radius:22px;
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  font-family:'Inter',sans-serif;
   background:var(--bg);
   color:var(--text);
+  font-family:'Inter',sans-serif;
   line-height:1.7;
 }
 
@@ -44,9 +45,9 @@ section{padding:120px 0}
 header{
   position:fixed;
   top:0;width:100%;
-  z-index:1000;
   background:rgba(0,0,0,.7);
   backdrop-filter:blur(14px);
+  z-index:1000;
 }
 .header-inner{
   height:76px;
@@ -58,14 +59,10 @@ header{
 nav a{
   margin-left:26px;
   font-size:14px;
-  text-decoration:none;
   color:var(--text);
+  text-decoration:none;
 }
-.burger{
-  display:none;
-  font-size:26px;
-  cursor:pointer;
-}
+.burger{display:none;font-size:26px;cursor:pointer}
 
 /* ================= MOBILE MENU ================= */
 .menu{
@@ -76,35 +73,41 @@ nav a{
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  gap:36px;
+  gap:34px;
   opacity:0;
   pointer-events:none;
   transition:.4s;
 }
-.menu.active{
-  opacity:1;
-  pointer-events:auto;
-}
-.menu a{
-  font-size:26px;
-  color:#fff;
-  text-decoration:none;
-}
+.menu.active{opacity:1;pointer-events:auto}
+.menu a{font-size:26px;color:#fff;text-decoration:none}
 
 /* ================= HERO ================= */
 .hero{
   min-height:100vh;
-  background:
-    linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.9)),
-    url("https://source.unsplash.com/1600x900/?hair,salon,interior") center/cover;
   display:flex;
   align-items:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:"✂ ✂ ✂ ✂ ✂";
+  position:absolute;
+  font-size:120px;
+  color:rgba(199,162,92,.04);
+  animation:move 40s linear infinite;
+  white-space:nowrap;
+}
+@keyframes move{
+  from{transform:translateX(-100%)}
+  to{transform:translateX(100%)}
 }
 .hero-content{
-  max-width:620px;
+  max-width:640px;
+  position:relative;
+  z-index:2;
 }
 .hero h1{font-size:46px;margin-bottom:26px}
-.hero p{color:var(--muted);font-size:18px}
+.hero p{color:var(--muted)}
 
 .btn{
   margin-top:40px;
@@ -113,8 +116,8 @@ nav a{
   color:#000;
   padding:16px 42px;
   border-radius:40px;
-  font-weight:500;
   text-decoration:none;
+  font-weight:500;
 }
 
 /* ================= FADE ================= */
@@ -123,28 +126,10 @@ nav a{
   transform:translateY(40px);
   transition:1s cubic-bezier(.2,.8,.2,1);
 }
-.fade.show{
-  opacity:1;
-  transform:none;
-}
+.fade.show{opacity:1;transform:none}
 
-/* ================= ADVANTAGES ================= */
-.adv-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:30px;
-}
-.adv{
-  background:var(--card);
-  padding:40px;
-  border-radius:var(--radius);
-}
-
-/* ================= SERVICES ================= */
-.services{
-  background:var(--bg-soft);
-}
-.services-grid{
+/* ================= BLOCKS ================= */
+.cards{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:30px;
@@ -154,78 +139,36 @@ nav a{
   padding:40px;
   border-radius:var(--radius);
 }
-.card span{
-  display:block;
-  margin-top:20px;
+.card span{color:var(--gold);display:block;margin-top:12px}
+
+/* ================= RATING ================= */
+.stars{
   color:var(--gold);
-}
-
-/* ================= MASTERS ================= */
-.masters-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:30px;
-}
-.master img{
-  width:100%;
-  height:360px;
-  object-fit:cover;
-  border-radius:18px;
-}
-.master p{color:var(--muted)}
-
-/* ================= GALLERY ================= */
-.gallery{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:18px;
-}
-.gallery img{
-  width:100%;
-  height:240px;
-  object-fit:cover;
-  border-radius:16px;
-}
-
-/* ================= REVIEWS ================= */
-.reviews{
-  background:var(--bg-soft);
-}
-.review{
-  background:var(--card);
-  padding:36px;
-  border-radius:var(--radius);
-  margin-bottom:20px;
-  color:var(--muted);
+  margin-top:10px;
 }
 
 /* ================= CONTACT ================= */
-.contact p{color:var(--muted);margin-bottom:12px}
+.contact i{color:var(--gold);margin-right:10px}
 
 /* ================= FOOTER ================= */
 footer{
-  padding:60px 20px;
-  text-align:center;
-  color:var(--muted);
+  background:#000;
+  padding:50px 20px;
 }
+.footer-menu{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  margin-bottom:20px;
+}
+.footer-menu a{color:var(--muted);text-decoration:none;font-size:14px}
+.footer-copy{text-align:center;color:var(--muted)}
 
 /* ================= MOBILE ================= */
 @media(max-width:900px){
   nav{display:none}
   .burger{display:block}
   section{padding:90px 0}
-}
-
-/* ================= MOBILE CTA ================= */
-.mobile-cta{
-  position:fixed;
-  bottom:16px;
-  left:16px;
-  right:16px;
-  z-index:900;
-}
-@media(min-width:900px){
-  .mobile-cta{display:none}
 }
 </style>
 </head>
@@ -236,10 +179,9 @@ footer{
   <div class="container header-inner">
     <div class="logo">СТИЛЬ & УЮТ</div>
     <nav>
-      <a href="#about">Философия</a>
+      <a href="#about">О нас</a>
       <a href="#services">Услуги</a>
       <a href="#masters">Мастера</a>
-      <a href="#gallery">Галерея</a>
       <a href="#contact">Контакты</a>
     </nav>
     <div class="burger" id="burger">☰</div>
@@ -247,116 +189,103 @@ footer{
 </header>
 
 <div class="menu" id="menu">
-  <a href="#about">Философия</a>
+  <a href="#about">О нас</a>
   <a href="#services">Услуги</a>
   <a href="#masters">Мастера</a>
-  <a href="#gallery">Галерея</a>
   <a href="#contact">Контакты</a>
 </div>
 
 <section class="hero">
   <div class="container hero-content fade">
-    <h1>Красота — это уверенность.<br>Стиль — это тишина.</h1>
-    <p>Премиальный салон красоты индивидуального подхода</p>
-    <a href="#contact" class="btn">Записаться</a>
+    <h1>Парикмахерская, где ценят стиль, тишину и доверие</h1>
+    <p>Мы работаем не на поток, а на результат. Каждый образ создаётся персонально.</p>
+    <a href="#contact" class="btn">Записаться онлайн</a>
   </div>
 </section>
 
 <section id="about" class="fade">
   <div class="container">
-    <h2>Философия салона</h2>
-    <p style="max-width:640px;margin-top:20px;color:var(--muted)">
-      Мы не работаем на поток. Мы создаём образы, которые подчёркивают характер и стиль жизни клиента.
+    <h2>О парикмахерской</h2>
+    <p style="max-width:700px;margin-top:20px;color:var(--muted)">
+      «Стиль & Уют» — это премиальная парикмахерская, где внимание к деталям стоит на первом месте.
+      Мы создаём образы, которые подчёркивают характер, образ жизни и индивидуальность клиента.
     </p>
   </div>
 </section>
 
-<section class="fade">
-  <div class="container adv-grid">
-    <div class="adv">Индивидуальный подход</div>
-    <div class="adv">Опытные мастера</div>
-    <div class="adv">Премиальные материалы</div>
-  </div>
-</section>
-
-<section id="services" class="services fade">
+<section id="services" class="fade">
   <div class="container">
-    <h2 style="margin-bottom:40px">Услуги</h2>
-    <div class="services-grid">
-      <div class="card"><h3>Женские стрижки</h3><span>от 1 200 ₽</span></div>
-      <div class="card"><h3>Мужские стрижки</h3><span>от 800 ₽</span></div>
-      <div class="card"><h3>Окрашивание</h3><span>от 2 500 ₽</span></div>
+    <h2>Услуги</h2>
+    <div class="cards" style="margin-top:40px">
+      <div class="card"><h3>Женские стрижки</h3><p>Индивидуальный подбор формы и длины</p><span>от 1 200 ₽</span></div>
+      <div class="card"><h3>Мужские стрижки</h3><p>Чёткие линии и стильный результат</p><span>от 800 ₽</span></div>
+      <div class="card"><h3>Детские стрижки</h3><p>Комфорт и внимание к ребёнку</p><span>от 700 ₽</span></div>
+      <div class="card"><h3>Окрашивание</h3><p>Премиальные красители и уход</p><span>от 2 500 ₽</span></div>
+      <div class="card"><h3>Укладки</h3><p>Повседневные и вечерние образы</p><span>от 1 000 ₽</span></div>
     </div>
   </div>
 </section>
 
 <section id="masters" class="fade">
   <div class="container">
-    <h2 style="margin-bottom:40px">Наши мастера</h2>
-    <div class="masters-grid">
-      <div class="master">
-        <img src="https://source.unsplash.com/600x800/?hairdresser,portrait,woman">
-        <h3>Анна</h3><p>Топ-мастер · 12 лет</p>
+    <h2>Наши мастера</h2>
+    <div class="cards" style="margin-top:40px">
+      <div class="card">
+        <h3>Анна</h3>
+        <p>Специалист по женским стрижкам и окрашиванию. Работает с формой и цветом.</p>
+        <div class="stars">★★★★★ 4.9</div>
       </div>
-      <div class="master">
-        <img src="https://source.unsplash.com/600x800/?barber,portrait,man">
-        <h3>Сергей</h3><p>Барбер · 10 лет</p>
+      <div class="card">
+        <h3>Сергей</h3>
+        <p>Барбер. Мужские и классические стрижки, оформление бороды.</p>
+        <div class="stars">★★★★★ 4.8</div>
+      </div>
+      <div class="card">
+        <h3>Мария</h3>
+        <p>Детские стрижки и семейные образы. Умеет найти подход к каждому ребёнку.</p>
+        <div class="stars">★★★★★ 5.0</div>
       </div>
     </div>
-  </div>
-</section>
-
-<section id="gallery" class="fade">
-  <div class="container">
-    <h2 style="margin-bottom:40px">Атмосфера</h2>
-    <div class="gallery">
-      <img src="https://source.unsplash.com/500x500/?hair,salon">
-      <img src="https://source.unsplash.com/500x500/?haircut">
-      <img src="https://source.unsplash.com/500x500/?beauty,salon">
-      <img src="https://source.unsplash.com/500x500/?hairdresser,work">
-    </div>
-  </div>
-</section>
-
-<section class="reviews fade">
-  <div class="container">
-    <h2 style="margin-bottom:40px">Отзывы</h2>
-    <div class="review">«Лучший салон, где я была. Тишина, стиль и профессионализм.»</div>
-    <div class="review">«Чувствуется уровень и уважение к клиенту.»</div>
   </div>
 </section>
 
 <section id="contact" class="fade">
   <div class="container">
     <h2>Контакты и запись</h2>
-    <p>Москва, ул. Пушкинская, 15</p>
-    <p>+7 (495) 123-45-67</p>
-    <a href="https://wa.me/79999999999" class="btn">WhatsApp</a>
-    <a href="https://t.me/username" class="btn" style="margin-left:10px">Telegram</a>
+    <p><i class="fa-solid fa-location-dot"></i>
+      <a href="https://yandex.ru/maps/?text=Москва,+ул.+Пушкинская,+15" target="_blank" style="color:inherit;text-decoration:none">
+        Москва, ул. Пушкинская, 15
+      </a>
+    </p>
+    <p><i class="fa-solid fa-phone"></i><a href="tel:+74951234567" style="color:inherit">+7 (495) 123-45-67</a></p>
+    <p><i class="fa-solid fa-phone"></i><a href="tel:+79876543210" style="color:inherit">+7 (987) 654-32-10</a></p>
+    <p><i class="fa-solid fa-clock"></i>Пн–Пт: 9:00–20:00 · Сб–Вс: 10:00–18:00</p>
+    <p>
+      <a href="https://wa.me/79999999999" class="btn"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+      <a href="https://t.me/username" class="btn" style="margin-left:10px"><i class="fa-brands fa-telegram"></i> Telegram</a>
+    </p>
   </div>
 </section>
 
 <footer>
-  © 2026 Салон «Стиль & Уют»
+  <div class="footer-menu">
+    <a href="#about">О нас</a>
+    <a href="#services">Услуги</a>
+    <a href="#masters">Мастера</a>
+    <a href="#contact">Контакты</a>
+  </div>
+  <div class="footer-copy">© 2026 «Стиль & Уют». Все права защищены.</div>
 </footer>
 
-<div class="mobile-cta">
-  <a href="#contact" class="btn" style="display:block;text-align:center">Записаться онлайн</a>
-</div>
-
 <script>
-const burger = document.getElementById('burger');
-const menu = document.getElementById('menu');
-burger.onclick = ()=>menu.classList.toggle('active');
-menu.querySelectorAll('a').forEach(a=>{
-  a.onclick = ()=>menu.classList.remove('active');
-});
+const burger=document.getElementById('burger');
+const menu=document.getElementById('menu');
+burger.onclick=()=>menu.classList.toggle('active');
+menu.querySelectorAll('a').forEach(a=>a.onclick=()=>menu.classList.remove('active'));
 
-const items = document.querySelectorAll('.fade');
-const obs = new IntersectionObserver(e=>{
-  e.forEach(i=>{
-    if(i.isIntersecting) i.target.classList.add('show');
-  });
+const items=document.querySelectorAll('.fade');
+const obs=new IntersectionObserver(e=>{
+  e.forEach(i=>{if(i.isIntersecting)i.target.classList.add('show')});
 },{threshold:.15});
 items.forEach(i=>obs.observe(i));
 </script>
