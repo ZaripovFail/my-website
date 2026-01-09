@@ -5,21 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>СТИЛЬ & УЮТ — Премиальная парикмахерская</title>
 
-<!-- ===================== FONTS ===================== -->
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="СТИЛЬ & УЮТ">
+
+<!-- FONTS -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
-<!-- ===================== ICONS ===================== -->
+<!-- ICONS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
 <style>
-
-/* ============================================================
-   ROOT
-   ============================================================ */
+/* ===== ROOT ===== */
 :root{
   --black:#0a0a0a;
-  --graphite:#111;
-  --soft:#1a1a1a;
   --card:#1e1e1e;
   --gold:#c6a15b;
   --text:#f5f5f5;
@@ -27,115 +29,41 @@
   --radius:26px;
 }
 
-/* ============================================================
-   RESET
-   ============================================================ */
+/* ===== RESET ===== */
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
 body{
   font-family:'Inter',sans-serif;
   background:var(--black);
   color:var(--text);
   line-height:1.8;
-  overflow-x:hidden;
 }
 
-/* ============================================================
-   BACKGROUND
-   ============================================================ */
+/* ===== BACKGROUND ===== */
 .background{
   position:fixed;
   inset:0;
-  z-index:-2;
+  z-index:-1;
   background:
     radial-gradient(circle at 20% 20%, rgba(198,161,91,.08), transparent 40%),
     radial-gradient(circle at 80% 30%, rgba(255,255,255,.04), transparent 40%),
-    radial-gradient(circle at 50% 80%, rgba(198,161,91,.06), transparent 45%),
-    linear-gradient(180deg, #000, #0b0b0b);
-  animation:bgMove 30s ease-in-out infinite alternate;
-}
-@keyframes bgMove{
-  from{filter:blur(0)}
-  to{filter:blur(8px)}
-}
-.background::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    linear-gradient(180deg,#000,#0b0b0b);
 }
 
-/* ============================================================
-   LOADER
-   ============================================================ */
-#loader{
-  position:fixed;
-  inset:0;
-  background:#000;
-  z-index:9999;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:opacity 1s ease, visibility 1s ease;
-}
-#loader.hidden{
-  opacity:0;
-  visibility:hidden;
-}
-.loader-title{
-  font-family:'Playfair Display',serif;
-  font-size:42px;
-  letter-spacing:4px;
-  position:relative;
-}
-.loader-title::after{
-  content:"";
-  position:absolute;
-  left:0;
-  top:50%;
-  width:100%;
-  height:1px;
-  background:rgba(198,161,91,.7);
-  transform:scaleX(0);
-  animation:slice 1.8s ease forwards;
-}
-@keyframes slice{
-  50%{transform:scaleX(1)}
-  100%{transform:scaleX(0)}
-}
-.scissors{
-  position:absolute;
-  bottom:-120px;
-  left:50%;
-  width:2px;
-  height:120px;
-  background:linear-gradient(to top, transparent, var(--gold), transparent);
-  transform:translateX(-50%);
-  animation:cut 1.8s ease forwards;
-}
-@keyframes cut{
-  0%{bottom:-120px;opacity:0}
-  40%{opacity:1}
-  100%{bottom:140px;opacity:0}
-}
-
-/* ============================================================
-   HEADER
-   ============================================================ */
+/* ===== HEADER ===== */
 header{
   position:fixed;
   top:0;
   width:100%;
   height:80px;
+  backdrop-filter:blur(16px);
   background:rgba(0,0,0,.55);
-  backdrop-filter:blur(18px);
   z-index:1000;
 }
 .header-inner{
   height:100%;
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   padding:0 20px;
 }
 .logo{
@@ -144,15 +72,13 @@ header{
 }
 nav a{
   margin-left:28px;
-  font-size:14px;
   color:var(--text);
   text-decoration:none;
+  font-size:14px;
 }
 .burger{display:none;font-size:26px}
 
-/* ============================================================
-   MOBILE MENU
-   ============================================================ */
+/* ===== MOBILE MENU ===== */
 .mobile-menu{
   position:fixed;
   inset:0;
@@ -167,30 +93,14 @@ nav a{
   transition:.4s;
   z-index:999;
 }
-.mobile-menu.active{
-  opacity:1;
-  pointer-events:auto;
-}
-.mobile-menu a{
-  font-size:26px;
-  text-decoration:none;
-  color:#fff;
-}
+.mobile-menu.active{opacity:1;pointer-events:auto}
+.mobile-menu a{color:#fff;font-size:26px;text-decoration:none}
 
-/* ============================================================
-   LAYOUT
-   ============================================================ */
-section{
-  padding:120px 20px;
-}
-.container{
-  max-width:1300px;
-  margin:0 auto;
-}
+/* ===== SECTIONS ===== */
+section{padding:120px 20px}
+.container{max-width:1300px;margin:0 auto}
 
-/* ============================================================
-   HERO
-   ============================================================ */
+/* ===== HERO ===== */
 .hero{
   min-height:100vh;
   display:flex;
@@ -199,16 +109,15 @@ section{
 .hero h1{
   font-family:'Playfair Display',serif;
   font-size:44px;
-  max-width:700px;
+  max-width:720px;
 }
 .hero p{
   margin-top:24px;
-  max-width:600px;
   color:var(--muted);
 }
 .btn{
-  margin-top:40px;
   display:inline-block;
+  margin-top:40px;
   background:var(--gold);
   color:#000;
   padding:16px 44px;
@@ -216,22 +125,15 @@ section{
   text-decoration:none;
 }
 
-/* ============================================================
-   FADE
-   ============================================================ */
+/* ===== FADE ===== */
 .fade{
   opacity:0;
-  transform:translateY(50px);
-  transition:1s ease;
+  transform:translateY(40px);
+  transition:1.1s cubic-bezier(.2,.8,.2,1);
 }
-.fade.show{
-  opacity:1;
-  transform:none;
-}
+.fade.show{opacity:1;transform:none}
 
-/* ============================================================
-   CARDS
-   ============================================================ */
+/* ===== GRID ===== */
 .grid{
   margin-top:50px;
   display:grid;
@@ -243,16 +145,24 @@ section{
   padding:36px;
   border-radius:var(--radius);
 }
-.card span{
-  display:block;
-  margin-top:14px;
-  color:var(--gold);
-}
+.card span{color:var(--gold);display:block;margin-top:12px}
 .stars{color:var(--gold);margin-top:10px}
 
-/* ============================================================
-   FOOTER
-   ============================================================ */
+/* ===== BOOKING ===== */
+.booking{
+  margin-top:50px;
+  display:grid;
+  gap:20px;
+}
+.booking select{
+  background:#000;
+  color:#fff;
+  border:1px solid #333;
+  padding:14px;
+  border-radius:14px;
+}
+
+/* ===== FOOTER ===== */
 footer{
   background:#000;
   padding:60px 20px;
@@ -262,37 +172,19 @@ footer{
   justify-content:center;
   gap:28px;
 }
-.footer-nav a{
-  color:var(--muted);
-  font-size:14px;
-  text-decoration:none;
-}
-.footer-copy{
-  margin-top:20px;
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
-}
+.footer-nav a{color:var(--muted);font-size:14px;text-decoration:none}
+.footer-copy{text-align:center;color:var(--muted);margin-top:20px}
 
-/* ============================================================
-   MOBILE
-   ============================================================ */
+/* ===== MOBILE ===== */
 @media(max-width:900px){
   nav{display:none}
   .burger{display:block}
   .hero h1{font-size:34px}
 }
-
 </style>
 </head>
 
 <body>
-
-<!-- LOADER -->
-<div id="loader">
-  <div class="loader-title">СТИЛЬ & УЮТ</div>
-  <div class="scissors"></div>
-</div>
 
 <div class="background"></div>
 
@@ -319,17 +211,15 @@ footer{
 <section class="hero">
   <div class="container fade">
     <h1>Пространство ухода, стиля и доверия</h1>
-    <p>Парикмахерская премиального уровня с персональным подходом.</p>
+    <p>Премиальная парикмахерская с персональным подходом.</p>
     <a href="#contact" class="btn">Записаться</a>
   </div>
 </section>
 
 <section id="about" class="fade">
   <div class="container">
-    <h2>О парикмахерской</h2>
-    <p class="subtitle">
-      Мы работаем для тех, кто ценит качество, тишину и внимание к деталям.
-    </p>
+    <h2>Философия</h2>
+    <p class="subtitle">Мы создаём образы, которые подчёркивают индивидуальность.</p>
   </div>
 </section>
 
@@ -358,12 +248,32 @@ footer{
 
 <section id="contact" class="fade">
   <div class="container">
-    <h2>Контакты</h2>
-    <p><i class="fa-solid fa-location-dot"></i> 
-      <a href="https://yandex.ru/maps/?text=Москва,+Пушкинская+15" target="_blank">Москва, ул. Пушкинская, 15</a>
+    <h2>Запись и контакты</h2>
+
+    <div class="booking">
+      <select>
+        <option>Выберите услугу</option>
+        <option>Женская стрижка</option>
+        <option>Мужская стрижка</option>
+        <option>Детская стрижка</option>
+      </select>
+
+      <select>
+        <option>Выберите мастера</option>
+        <option>Анна</option>
+        <option>Сергей</option>
+        <option>Мария</option>
+      </select>
+
+      <a class="btn" href="https://wa.me/79999999999">Записаться в WhatsApp</a>
+      <a class="btn" href="https://t.me/username">Записаться в Telegram</a>
+    </div>
+
+    <p style="margin-top:40px">
+      📍 <a href="https://yandex.ru/maps/?text=Москва,+Пушкинская+15" target="_blank">Москва, ул. Пушкинская, 15</a><br>
+      📞 <a href="tel:+74951234567">+7 (495) 123-45-67</a><br>
+      ⏰ Пн–Вс 9:00–20:00
     </p>
-    <p><i class="fa-solid fa-phone"></i> <a href="tel:+74951234567">+7 (495) 123-45-67</a></p>
-    <p><i class="fa-solid fa-clock"></i> Пн–Вс 9:00–20:00</p>
   </div>
 </section>
 
@@ -374,17 +284,12 @@ footer{
     <a href="#masters">Мастера</a>
     <a href="#contact">Контакты</a>
   </div>
-  <div class="footer-copy">© 2026 «Стиль & Уют». Все права защищены.</div>
+  <div class="footer-copy">© 2026 «Стиль & Уют»</div>
 </footer>
 
 <script>
-/* LOADER + FORCE TOP */
-window.addEventListener('load',()=>{
-  setTimeout(()=>{
-    document.getElementById('loader').classList.add('hidden');
-    window.scrollTo(0,0);
-  },2200);
-});
+/* FORCE TOP */
+window.scrollTo(0,0);
 
 /* BURGER */
 const burger=document.getElementById('burger');
@@ -398,6 +303,11 @@ const obs=new IntersectionObserver(e=>{
   e.forEach(i=>{if(i.isIntersecting)i.target.classList.add('show')});
 },{threshold:.2});
 fades.forEach(f=>obs.observe(f));
+
+/* SERVICE WORKER */
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js');
+}
 </script>
 
 </body>
