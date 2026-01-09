@@ -19,13 +19,16 @@
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{
   font-family:'Inter',sans-serif;
   background:var(--black);
   color:var(--text);
   line-height:1.8;
+  overflow-x:hidden;
 }
 
+/* BACKGROUND */
 .background{
   position:fixed;
   inset:0;
@@ -36,6 +39,62 @@ body{
     linear-gradient(180deg,#000,#0b0b0b);
 }
 
+/* LOADER */
+#loader{
+  position:fixed;
+  inset:0;
+  background:#000;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:opacity 1s ease, visibility 1s ease;
+}
+#loader.hidden{
+  opacity:0;
+  visibility:hidden;
+}
+.loader-box{
+  position:relative;
+}
+.loader-title{
+  font-family:'Playfair Display',serif;
+  font-size:42px;
+  letter-spacing:4px;
+  position:relative;
+}
+.loader-title::after{
+  content:"";
+  position:absolute;
+  left:0;
+  top:50%;
+  width:100%;
+  height:1px;
+  background:rgba(198,161,91,.7);
+  transform:scaleX(0);
+  animation:slice 1.8s ease forwards;
+}
+@keyframes slice{
+  50%{transform:scaleX(1)}
+  100%{transform:scaleX(0)}
+}
+.scissors{
+  position:absolute;
+  bottom:-120px;
+  left:50%;
+  width:2px;
+  height:120px;
+  background:linear-gradient(to top, transparent, var(--gold), transparent);
+  transform:translateX(-50%);
+  animation:cut 1.8s ease forwards;
+}
+@keyframes cut{
+  0%{bottom:-120px;opacity:0}
+  40%{opacity:1}
+  100%{bottom:140px;opacity:0}
+}
+
+/* HEADER */
 header{
   position:fixed;
   top:0;
@@ -45,7 +104,6 @@ header{
   backdrop-filter:blur(16px);
   z-index:1000;
 }
-
 .header-inner{
   height:100%;
   display:flex;
@@ -53,12 +111,10 @@ header{
   justify-content:space-between;
   padding:0 20px;
 }
-
 .logo{
   font-family:'Playfair Display',serif;
   letter-spacing:2px;
 }
-
 nav a{
   margin-left:28px;
   font-size:14px;
@@ -66,71 +122,67 @@ nav a{
   text-decoration:none;
 }
 
+/* SECTIONS */
 section{padding:120px 20px}
 .container{max-width:1300px;margin:0 auto}
 
+/* HERO */
 .hero{
   min-height:100vh;
   display:flex;
   align-items:center;
 }
-
 .hero h1{
   font-family:'Playfair Display',serif;
   font-size:44px;
   max-width:720px;
 }
-
 .hero p{
   margin-top:24px;
   color:var(--muted);
 }
 
+/* FADE */
 .fade{
   opacity:0;
   transform:translateY(40px);
   transition:1s ease;
 }
-
 .fade.show{
   opacity:1;
   transform:none;
 }
 
+/* GRID */
 .grid{
   margin-top:50px;
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:28px;
 }
-
 .card{
   background:var(--card);
   padding:36px;
   border-radius:var(--radius);
 }
-
 .card span{
   display:block;
   margin-top:12px;
   color:var(--gold);
 }
-
 .stars{color:var(--gold);margin-top:10px}
 
-/* ================= CONTACTS ================= */
+/* CONTACTS */
 .contacts-wrapper{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:40px;
   margin-top:50px;
 }
-
 .contact-info p{
   margin-top:16px;
   color:var(--muted);
 }
-
 .contact-info a{
   color:var(--text);
   text-decoration:none;
@@ -142,7 +194,6 @@ section{padding:120px 20px}
   overflow:hidden;
   height:320px;
 }
-
 .map-card iframe{
   width:100%;
   height:100%;
@@ -152,11 +203,10 @@ section{padding:120px 20px}
 
 /* SOCIALS */
 .socials{
-  margin-top:50px;
+  margin-top:40px;
   display:flex;
   gap:18px;
 }
-
 .socials a{
   width:44px;
   height:44px;
@@ -168,36 +218,36 @@ section{padding:120px 20px}
   color:#fff;
   text-decoration:none;
 }
-
 .socials a.whatsapp{background:#25D366}
 .socials a.telegram{background:#2AABEE}
-.socials a.instagram{background:linear-gradient(45deg,#f58529,#dd2a7b,#8134af)}
 .socials a.messenger{background:#0084ff}
+.socials a.instagram{background:linear-gradient(45deg,#f58529,#dd2a7b,#8134af)}
 .socials a.facebook{background:#1877f2}
 
 /* FOOTER */
-footer{
-  background:#000;
-  padding:60px 20px;
-}
-
 .footer-copy{
   text-align:center;
   color:var(--muted);
   font-size:13px;
-  margin-top:30px;
+  margin-top:40px;
 }
 
 @media(max-width:900px){
-  .contacts-wrapper{
-    grid-template-columns:1fr;
-  }
+  .contacts-wrapper{grid-template-columns:1fr}
   .hero h1{font-size:34px}
 }
 </style>
 </head>
 
 <body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-box">
+    <div class="loader-title">СТИЛЬ & УЮТ</div>
+    <div class="scissors"></div>
+  </div>
+</div>
 
 <div class="background"></div>
 
@@ -256,20 +306,19 @@ footer{
 
     <div class="contacts-wrapper">
       <div class="contact-info">
-        <p>Адрес:<br>
-          <a href="https://yandex.ru/maps/?text=Москва,+Пушкинская+15" target="_blank">
-            Москва, ул. Пушкинская, 15
+        <p>
+          улица Егорова, 3<br>
+          <a href="https://yandex.ru/maps?text=55.899509,49.327913&si=8b7cmnbq6eyqq3m33ceb5h05cg" target="_blank">
+            село Высокая Гора, Республика Татарстан
           </a>
         </p>
 
-        <p>Телефон:<br>
+        <p>
           <a href="tel:+74951234567">+7 (495) 123-45-67</a><br>
           <a href="tel:+79876543210">+7 (987) 654-32-10</a>
         </p>
 
-        <p>Режим работы:<br>
-          Пн–Вс 9:00–20:00
-        </p>
+        <p>Пн–Вс 9:00–20:00</p>
 
         <div class="socials">
           <a href="#" class="whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
@@ -281,7 +330,10 @@ footer{
       </div>
 
       <div class="map-card">
-        <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A5a29f0fcb92e7b3d8fd4a60e38d1c2e20f0c3b5a7c5e4d9e8f4a3c2d1b0a&source=constructor"></iframe>
+        <iframe
+          src="https://yandex.ru/map-widget/v1/?ll=49.327913%2C55.899509&z=16&pt=49.327913,55.899509,pm2rdm"
+          allowfullscreen>
+        </iframe>
       </div>
     </div>
 
@@ -293,6 +345,15 @@ footer{
 </section>
 
 <script>
+/* LOADER + FORCE TOP */
+window.addEventListener('load',()=>{
+  window.scrollTo(0,0);
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('hidden');
+  },2000);
+});
+
+/* FADE */
 const fades=document.querySelectorAll('.fade');
 const obs=new IntersectionObserver(e=>{
   e.forEach(i=>{if(i.isIntersecting)i.target.classList.add('show')});
