@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>СТИЛЬ & УЮТ — Премиальная парикмахерская</title>
 
 <!-- ===================== FONTS ===================== -->
@@ -11,11 +11,10 @@
 <!-- ===================== ICONS ===================== -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
-<!-- ===================== GLOBAL STYLES ===================== -->
 <style>
 
 /* ============================================================
-   ROOT VARIABLES
+   ROOT
    ============================================================ */
 :root{
   --black:#0a0a0a;
@@ -23,7 +22,6 @@
   --soft:#1a1a1a;
   --card:#1e1e1e;
   --gold:#c6a15b;
-  --gold-soft:#e3c98b;
   --text:#f5f5f5;
   --muted:#a1a1a1;
   --radius:26px;
@@ -32,26 +30,18 @@
 /* ============================================================
    RESET
    ============================================================ */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{
+  font-family:'Inter',sans-serif;
   background:var(--black);
   color:var(--text);
-  font-family:'Inter',sans-serif;
   line-height:1.8;
   overflow-x:hidden;
 }
 
 /* ============================================================
-   ABSTRACT BACKGROUND (PREMIUM, CALM)
+   BACKGROUND
    ============================================================ */
 .background{
   position:fixed;
@@ -64,33 +54,69 @@ body{
     linear-gradient(180deg, #000, #0b0b0b);
   animation:bgMove 30s ease-in-out infinite alternate;
 }
-
 @keyframes bgMove{
-  0%{filter:blur(0px)}
-  100%{filter:blur(8px)}
+  from{filter:blur(0)}
+  to{filter:blur(8px)}
 }
-
-/* subtle noise */
 .background::after{
   content:"";
   position:absolute;
   inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
-  opacity:.4;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
 }
 
 /* ============================================================
-   LAYOUT
+   LOADER
    ============================================================ */
-.container{
-  max-width:1300px;
-  margin:0 auto;
-  padding:0 28px;
+#loader{
+  position:fixed;
+  inset:0;
+  background:#000;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:opacity 1s ease, visibility 1s ease;
 }
-
-section{
-  padding:140px 0;
+#loader.hidden{
+  opacity:0;
+  visibility:hidden;
+}
+.loader-title{
+  font-family:'Playfair Display',serif;
+  font-size:42px;
+  letter-spacing:4px;
   position:relative;
+}
+.loader-title::after{
+  content:"";
+  position:absolute;
+  left:0;
+  top:50%;
+  width:100%;
+  height:1px;
+  background:rgba(198,161,91,.7);
+  transform:scaleX(0);
+  animation:slice 1.8s ease forwards;
+}
+@keyframes slice{
+  50%{transform:scaleX(1)}
+  100%{transform:scaleX(0)}
+}
+.scissors{
+  position:absolute;
+  bottom:-120px;
+  left:50%;
+  width:2px;
+  height:120px;
+  background:linear-gradient(to top, transparent, var(--gold), transparent);
+  transform:translateX(-50%);
+  animation:cut 1.8s ease forwards;
+}
+@keyframes cut{
+  0%{bottom:-120px;opacity:0}
+  40%{opacity:1}
+  100%{bottom:140px;opacity:0}
 }
 
 /* ============================================================
@@ -100,51 +126,29 @@ header{
   position:fixed;
   top:0;
   width:100%;
-  height:84px;
-  backdrop-filter:blur(18px);
+  height:80px;
   background:rgba(0,0,0,.55);
+  backdrop-filter:blur(18px);
   z-index:1000;
 }
-
 .header-inner{
   height:100%;
   display:flex;
   align-items:center;
   justify-content:space-between;
+  padding:0 20px;
 }
-
 .logo{
   font-family:'Playfair Display',serif;
   letter-spacing:2px;
-  font-size:20px;
 }
-
 nav a{
-  margin-left:32px;
+  margin-left:28px;
   font-size:14px;
   color:var(--text);
   text-decoration:none;
-  position:relative;
 }
-
-nav a::after{
-  content:"";
-  position:absolute;
-  left:0;
-  bottom:-6px;
-  width:0;
-  height:1px;
-  background:var(--gold);
-  transition:.3s;
-}
-
-nav a:hover::after{width:100%}
-
-.burger{
-  display:none;
-  font-size:26px;
-  cursor:pointer;
-}
+.burger{display:none;font-size:26px}
 
 /* ============================================================
    MOBILE MENU
@@ -157,22 +161,31 @@ nav a:hover::after{width:100%}
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:40px;
+  gap:36px;
   opacity:0;
   pointer-events:none;
   transition:.4s;
   z-index:999;
 }
-
 .mobile-menu.active{
   opacity:1;
   pointer-events:auto;
 }
-
 .mobile-menu a{
   font-size:26px;
   text-decoration:none;
   color:#fff;
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+section{
+  padding:120px 20px;
+}
+.container{
+  max-width:1300px;
+  margin:0 auto;
 }
 
 /* ============================================================
@@ -183,123 +196,79 @@ nav a:hover::after{width:100%}
   display:flex;
   align-items:center;
 }
-
 .hero h1{
   font-family:'Playfair Display',serif;
-  font-size:54px;
-  max-width:720px;
+  font-size:44px;
+  max-width:700px;
 }
-
 .hero p{
-  margin-top:26px;
-  max-width:620px;
+  margin-top:24px;
+  max-width:600px;
   color:var(--muted);
-  font-size:18px;
 }
-
 .btn{
-  margin-top:50px;
+  margin-top:40px;
   display:inline-block;
   background:var(--gold);
   color:#000;
-  padding:18px 48px;
-  border-radius:50px;
+  padding:16px 44px;
+  border-radius:40px;
   text-decoration:none;
-  font-weight:500;
 }
 
 /* ============================================================
-   FADE ANIMATION
+   FADE
    ============================================================ */
 .fade{
   opacity:0;
-  transform:translateY(60px);
-  transition:1.2s cubic-bezier(.2,.8,.2,1);
+  transform:translateY(50px);
+  transition:1s ease;
 }
-
 .fade.show{
   opacity:1;
   transform:none;
 }
 
 /* ============================================================
-   TYPOGRAPHY BLOCKS
-   ============================================================ */
-h2{
-  font-family:'Playfair Display',serif;
-  font-size:40px;
-}
-
-.subtitle{
-  margin-top:16px;
-  max-width:720px;
-  color:var(--muted);
-}
-
-/* ============================================================
    CARDS
    ============================================================ */
 .grid{
-  margin-top:60px;
+  margin-top:50px;
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:34px;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:28px;
 }
-
 .card{
   background:var(--card);
-  padding:44px;
+  padding:36px;
   border-radius:var(--radius);
 }
-
 .card span{
-  color:var(--gold);
   display:block;
-  margin-top:16px;
-}
-
-/* ============================================================
-   STARS
-   ============================================================ */
-.stars{
-  color:var(--gold);
   margin-top:14px;
+  color:var(--gold);
 }
-
-/* ============================================================
-   CONTACT
-   ============================================================ */
-.contact p{
-  margin-top:16px;
-}
-
-.contact a{
-  color:var(--text);
-  text-decoration:none;
-}
+.stars{color:var(--gold);margin-top:10px}
 
 /* ============================================================
    FOOTER
    ============================================================ */
 footer{
   background:#000;
-  padding:80px 20px;
+  padding:60px 20px;
 }
-
 .footer-nav{
   display:flex;
   justify-content:center;
-  gap:34px;
-  margin-bottom:24px;
+  gap:28px;
 }
-
 .footer-nav a{
   color:var(--muted);
   font-size:14px;
   text-decoration:none;
 }
-
 .footer-copy{
+  margin-top:20px;
   text-align:center;
   color:var(--muted);
   font-size:13px;
@@ -311,8 +280,7 @@ footer{
 @media(max-width:900px){
   nav{display:none}
   .burger{display:block}
-  section{padding:110px 0}
-  .hero h1{font-size:38px}
+  .hero h1{font-size:34px}
 }
 
 </style>
@@ -320,11 +288,16 @@ footer{
 
 <body>
 
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-title">СТИЛЬ & УЮТ</div>
+  <div class="scissors"></div>
+</div>
+
 <div class="background"></div>
 
-<!-- ================= HEADER ================= -->
 <header>
-  <div class="container header-inner">
+  <div class="header-inner">
     <div class="logo">СТИЛЬ & УЮТ</div>
     <nav>
       <a href="#about">О нас</a>
@@ -343,84 +316,54 @@ footer{
   <a href="#contact">Контакты</a>
 </div>
 
-<!-- ================= HERO ================= -->
 <section class="hero">
   <div class="container fade">
-    <h1>Пространство ухода, стиля и уважения к деталям</h1>
-    <p>
-      Мы создали парикмахерскую, в которой важен не поток клиентов,
-      а ощущение комфорта, доверия и результата.
-    </p>
-    <a href="#contact" class="btn">Записаться онлайн</a>
+    <h1>Пространство ухода, стиля и доверия</h1>
+    <p>Парикмахерская премиального уровня с персональным подходом.</p>
+    <a href="#contact" class="btn">Записаться</a>
   </div>
 </section>
 
-<!-- ================= ABOUT ================= -->
 <section id="about" class="fade">
   <div class="container">
-    <h2>Философия</h2>
+    <h2>О парикмахерской</h2>
     <p class="subtitle">
-      «Стиль & Уют» — это не просто услуги. Это сервис, построенный вокруг человека.
-      Мы верим, что хороший результат начинается с диалога.
+      Мы работаем для тех, кто ценит качество, тишину и внимание к деталям.
     </p>
   </div>
 </section>
 
-<!-- ================= SERVICES ================= -->
 <section id="services" class="fade">
   <div class="container">
     <h2>Услуги</h2>
     <div class="grid">
-      <div class="card"><h3>Женские стрижки</h3><p>Форма, подходящая образу жизни</p><span>от 1 200 ₽</span></div>
-      <div class="card"><h3>Мужские стрижки</h3><p>Точность, стиль, аккуратность</p><span>от 800 ₽</span></div>
-      <div class="card"><h3>Детские стрижки</h3><p>Комфорт и спокойствие</p><span>от 700 ₽</span></div>
-      <div class="card"><h3>Окрашивание</h3><p>Цвет и уход</p><span>от 2 500 ₽</span></div>
-      <div class="card"><h3>Укладки</h3><p>Ежедневные и вечерние</p><span>от 1 000 ₽</span></div>
-      <div class="card"><h3>Консультация</h3><p>Подбор формы и ухода</p><span>бесплатно</span></div>
+      <div class="card"><h3>Женские стрижки</h3><span>от 1 200 ₽</span></div>
+      <div class="card"><h3>Мужские стрижки</h3><span>от 800 ₽</span></div>
+      <div class="card"><h3>Детские стрижки</h3><span>от 700 ₽</span></div>
+      <div class="card"><h3>Окрашивание</h3><span>от 2 500 ₽</span></div>
     </div>
   </div>
 </section>
 
-<!-- ================= MASTERS ================= -->
 <section id="masters" class="fade">
   <div class="container">
     <h2>Мастера</h2>
     <div class="grid">
-      <div class="card">
-        <h3>Анна</h3>
-        <p>Женские стрижки и окрашивание</p>
-        <div class="stars">★★★★★ 4.9</div>
-      </div>
-      <div class="card">
-        <h3>Сергей</h3>
-        <p>Мужские стрижки и бороды</p>
-        <div class="stars">★★★★★ 4.8</div>
-      </div>
-      <div class="card">
-        <h3>Мария</h3>
-        <p>Детские стрижки</p>
-        <div class="stars">★★★★★ 5.0</div>
-      </div>
+      <div class="card"><h3>Анна</h3><p>Женские стрижки</p><div class="stars">★★★★★ 4.9</div></div>
+      <div class="card"><h3>Сергей</h3><p>Мужские стрижки</p><div class="stars">★★★★★ 4.8</div></div>
+      <div class="card"><h3>Мария</h3><p>Детские стрижки</p><div class="stars">★★★★★ 5.0</div></div>
     </div>
   </div>
 </section>
 
-<!-- ================= CONTACT ================= -->
-<section id="contact" class="fade contact">
+<section id="contact" class="fade">
   <div class="container">
-    <h2>Контакты и запись</h2>
-    <p><i class="fa-solid fa-location-dot"></i>
-      <a href="https://yandex.ru/maps/?text=Москва,+Пушкинская+15" target="_blank">
-        Москва, ул. Пушкинская, 15
-      </a>
+    <h2>Контакты</h2>
+    <p><i class="fa-solid fa-location-dot"></i> 
+      <a href="https://yandex.ru/maps/?text=Москва,+Пушкинская+15" target="_blank">Москва, ул. Пушкинская, 15</a>
     </p>
     <p><i class="fa-solid fa-phone"></i> <a href="tel:+74951234567">+7 (495) 123-45-67</a></p>
-    <p><i class="fa-solid fa-phone"></i> <a href="tel:+79876543210">+7 (987) 654-32-10</a></p>
-    <p><i class="fa-solid fa-clock"></i> Пн–Пт 9:00–20:00 · Сб–Вс 10:00–18:00</p>
-    <p>
-      <a class="btn" href="https://wa.me/79999999999">WhatsApp</a>
-      <a class="btn" href="https://t.me/username">Telegram</a>
-    </p>
+    <p><i class="fa-solid fa-clock"></i> Пн–Вс 9:00–20:00</p>
   </div>
 </section>
 
@@ -431,17 +374,25 @@ footer{
     <a href="#masters">Мастера</a>
     <a href="#contact">Контакты</a>
   </div>
-  <div class="footer-copy">
-    © 2026 «Стиль & Уют». Все права защищены.
-  </div>
+  <div class="footer-copy">© 2026 «Стиль & Уют». Все права защищены.</div>
 </footer>
 
 <script>
+/* LOADER + FORCE TOP */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('hidden');
+    window.scrollTo(0,0);
+  },2200);
+});
+
+/* BURGER */
 const burger=document.getElementById('burger');
 const menu=document.getElementById('menu');
 burger.onclick=()=>menu.classList.toggle('active');
 menu.querySelectorAll('a').forEach(a=>a.onclick=()=>menu.classList.remove('active'));
 
+/* FADE */
 const fades=document.querySelectorAll('.fade');
 const obs=new IntersectionObserver(e=>{
   e.forEach(i=>{if(i.isIntersecting)i.target.classList.add('show')});
